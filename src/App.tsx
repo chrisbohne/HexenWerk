@@ -6,6 +6,7 @@ export const App = () => {
     <>
       <h1>HexFinder</h1>
       <img src={Image} width="300" height="200" />
+      <p>{process.env.TEST}</p>
     </>
   );
 };
