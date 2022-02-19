@@ -1,17 +1,12 @@
 {
   "compilerOptions": {
     "target": "ES6",
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "lib": ["DOM", "ESNext"],
-    "jsx": "react-jsx",
-    "noEmit": true,
-    "isolatedModules": true,
-    "esModuleInterop": true,
+    "module": "commonjs",
+    "jsx": "preserve",
     "strict": true,
+    "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true
+    "forceConsistentCasingInFileNames": true
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "public/declarations.d.ts"]
 }
