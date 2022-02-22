@@ -3,12 +3,11 @@
 .navbar {
   background: $primary-200;
   color: $primary-300;
-  height: $header-height;
+  height: $nav-height;
   width: 100%;
   max-width: 1920px;
   display: flex;
   justify-content: space-between;
-  position: fixed;
   align-items: center;
   z-index: 100;
   padding: 0 $spacing-md;
@@ -22,6 +21,7 @@
     font-weight: bold;
     color: $primary-100;
     display: flex;
+    margin-right: $spacing-md;
   }
 
   & a {
@@ -37,7 +37,7 @@
     height: 100vh;
     position: fixed;
     display: flex;
-    color: white;
+    color: $neutral-100;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -48,11 +48,10 @@
     transition: 0.3s ease transform;
 
     @include breakpoint(md) {
-      transform: none;
       color: inherit;
       flex-direction: row;
       justify-content: space-between;
-      background: transparent;
+      background: inherit;
       height: 100%;
       position: static;
     }
@@ -78,8 +77,10 @@
           }
         }
 
-        a {
-          padding: 0.75rem 1.25rem;
+        a,
+        p {
+          cursor: pointer;
+          padding: 0 $spacing-md;
           border-radius: $border-radius;
           transition: 0.3s ease all;
 
@@ -96,32 +97,32 @@
         }
       }
     }
-    button {
-      cursor: pointer;
-      outline: none;
-      padding: 0.75rem 1.25rem;
-      border-radius: $border-radius;
-      font-size: 1rem;
-      font-family: inherit;
-      background: $primary-100;
-      color: $primary-300;
-      border: 1px solid transparent;
-      transition: 0.3s ease all;
+    // button {
+    //   cursor: pointer;
+    //   outline: none;
+    //   padding: 0.75rem 1.25rem;
+    //   border-radius: $border-radius;
+    //   font-size: 1rem;
+    //   font-family: inherit;
+    //   background: $primary-100;
+    //   color: $primary-300;
+    //   border: 1px solid transparent;
+    //   transition: 0.3s ease all;
 
-      &:hover {
-        border-color: $primary-100;
-        background: rgba($primary-100, 0.1);
-        color: $primary-100;
-      }
-      &:active {
-        border-color: $primary-100;
-        background: linear-gradient(
-          rgba($primary-100, 0.2),
-          rgba($primary-100, 0.3)
-        );
-        color: $primary-100;
-      }
-    }
+    //   &:hover {
+    //     border-color: $primary-100;
+    //     background: rgba($primary-100, 0.1);
+    //     color: $primary-100;
+    //   }
+    //   &:active {
+    //     border-color: $primary-100;
+    //     background: linear-gradient(
+    //       rgba($primary-100, 0.2),
+    //       rgba($primary-100, 0.3)
+    //     );
+    //     color: $primary-100;
+    //   }
+    // }
 
     &.isMenu {
       transform: translate(100%);

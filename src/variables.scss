@@ -8,7 +8,21 @@ $primary-100: #e67e22;
 $primary-200: #ecf0f1;
 $primary-300: #34495e;
 
+$neutral-100: #fff;
+$neutral-200: #f4f5f7;
+$neutral-300: #e1e1e1;
+$neutral-400: #737581;
+$neutral-500: #4a4b53;
+$neutral-600: #000;
+
+$success-100: #529e66;
+
+$error-100: #d0454c;
+
+$warning-100: #e1c542;
+
 // spacing
+$spacing-sm: 8px;
 $spacing-md: 16px;
 $spacing-lg: 32px;
 
@@ -16,11 +30,17 @@ $spacing-lg: 32px;
 $border-radius: 12px;
 
 // header height
-$header-height: 100px;
+$nav-height: 60px;
+
+// points
+$sm: 37.5em;
+$md: 48.5em;
+$lg: 64em;
+$xl: 75em;
 
 @mixin breakpoint($point) {
   @if $point == md {
-    @media (min-width: 48em) {
+    @media (min-width: $md) {
       @content;
     }
   }
