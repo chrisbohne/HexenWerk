@@ -1,9 +1,15 @@
 @import './variables.scss';
 
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
 body {
   font-family: $Poppins;
+  background-color: $primary-300;
 }
 
 h1 {
-  color: orange;
+  color: $neutral-100;
 }
