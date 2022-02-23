@@ -4,6 +4,7 @@ import { IIconsProps } from '../../components/Icon/Icon';
 export const HamburgerIcon: FC<IIconsProps> = ({ color, size, className }) => {
   return (
     <svg
+      data-testid="test-icon"
       width={size ? size : '16'}
       height={size ? size : '16'}
       fill={color ? color : 'black'}

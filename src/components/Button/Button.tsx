@@ -3,11 +3,12 @@ import styles from './Button.module.scss';
 
 interface IButton {
   label: string;
+  type: string;
 }
 
-const Button: FC<IButton> = ({ label }) => {
+const Button: FC<IButton> = ({ label, type }) => {
   return (
-    <button data-testid="button" className={styles.button}>
+    <button data-testid="button" className={styles[type]}>
       {label}
     </button>
   );
