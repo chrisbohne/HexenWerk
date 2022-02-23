@@ -6,7 +6,7 @@ const Home = () => {
     <div>
       <h1>Welcome to HexFinder</h1>
       <Icon name="hamburger" color="red" size="64" />
-      <Button label="Play" />
+      <Button label="Play Around" type="primary" />
     </div>
   );
 };

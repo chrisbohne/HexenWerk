@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import './Icon.scss';
 import { HamburgerIcon } from '../../assets/icons/navigation';
 
 export interface IIconsProps {
