@@ -48,7 +48,7 @@ const Nav = () => {
         className={`${styles.navbar__menu} ${menuOpen ? styles.isMenu : ''}`}
       >
         <ul>
-          <li>
+          <li data-testid="test-nav-item">
             <Link to="/playground">Playground</Link>
           </li>
           <li>

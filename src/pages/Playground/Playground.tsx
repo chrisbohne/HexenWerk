@@ -1,7 +1,7 @@
 const Playground = () => {
   return (
-    <div>
-      <h1>Playground</h1>
+    <div data-testid="test-playground">
+      <h1>Playground Huch</h1>
     </div>
   );
 };
