@@ -2,16 +2,16 @@ import { cleanup, render, fireEvent } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import Login from './Login';
 
-afterEach(cleanup);
-
 describe('Login', () => {
-  it('calls onSubmit with username and password', async () => {
+  afterEach(cleanup);
+
+  it('calls onSubmit with username and password', () => {
     const handleSubmit = jest.fn();
     const { getByLabelText, getByRole } = render(
       <Login onSubmit={handleSubmit} />
     );
 
-    await act(async () => {
+    act(() => {
       fireEvent.change(getByLabelText(/username/i), {
         target: { value: 'chris' },
       });
@@ -20,7 +20,7 @@ describe('Login', () => {
       });
     });
 
-    await act(async () => {
+    act(() => {
       fireEvent.click(getByRole('button'));
     });
 
