@@ -12,7 +12,7 @@ describe('Register', () => {
 
   it('should render basic fields', () => {
     const handleOnSubmit = jest.fn();
-    render(<Register onSubmit={handleOnSubmit} />);
+    render(<Register signUp={handleOnSubmit} />);
     expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
@@ -23,7 +23,7 @@ describe('Register', () => {
     const handleOnSubmit = jest.fn();
 
     const { getByLabelText, getByRole } = render(
-      <Register onSubmit={handleOnSubmit} />
+      <Register signUp={handleOnSubmit} />
     );
 
     fireEvent.input(getByLabelText(/username/i), {
@@ -39,11 +39,11 @@ describe('Register', () => {
     fireEvent.click(getByRole('button'));
 
     await waitFor(() => {
-      expect(handleOnSubmit).toHaveBeenCalledWith(
-        'chris',
-        'chris@test.com',
-        '12345678'
-      );
+      expect(handleOnSubmit).toHaveBeenCalledWith({
+        username: 'chris',
+        email: 'chris@test.com',
+        password: '12345678',
+      });
     });
   });
 });
