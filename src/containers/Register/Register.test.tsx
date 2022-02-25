@@ -1,37 +1,49 @@
-import { render, fireEvent, cleanup } from '@testing-library/react';
-import { act } from 'react-dom/test-utils';
+import {
+  render,
+  fireEvent,
+  cleanup,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import Register from './Register';
 
 describe('Register', () => {
   afterEach(cleanup);
 
-  it('calls the onSubmit function with relevant data', () => {
+  it('should render basic fields', () => {
     const handleOnSubmit = jest.fn();
+    render(<Register onSubmit={handleOnSubmit} />);
+    expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+    expect(screen.getByRole('button')).toBeInTheDocument();
+  });
+
+  it('should submit correct form data', async () => {
+    const handleOnSubmit = jest.fn();
+
     const { getByLabelText, getByRole } = render(
       <Register onSubmit={handleOnSubmit} />
     );
 
-    act(() => {
-      fireEvent.change(getByLabelText(/username/i), {
-        target: { value: 'chris' },
-      });
-      fireEvent.change(getByLabelText(/email/i), {
-        target: { value: 'chris@test.com' },
-      });
-      fireEvent.change(getByLabelText(/password/i), {
-        target: { value: '12345678' },
-      });
+    fireEvent.input(getByLabelText(/username/i), {
+      target: { value: 'chris' },
+    });
+    fireEvent.input(getByLabelText(/email/i), {
+      target: { value: 'chris@test.com' },
+    });
+    fireEvent.input(getByLabelText(/password/i), {
+      target: { value: '12345678' },
     });
 
-    act(() => {
-      fireEvent.click(getByRole('button'));
-    });
+    fireEvent.click(getByRole('button'));
 
-    expect(handleOnSubmit).toBeCalledTimes(1);
-    expect(handleOnSubmit).toHaveBeenCalledWith(
-      'chris',
-      'chris@test.com',
-      '12345678'
-    );
+    await waitFor(() => {
+      expect(handleOnSubmit).toHaveBeenCalledWith(
+        'chris',
+        'chris@test.com',
+        '12345678'
+      );
+    });
   });
 });

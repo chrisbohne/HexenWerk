@@ -1,74 +1,29 @@
-import { ChangeEvent, useState } from 'react';
+import { useState, ChangeEvent, SyntheticEvent } from 'react';
 
-interface IUseForm {
-  username?: string;
-  password?: string;
-  email?: string;
-}
+const useForm = (callback: () => void) => {
+  const [values, setValues] = useState({
+    username: '',
+    email: '',
+    password: '',
+  });
 
-const useForm = () => {
-  const [values, setValues] = useState<IUseForm>({});
-  const [errors, setErrors] = useState<IUseForm>({});
-
-  const validate = (name: string, value: string) => {
-    switch (name) {
-      case 'username':
-        if (value.length < 3) {
-          setErrors({
-            ...errors,
-            username: 'Username must have at least 3 characters',
-          });
-        } else {
-          const newObj = { ...errors };
-          delete newObj.username;
-          setErrors(newObj);
-        }
-        break;
-
-      case 'email':
-        if (
-          !new RegExp(
-            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-          ).test(value)
-        ) {
-          setErrors({
-            ...errors,
-            email: 'Enter a valid email address',
-          });
-        }
-        break;
-
-      case 'password':
-        if (value.length < 8) {
-          setErrors({
-            ...errors,
-            password: 'Password should contain at least 8 characters',
-          });
-        }
-        break;
-      default:
-        break;
-    }
+  const handleSubmit = (event: SyntheticEvent) => {
+    if (event) event.preventDefault();
+    callback();
   };
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-
-    const name = e.target.id;
-    const value = e.target.value;
-
-    validate(name, value);
-
-    setValues({
+  const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    event.persist();
+    setValues((values) => ({
       ...values,
-      [name]: value,
-    });
+      [event.target.name]: event.target.value,
+    }));
   };
 
   return {
-    values,
-    errors,
     handleChange,
+    handleSubmit,
+    values,
   };
 };
 

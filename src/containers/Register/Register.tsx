@@ -1,40 +1,48 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
+import useForm from '../../hooks/useForm';
 
 interface IRegister {
   onSubmit(username: string, email: string, password: string): void;
 }
 
 const Register: FC<IRegister> = ({ onSubmit }) => {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { values, handleChange, handleSubmit } = useForm(register);
+
+  function register() {
+    const { username, email, password } = values;
+    onSubmit(username, email, password);
+  }
 
   return (
     <div>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          onSubmit(username, email, password);
-        }}
-      >
+      <form onSubmit={handleSubmit}>
         <label htmlFor="username">Username</label>
         <input
           id="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          name="username"
+          type="text"
+          onChange={handleChange}
+          // value={values.username}
         />
+
         <label htmlFor="email">Email</label>
         <input
           id="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          name="email"
+          type="email"
+          onChange={handleChange}
+          // value={values.email}
         />
+
         <label htmlFor="password">Password</label>
         <input
           id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          name="password"
+          type="password"
+          onChange={handleChange}
+          // value={values.password}
         />
+
         <button type="submit">Submit</button>
       </form>
     </div>

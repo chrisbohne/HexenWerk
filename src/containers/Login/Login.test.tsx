@@ -11,18 +11,13 @@ describe('Login', () => {
       <Login onSubmit={handleSubmit} />
     );
 
-    act(() => {
-      fireEvent.change(getByLabelText(/username/i), {
-        target: { value: 'chris' },
-      });
-      fireEvent.change(getByLabelText(/password/i), {
-        target: { value: '1234' },
-      });
+    fireEvent.change(getByLabelText(/username/i), {
+      target: { value: 'chris' },
     });
-
-    act(() => {
-      fireEvent.click(getByRole('button'));
+    fireEvent.change(getByLabelText(/password/i), {
+      target: { value: '1234' },
     });
+    fireEvent.click(getByRole('button'));
 
     expect(handleSubmit).toBeCalledTimes(1);
     expect(handleSubmit).toHaveBeenCalledWith('chris', '1234');
