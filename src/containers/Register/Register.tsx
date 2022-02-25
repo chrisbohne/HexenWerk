@@ -1,15 +1,32 @@
-import { useForm } from 'react-hook-form';
+import { FC } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
 
-const Register = () => {
-  const { register, handleSubmit } = useForm();
-  const onSubmit = () => {
-    console.log('submitted');
+interface IFormInput {
+  username: string;
+  email: string;
+  password: string;
+}
+
+interface IProps {
+  signUp(data: IFormInput): void;
+}
+
+const Register: FC<IProps> = ({ signUp }) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormInput>();
+  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+    console.log(data);
+    signUp(data);
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <label htmlFor="username">Username</label>
-      <input id="username" {...register('username')} />
+      <input id="username" {...register('username', { required: true })} />
+      {errors.username && <p>This field is required</p>}
       <label htmlFor="email">Email</label>
       <input id="email" {...register('email')} />
       <label htmlFor="password">Password</label>
