@@ -21,7 +21,6 @@ const Register: FC<IProps> = ({ signUp }) => {
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     signUp(data);
-    console.log('called');
     reset();
   };
 
@@ -32,7 +31,7 @@ const Register: FC<IProps> = ({ signUp }) => {
         id="username"
         type="text"
         {...register('username', {
-          required: 'Username is required',
+          required: 'Please enter a username',
           minLength: {
             value: 3,
             message: 'Please enter a username with at least 3 characters',
@@ -45,7 +44,7 @@ const Register: FC<IProps> = ({ signUp }) => {
         id="email"
         type="email"
         {...register('email', {
-          required: 'Email is required',
+          required: 'Please enter an email address',
           pattern: {
             value:
               /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
@@ -59,7 +58,7 @@ const Register: FC<IProps> = ({ signUp }) => {
         id="password"
         type="password"
         {...register('password', {
-          required: 'Password is required',
+          required: 'Please enter a password',
           minLength: {
             value: 8,
             message: 'Please enter a password with at least 8 characters',
@@ -67,7 +66,7 @@ const Register: FC<IProps> = ({ signUp }) => {
         })}
       />
       {errors.password && <p role="alert">{errors.password.message}</p>}
-      <button type="submit">Submit</button>
+      <button type="submit">Register</button>
     </form>
   );
 };
