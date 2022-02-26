@@ -16,77 +16,60 @@ const Register: FC<IProps> = ({ signUp }) => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IFormInput>();
+    reset,
+  } = useForm<IFormInput>({ mode: 'onChange' });
+
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    console.log(data);
     signUp(data);
+    console.log('called');
+    reset();
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form noValidate onSubmit={handleSubmit(onSubmit)}>
       <label htmlFor="username">Username</label>
-      <input id="username" {...register('username', { required: true })} />
-      {errors.username && <p>This field is required</p>}
+      <input
+        id="username"
+        type="text"
+        {...register('username', {
+          required: 'Username is required',
+          minLength: {
+            value: 3,
+            message: 'Please enter a username with at least 3 characters',
+          },
+        })}
+      />
+      {errors.username && <p role="alert">{errors.username.message}</p>}
       <label htmlFor="email">Email</label>
-      <input id="email" {...register('email')} />
+      <input
+        id="email"
+        type="email"
+        {...register('email', {
+          required: 'Email is required',
+          pattern: {
+            value:
+              /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+            message: 'Please enter a valid email',
+          },
+        })}
+      />
+      {errors.email && <p role="alert">{errors.email.message}</p>}
       <label htmlFor="password">Password</label>
-      <input id="password" {...register('password')} />
+      <input
+        id="password"
+        type="password"
+        {...register('password', {
+          required: 'Password is required',
+          minLength: {
+            value: 8,
+            message: 'Please enter a password with at least 8 characters',
+          },
+        })}
+      />
+      {errors.password && <p role="alert">{errors.password.message}</p>}
       <button type="submit">Submit</button>
     </form>
   );
 };
 
 export default Register;
-
-// import { FC } from 'react';
-// import useForm from '../../hooks/useForm';
-
-// interface IRegister {
-//   onSubmit(username: string, email: string, password: string): void;
-// }
-
-// const Register: FC<IRegister> = ({ onSubmit }) => {
-//   const { values, handleChange, handleSubmit } = useForm(register);
-
-//   function register() {
-//     const { username, email, password } = values;
-//     onSubmit(username, email, password);
-//   }
-
-//   return (
-//     <div>
-//       <form onSubmit={handleSubmit}>
-//         <label htmlFor="username">Username</label>
-//         <input
-//           id="username"
-//           name="username"
-//           type="text"
-//           onChange={handleChange}
-//           // value={values.username}
-//         />
-
-//         <label htmlFor="email">Email</label>
-//         <input
-//           id="email"
-//           name="email"
-//           type="email"
-//           onChange={handleChange}
-//           // value={values.email}
-//         />
-
-//         <label htmlFor="password">Password</label>
-//         <input
-//           id="password"
-//           name="password"
-//           type="password"
-//           onChange={handleChange}
-//           // value={values.password}
-//         />
-
-//         <button type="submit">Submit</button>
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default Register;
