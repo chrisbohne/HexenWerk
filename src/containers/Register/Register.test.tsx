@@ -13,11 +13,13 @@ describe('Register', () => {
     expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /submit/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /register/i })
+    ).toBeInTheDocument();
   });
 
   it('should not submit if fields are empty', async () => {
-    userEvent.click(screen.getByRole('button', { name: /submit/i }));
+    userEvent.click(screen.getByRole('button', { name: /register/i }));
     expect(await screen.findAllByRole('alert')).toHaveLength(3);
     expect(mockSignUp).not.toBeCalled();
   });
@@ -26,7 +28,7 @@ describe('Register', () => {
     userEvent.type(screen.getByLabelText(/username/i), 'c');
     userEvent.type(screen.getByLabelText(/email/i), 'chris@test.com');
     userEvent.type(screen.getByLabelText(/username/i), '12345678');
-    userEvent.click(screen.getByRole('button', { name: /submit/i }));
+    userEvent.click(screen.getByRole('button', { name: /register/i }));
     expect(await screen.findAllByRole('alert')).toHaveLength(1);
     expect(mockSignUp).not.toBeCalled();
   });
@@ -35,7 +37,7 @@ describe('Register', () => {
     userEvent.type(screen.getByLabelText(/username/i), 'chris');
     userEvent.type(screen.getByLabelText(/email/i), 'test.com');
     userEvent.type(screen.getByLabelText(/username/i), '12345678');
-    userEvent.click(screen.getByRole('button', { name: /submit/i }));
+    userEvent.click(screen.getByRole('button', { name: /register/i }));
     expect(await screen.findAllByRole('alert')).toHaveLength(1);
     expect(mockSignUp).not.toBeCalled();
   });
@@ -44,7 +46,7 @@ describe('Register', () => {
     userEvent.type(screen.getByLabelText(/username/i), 'chris');
     userEvent.type(screen.getByLabelText(/email/i), 'chris@test.com');
     userEvent.type(screen.getByLabelText(/username/i), '1234');
-    userEvent.click(screen.getByRole('button', { name: /submit/i }));
+    userEvent.click(screen.getByRole('button', { name: /register/i }));
     expect(await screen.findAllByRole('alert')).toHaveLength(1);
     expect(mockSignUp).not.toBeCalled();
   });
@@ -53,7 +55,7 @@ describe('Register', () => {
     userEvent.type(screen.getByLabelText(/username/i), 'chris');
     userEvent.type(screen.getByLabelText(/email/i), 'chris@test.com');
     userEvent.type(screen.getByLabelText(/password/i), '12345678');
-    userEvent.click(screen.getByRole('button', { name: /submit/i }));
+    userEvent.click(screen.getByRole('button', { name: /register/i }));
 
     await waitFor(() => {
       expect(mockSignUp).toHaveBeenCalledWith({

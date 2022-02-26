@@ -1,36 +1,51 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
 
-interface ILogin {
-  onSubmit(username: string, password: string): void;
+interface IFormInput {
+  username: string;
+  password: string;
 }
 
-const Login: FC<ILogin> = ({ onSubmit }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+interface IProps {
+  login(data: IFormInput): void;
+}
+
+const Login: FC<IProps> = ({ login }) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<IFormInput>();
+
+  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+    login(data);
+    console.log(data);
+    reset();
+  };
 
   return (
-    <div>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault;
-          onSubmit(username, password);
-        }}
-      >
-        <label htmlFor="username">Username</label>
-        <input
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          id="username"
-        />
-        <label htmlFor="password">Password</label>
-        <input
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          id="password"
-        />
-        <button type="submit">Submit</button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit(onSubmit)} noValidate>
+      <label htmlFor="username">Username</label>
+      <input
+        type="text"
+        id="username"
+        {...register('username', {
+          required: true,
+        })}
+      />
+      {errors.username && <p role="alert">Please enter your username</p>}
+      <label htmlFor="password">Password</label>
+      <input
+        id="password"
+        type="password"
+        {...register('password', {
+          required: true,
+        })}
+      />
+      {errors.password && <p role="alert">Please enter your password</p>}
+      <button type="submit">Login</button>
+    </form>
   );
 };
 

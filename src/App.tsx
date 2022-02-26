@@ -6,13 +6,13 @@ import Home from './pages/Home/Home';
 import Playground from './pages/Playground/Playground';
 import About from './pages/About/About';
 import './styles.scss';
-import Register from './containers/Register/Register';
+import Login from './containers/Login/Login';
 
 const App = () => {
   return (
     <>
       <Nav />
-      <Register />
+      <Login login={() => console.log('bla')} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/playground" element={<Playground />} />
