@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { BiMenuAltRight } from 'react-icons/bi';
 import { AiOutlineClose } from 'react-icons/ai';
+import Modal from '../../components/Modal/Modal';
 import styles from './Nav.module.scss';
+import Login from '../Login/Login';
 
 interface ISize {
   width: number | undefined;
@@ -15,6 +17,11 @@ const Nav = () => {
     width: undefined,
     height: undefined,
   });
+  const [showModal, setShowModal] = useState(false);
+
+  const toggleModal = () => {
+    setShowModal((p) => !p);
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -63,7 +70,7 @@ const Nav = () => {
         </ul>
         <ul>
           <li>
-            <p>Login</p>
+            <button onClick={toggleModal}>Login</button>
           </li>
           <li>
             <p>Register</p>
@@ -77,6 +84,11 @@ const Nav = () => {
           <BiMenuAltRight onClick={menuToggleHandler} />
         )}
       </div>
+      {showModal ? (
+        <Modal close={toggleModal}>
+          <Login login={() => console.log('bla')} />
+        </Modal>
+      ) : null}
     </nav>
   );
 };
