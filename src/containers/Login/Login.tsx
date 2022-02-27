@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import Button from '../../components/Button/Button';
 import styles from './Login.module.scss';
 
 interface IFormInput {
@@ -53,7 +54,8 @@ const Login: FC<IProps> = ({ login }) => {
           Please enter your password
         </p>
       )}
-      <button type="submit">Login</button>
+      <Button label="Login" type="primary" />
+      {/* <button type="submit">Login</button> */}
     </form>
   );
 };
