@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import styles from './Login.module.scss';
 
 interface IFormInput {
   username: string;
@@ -34,7 +35,11 @@ const Login: FC<IProps> = ({ login }) => {
           required: true,
         })}
       />
-      {errors.username && <p role="alert">Please enter your username</p>}
+      {errors.username && (
+        <p className={styles.error} role="alert">
+          Please enter your username
+        </p>
+      )}
       <label htmlFor="password">Password</label>
       <input
         id="password"
@@ -43,7 +48,11 @@ const Login: FC<IProps> = ({ login }) => {
           required: true,
         })}
       />
-      {errors.password && <p role="alert">Please enter your password</p>}
+      {errors.password && (
+        <p className={styles.error} role="alert">
+          Please enter your password
+        </p>
+      )}
       <button type="submit">Login</button>
     </form>
   );

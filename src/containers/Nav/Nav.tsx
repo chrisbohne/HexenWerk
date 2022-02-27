@@ -23,6 +23,10 @@ const Nav = () => {
     setShowModal((p) => !p);
   };
 
+  const login = () => {
+    toggleModal();
+  };
+
   useEffect(() => {
     const handleResize = () => {
       setSize({
@@ -73,7 +77,7 @@ const Nav = () => {
             <button onClick={toggleModal}>Login</button>
           </li>
           <li>
-            <p>Register</p>
+            <button>Register</button>
           </li>
         </ul>
       </div>
@@ -86,7 +90,7 @@ const Nav = () => {
       </div>
       {showModal ? (
         <Modal close={toggleModal}>
-          <Login login={() => console.log('bla')} />
+          <Login login={login} />
         </Modal>
       ) : null}
     </nav>
