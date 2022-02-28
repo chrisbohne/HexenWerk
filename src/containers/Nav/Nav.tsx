@@ -89,7 +89,7 @@ const Nav = () => {
         )}
       </div>
       {showModal ? (
-        <Modal close={toggleModal}>
+        <Modal onClose={toggleModal}>
           <Login login={login} />
         </Modal>
       ) : null}

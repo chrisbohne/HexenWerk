@@ -6,14 +6,19 @@ import { createPortal } from 'react-dom';
 import { CloseButton } from '../Button/Button';
 import styles from './Modal.module.scss';
 
-const modalRoot = document.getElementById('modal');
+let modalRoot = document.getElementById('modal');
+if (!modalRoot) {
+  modalRoot = document.createElement('div');
+  modalRoot.setAttribute('id', 'modal');
+  document.body.appendChild(modalRoot);
+}
 
 interface IProps {
   children: ReactNode;
-  close(): void;
+  onClose(): void;
 }
 
-const Modal: FC<IProps> = ({ children, close }) => {
+const Modal: FC<IProps> = ({ children, onClose }) => {
   const elRef: MutableRefObject<HTMLDivElement | null> = useRef(null);
   if (!elRef.current) {
     elRef.current = document.createElement('div');
@@ -32,12 +37,9 @@ const Modal: FC<IProps> = ({ children, close }) => {
   }, []);
 
   return createPortal(
-    <div className={styles.modal__container} onClick={close}>
+    <div className={styles.modal__container} onClick={onClose}>
       <div onClick={(e) => e.stopPropagation()} className={styles.modal}>
-        {/* <button className={styles.button} onClick={close}>
-          X
-        </button> */}
-        <CloseButton callFunction={close} />
+        <CloseButton onClick={onClose} />
         {children}
       </div>
     </div>,
