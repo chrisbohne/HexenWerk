@@ -1,15 +1,35 @@
 @import './variables.scss';
 
-* {
+html {
   box-sizing: border-box;
-  margin: 0;
+  font-size: 16px;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
 }
 
 body {
-  font-family: $Poppins;
-  background-color: $primary-300;
+  margin: 0;
+  font-family: $primary-font;
+  background-color: $primary-400;
+  color: $neutral-100;
 }
 
 h1 {
-  color: $neutral-100;
+  font-size: $header1;
+}
+h2 {
+  font-size: $header2;
+}
+h3 {
+  font-size: $header3;
+}
+h4 {
+  font-size: $header4;
+}
+h5 {
+  font-size: $header5;
 }

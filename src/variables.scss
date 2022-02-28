@@ -1,12 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
 // font
-$Poppins: 'Poppins', sans-serif;
+$primary-font: 'Poppins', sans-serif;
 
 // color
-$primary-100: #e67e22;
-$primary-200: #ecf0f1;
-$primary-300: #34495e;
+$primary-100: #ff7d00;
+$primary-200: #f9dc5c;
+$primary-300: #93a3b1;
+$primary-400: #34495e;
+$primary-500: #2c3e50;
 
 $neutral-100: #fff;
 $neutral-200: #f4f5f7;
@@ -16,10 +18,17 @@ $neutral-500: #4a4b53;
 $neutral-600: #000;
 
 $success-100: #529e66;
-
 $error-100: #d0454c;
-
 $warning-100: #e1c542;
+
+// typography
+$header1: 1.8rem;
+$header2: 1.6rem;
+$header3: 1.4rem;
+$header4: 1.2rem;
+$header5: 1.1rem;
+$paragraph: 1rem;
+$helper-text: 0.8rem;
 
 // spacing
 $spacing-sm: 8px;
