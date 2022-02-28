@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import Button from '../../components/Button/Button';
+import { Button } from '../../components/Button/Button';
 import styles from './Login.module.scss';
 
 interface IFormInput {
@@ -22,7 +22,6 @@ const Login: FC<IProps> = ({ login }) => {
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     login(data);
-    console.log(data);
     reset();
   };
 

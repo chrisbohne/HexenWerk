@@ -3,6 +3,7 @@
 
 import { FC, MutableRefObject, ReactNode, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
+import { CloseButton } from '../Button/Button';
 import styles from './Modal.module.scss';
 
 const modalRoot = document.getElementById('modal');
@@ -33,9 +34,10 @@ const Modal: FC<IProps> = ({ children, close }) => {
   return createPortal(
     <div className={styles.modal__container} onClick={close}>
       <div onClick={(e) => e.stopPropagation()} className={styles.modal}>
-        <button className={styles.button} onClick={close}>
+        {/* <button className={styles.button} onClick={close}>
           X
-        </button>
+        </button> */}
+        <CloseButton callFunction={close} />
         {children}
       </div>
     </div>,

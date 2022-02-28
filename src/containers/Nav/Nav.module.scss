@@ -76,15 +76,17 @@
             margin-right: $spacing-md;
           }
         }
-
         a,
         button {
           cursor: pointer;
+          border: none;
           padding: $spacing-md $spacing-md;
           height: 100%;
           border-radius: $border-radius;
           transition: 0.3s ease all;
           color: inherit;
+          font-size: inherit;
+          font-family: inherit;
 
           &:hover {
             background: rgba($primary-100, 0.3);

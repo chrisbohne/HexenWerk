@@ -1,17 +1,46 @@
-import { FC } from 'react';
+import { FC, ReactElement } from 'react';
 import styles from './Button.module.scss';
 
 interface IButton {
   label: string;
   type: string;
+  onClick?: () => void;
 }
 
-const Button: FC<IButton> = ({ label, type }) => {
+interface ICloseButton {
+  onClick(): void;
+}
+
+interface IIconButton {
+  icon: ReactElement;
+  onClick?: () => void;
+}
+
+export const Button: FC<IButton> = ({ label, type, onClick }) => {
   return (
-    <button data-testid="button" className={styles[type]}>
+    <button
+      onClick={onClick}
+      data-testid="button"
+      className={`${styles[type]} ${styles.button}`}
+      data-content={label}
+    >
       {label}
     </button>
   );
 };
 
-export default Button;
+export const CloseButton: FC<ICloseButton> = ({ onClick }) => {
+  return (
+    <button className={styles.button__close} onClick={onClick}>
+      x
+    </button>
+  );
+};
+
+export const IconButton: FC<IIconButton> = ({ icon, onClick }) => {
+  return (
+    <button className={styles.button__icon} onClick={onClick}>
+      {icon}
+    </button>
+  );
+};

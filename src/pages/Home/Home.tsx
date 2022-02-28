@@ -1,10 +1,7 @@
-import Icon from '../../components/Icon/Icon';
-
 const Home = () => {
   return (
-    <div data-testid="test-app">
+    <div>
       <h1>Welcome to HexFinder</h1>
-      <Icon name="hamburger" color="red" size="64" />
     </div>
   );
 };
