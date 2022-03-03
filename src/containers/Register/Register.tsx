@@ -1,8 +1,10 @@
 import { FC } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { Button } from '../../components/Button/Button';
+import styles from './Register.module.scss';
 
 interface IFormInput {
-  username: string;
+  name: string;
   email: string;
   password: string;
 }
@@ -30,7 +32,7 @@ const Register: FC<IProps> = ({ signUp }) => {
       <input
         id="username"
         type="text"
-        {...register('username', {
+        {...register('name', {
           required: 'Please enter a username',
           minLength: {
             value: 3,
@@ -38,7 +40,11 @@ const Register: FC<IProps> = ({ signUp }) => {
           },
         })}
       />
-      {errors.username && <p role="alert">{errors.username.message}</p>}
+      {errors.name && (
+        <p className={styles.error} role="alert">
+          {errors.name.message}
+        </p>
+      )}
       <label htmlFor="email">Email</label>
       <input
         id="email"
@@ -52,7 +58,11 @@ const Register: FC<IProps> = ({ signUp }) => {
           },
         })}
       />
-      {errors.email && <p role="alert">{errors.email.message}</p>}
+      {errors.email && (
+        <p className={styles.error} role="alert">
+          {errors.email.message}
+        </p>
+      )}
       <label htmlFor="password">Password</label>
       <input
         id="password"
@@ -65,8 +75,12 @@ const Register: FC<IProps> = ({ signUp }) => {
           },
         })}
       />
-      {errors.password && <p role="alert">{errors.password.message}</p>}
-      <button type="submit">Register</button>
+      {errors.password && (
+        <p className={styles.error} role="alert">
+          {errors.password.message}
+        </p>
+      )}
+      <Button type="primary" label="Register" />
     </form>
   );
 };

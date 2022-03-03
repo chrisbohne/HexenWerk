@@ -4,7 +4,7 @@ import { Button } from '../../components/Button/Button';
 import styles from './Login.module.scss';
 
 interface IFormInput {
-  username: string;
+  email: string;
   password: string;
 }
 
@@ -27,17 +27,17 @@ const Login: FC<IProps> = ({ login }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
-      <label htmlFor="username">Username</label>
+      <label htmlFor="email">Email</label>
       <input
         type="text"
-        id="username"
-        {...register('username', {
+        id="email"
+        {...register('email', {
           required: true,
         })}
       />
-      {errors.username && (
+      {errors.email && (
         <p className={styles.error} role="alert">
-          Please enter your username
+          Please enter your Email
         </p>
       )}
       <label htmlFor="password">Password</label>
@@ -54,7 +54,6 @@ const Login: FC<IProps> = ({ login }) => {
         </p>
       )}
       <Button label="Login" type="primary" />
-      {/* <button type="submit">Login</button> */}
     </form>
   );
 };
