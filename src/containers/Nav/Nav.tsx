@@ -6,6 +6,7 @@ import Modal from '../../components/Modal/Modal';
 import styles from './Nav.module.scss';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
+import { loginUser, registerUser } from '../../services/auth.service';
 
 interface ISize {
   width: number | undefined;
@@ -35,12 +36,16 @@ const Nav = () => {
     toggleModal();
   };
 
-  const login = () => {
+  const login = async (data: any) => {
     toggleModal();
+    const res = await loginUser(data);
+    console.log(res);
   };
 
-  const signup = () => {
+  const signup = async (data: any) => {
     toggleModal();
+    const res = await registerUser(data);
+    console.log(res);
   };
 
   useEffect(() => {
