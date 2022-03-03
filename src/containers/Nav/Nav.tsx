@@ -5,6 +5,7 @@ import { AiOutlineClose } from 'react-icons/ai';
 import Modal from '../../components/Modal/Modal';
 import styles from './Nav.module.scss';
 import Login from '../Login/Login';
+import Register from '../Register/Register';
 
 interface ISize {
   width: number | undefined;
@@ -18,12 +19,27 @@ const Nav = () => {
     height: undefined,
   });
   const [showModal, setShowModal] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
 
   const toggleModal = () => {
     setShowModal((p) => !p);
   };
 
+  const showLogin = () => {
+    setIsLogin(true);
+    toggleModal();
+  };
+
+  const showRegister = () => {
+    setIsLogin(false);
+    toggleModal();
+  };
+
   const login = () => {
+    toggleModal();
+  };
+
+  const signup = () => {
     toggleModal();
   };
 
@@ -74,10 +90,10 @@ const Nav = () => {
         </ul>
         <ul>
           <li>
-            <button onClick={toggleModal}>Login</button>
+            <button onClick={showLogin}>Login</button>
           </li>
           <li>
-            <button>Register</button>
+            <button onClick={showRegister}>Register</button>
           </li>
         </ul>
       </div>
@@ -90,7 +106,7 @@ const Nav = () => {
       </div>
       {showModal ? (
         <Modal onClose={toggleModal}>
-          <Login login={login} />
+          {isLogin ? <Login login={login} /> : <Register signUp={signup} />}
         </Modal>
       ) : null}
     </nav>

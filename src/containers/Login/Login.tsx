@@ -54,7 +54,6 @@ const Login: FC<IProps> = ({ login }) => {
         </p>
       )}
       <Button label="Login" type="primary" />
-      {/* <button type="submit">Login</button> */}
     </form>
   );
 };
