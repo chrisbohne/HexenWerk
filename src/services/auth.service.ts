@@ -13,7 +13,7 @@ interface Login {
   password: string;
 }
 
-export const registerUser = async (dto: Signup) => {
+const register = async (dto: Signup) => {
   try {
     const response = await axios.post(baseUrl + '/register', dto);
     return response;
@@ -22,7 +22,7 @@ export const registerUser = async (dto: Signup) => {
   }
 };
 
-export const loginUser = async (dto: Login) => {
+const login = async (dto: Login) => {
   try {
     const response = await axios.post(baseUrl + '/login', dto, {
       withCredentials: true,
@@ -33,7 +33,7 @@ export const loginUser = async (dto: Login) => {
   }
 };
 
-export const logoutUser = async () => {
+const logout = async () => {
   try {
     const response = await axios.post(
       baseUrl + '/logout',
@@ -46,4 +46,10 @@ export const logoutUser = async () => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export default {
+  register,
+  login,
+  logout,
 };
