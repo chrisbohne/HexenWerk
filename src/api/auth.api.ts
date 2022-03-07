@@ -1,5 +1,11 @@
 import axios from 'axios';
 
+export const authService = {
+  register,
+  login,
+  logout,
+};
+
 const baseUrl = 'http://localhost:3000/auth';
 
 interface Signup {
@@ -13,16 +19,16 @@ interface Login {
   password: string;
 }
 
-const register = async (dto: Signup) => {
+async function register(dto: Signup) {
   try {
     const response = await axios.post(baseUrl + '/register', dto);
-    return response;
+    return response.data;
   } catch (error) {
     console.log(error);
   }
-};
+}
 
-const login = async (dto: Login) => {
+async function login(dto: Login) {
   try {
     const response = await axios.post(baseUrl + '/login', dto, {
       withCredentials: true,
@@ -31,9 +37,9 @@ const login = async (dto: Login) => {
   } catch (error) {
     console.log(error);
   }
-};
+}
 
-const logout = async () => {
+async function logout() {
   try {
     const response = await axios.post(
       baseUrl + '/logout',
@@ -46,10 +52,4 @@ const logout = async () => {
   } catch (error) {
     console.log(error);
   }
-};
-
-export default {
-  register,
-  login,
-  logout,
-};
+}

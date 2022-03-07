@@ -1,10 +1,10 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import Register from './Register';
+import Register from './RegistrationForm';
 
 const mockSignUp = jest.fn();
 
-describe('Register', () => {
+describe('Registration', () => {
   beforeEach(() => {
     render(<Register signUp={mockSignUp} />);
   });

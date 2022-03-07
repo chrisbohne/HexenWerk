@@ -1,7 +1,9 @@
 import { FC } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '../../components/Button/Button';
 import styles from './Login.module.scss';
+import { registerUser, userSelector } from './userSlice';
 
 interface IFormInput {
   email: string;
@@ -12,7 +14,10 @@ interface IProps {
   login(data: IFormInput): void;
 }
 
-const Login: FC<IProps> = ({ login }) => {
+const LoginForm: FC<IProps> = ({ login }) => {
+  const dispatch = useDispatch();
+  const user = useSelector(userSelector);
+
   const {
     register,
     handleSubmit,
@@ -22,11 +27,13 @@ const Login: FC<IProps> = ({ login }) => {
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     login(data);
+    dispatch(registerUser(data));
     reset();
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
+      {console.log(user)}
       <label htmlFor="email">Email</label>
       <input
         type="text"
@@ -58,4 +65,4 @@ const Login: FC<IProps> = ({ login }) => {
   );
 };
 
-export default Login;
+export default LoginForm;

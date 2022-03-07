@@ -4,9 +4,8 @@ import { BiMenuAltRight } from 'react-icons/bi';
 import { AiOutlineClose } from 'react-icons/ai';
 import Modal from '../../components/Modal/Modal';
 import styles from './Nav.module.scss';
-import Login from '../Login/Login';
-import Register from '../Register/Register';
-import { loginUser, registerUser } from '../../services/auth.service';
+// import Login from '../../containers/Login/Login';
+// import Register from '../../containers/Register/Register';
 
 interface ISize {
   width: number | undefined;
@@ -38,14 +37,10 @@ const Nav = () => {
 
   const login = async (data: any) => {
     toggleModal();
-    const res = await loginUser(data);
-    console.log(res);
   };
 
   const signup = async (data: any) => {
     toggleModal();
-    const res = await registerUser(data);
-    console.log(res);
   };
 
   useEffect(() => {
@@ -95,10 +90,12 @@ const Nav = () => {
         </ul>
         <ul>
           <li>
-            <button onClick={showLogin}>Login</button>
+            {/* <button onClick={showLogin}>Login</button> */}
+            <Link to="/login">Login</Link>
           </li>
           <li>
-            <button onClick={showRegister}>Register</button>
+            {/* <button onClick={showRegister}>Register</button> */}
+            <Link to="/signup">Register</Link>
           </li>
         </ul>
       </div>
@@ -109,11 +106,11 @@ const Nav = () => {
           <BiMenuAltRight onClick={menuToggleHandler} />
         )}
       </div>
-      {showModal ? (
+      {/* {showModal ? (
         <Modal onClose={toggleModal}>
           {isLogin ? <Login login={login} /> : <Register signUp={signup} />}
         </Modal>
-      ) : null}
+      ) : null} */}
     </nav>
   );
 };

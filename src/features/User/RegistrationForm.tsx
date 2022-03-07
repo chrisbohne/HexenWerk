@@ -1,7 +1,9 @@
 import { FC } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '../../components/Button/Button';
 import styles from './Register.module.scss';
+import { registerUser, userSelector } from './userSlice';
 
 interface IFormInput {
   name: string;
@@ -13,7 +15,10 @@ interface IProps {
   signUp(data: IFormInput): void;
 }
 
-const Register: FC<IProps> = ({ signUp }) => {
+const RegistrationForm: FC<IProps> = ({ signUp }) => {
+  const dispatch = useDispatch();
+  const user = useSelector(userSelector);
+
   const {
     register,
     handleSubmit,
@@ -23,6 +28,7 @@ const Register: FC<IProps> = ({ signUp }) => {
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     signUp(data);
+    dispatch(registerUser(data));
     reset();
   };
 
@@ -85,4 +91,4 @@ const Register: FC<IProps> = ({ signUp }) => {
   );
 };
 
-export default Register;
+export default RegistrationForm;
