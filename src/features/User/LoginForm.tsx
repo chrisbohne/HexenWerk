@@ -1,39 +1,28 @@
 import { FC } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '../../components/Button/Button';
+import { ILogin } from './interfaces';
 import styles from './Login.module.scss';
-import { registerUser, userSelector } from './userSlice';
-
-interface IFormInput {
-  email: string;
-  password: string;
-}
 
 interface IProps {
-  login(data: IFormInput): void;
+  login(data: ILogin): void;
 }
 
 const LoginForm: FC<IProps> = ({ login }) => {
-  const dispatch = useDispatch();
-  const user = useSelector(userSelector);
-
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<IFormInput>();
+  } = useForm<ILogin>();
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    login(data);
-    dispatch(registerUser(data));
+  const onSubmit: SubmitHandler<ILogin> = (user) => {
+    login(user);
     reset();
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
-      {console.log(user)}
       <label htmlFor="email">Email</label>
       <input
         type="text"

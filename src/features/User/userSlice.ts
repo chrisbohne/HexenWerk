@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { authService } from '../../api';
+import { ILogin, IRegistration } from './interfaces';
 
 interface IState {
   user: object;
@@ -15,8 +16,16 @@ const initialState: IState = {
 
 export const registerUser = createAsyncThunk(
   'user/registerUser',
-  async (data: any) => {
+  async (data: IRegistration) => {
     const response = await authService.register(data);
+    return response;
+  }
+);
+
+export const loginUser = createAsyncThunk(
+  'user/loginUser',
+  async (data: ILogin) => {
+    const response = await authService.login(data);
     return response;
   }
 );
@@ -27,10 +36,11 @@ const userSlice = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder
-      .addCase(registerUser.pending, (state, action) => {
+      .addCase(registerUser.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(registerUser.fulfilled, (state, action) => {
+        console.log(action);
         state.status = 'succeeded';
       })
       .addCase(registerUser.rejected, (state, action) => {
@@ -40,6 +50,6 @@ const userSlice = createSlice({
   },
 });
 
-export const userSelector = (state: any) => state.user;
+export const userSelector = (state: IState) => state.user;
 
 export default userSlice.reducer;

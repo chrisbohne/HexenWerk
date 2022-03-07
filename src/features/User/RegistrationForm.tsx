@@ -1,34 +1,23 @@
 import { FC } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '../../components/Button/Button';
+import { IRegistration } from './interfaces';
 import styles from './Register.module.scss';
-import { registerUser, userSelector } from './userSlice';
-
-interface IFormInput {
-  name: string;
-  email: string;
-  password: string;
-}
 
 interface IProps {
-  signUp(data: IFormInput): void;
+  signUp(data: IRegistration): void;
 }
 
 const RegistrationForm: FC<IProps> = ({ signUp }) => {
-  const dispatch = useDispatch();
-  const user = useSelector(userSelector);
-
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<IFormInput>({ mode: 'onChange' });
+  } = useForm<IRegistration>({ mode: 'onChange' });
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+  const onSubmit: SubmitHandler<IRegistration> = (data) => {
     signUp(data);
-    dispatch(registerUser(data));
     reset();
   };
 

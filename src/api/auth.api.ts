@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { ILogin, IRegistration } from '../features/User/interfaces';
 
 export const authService = {
   register,
@@ -8,29 +9,18 @@ export const authService = {
 
 const baseUrl = 'http://localhost:3000/auth';
 
-interface Signup {
-  name: string;
-  email: string;
-  password: string;
-}
-
-interface Login {
-  email: string;
-  password: string;
-}
-
-async function register(dto: Signup) {
+async function register(user: IRegistration) {
   try {
-    const response = await axios.post(baseUrl + '/register', dto);
+    const response = await axios.post(baseUrl + '/register', user);
     return response.data;
   } catch (error) {
     console.log(error);
   }
 }
 
-async function login(dto: Login) {
+async function login(user: ILogin) {
   try {
-    const response = await axios.post(baseUrl + '/login', dto, {
+    const response = await axios.post(baseUrl + '/login', user, {
       withCredentials: true,
     });
     return response;
