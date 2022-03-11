@@ -4,6 +4,7 @@ import styles from './Button.module.scss';
 interface IButton {
   label: string;
   type: string;
+  disabled?: boolean;
   onClick?: () => void;
 }
 
@@ -16,13 +17,14 @@ interface IIconButton {
   onClick?: () => void;
 }
 
-export const Button: FC<IButton> = ({ label, type, onClick }) => {
+export const Button: FC<IButton> = ({ disabled, label, type, onClick }) => {
   return (
     <button
       onClick={onClick}
       data-testid="button"
       className={`${styles[type]} ${styles.button}`}
       data-content={label}
+      disabled={disabled}
     >
       {label}
     </button>

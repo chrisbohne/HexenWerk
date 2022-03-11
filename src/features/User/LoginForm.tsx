@@ -1,57 +1,102 @@
-import { FC } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { Button } from '../../components/Button/Button';
-import { ILogin } from './interfaces';
-import styles from './Login.module.scss';
+import { FC, useRef, useState, useEffect, SyntheticEvent } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { authService } from '../../api';
+import { useAppDispatch } from '../../app/hooks';
+import { setCredentials } from './userSlice';
+import './Register.scss';
+import { AxiosError } from 'axios';
 
-interface IProps {
-  login(data: ILogin): void;
+interface LocationState {
+  from: {
+    pathname: string;
+  };
 }
 
-const LoginForm: FC<IProps> = ({ login }) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm<ILogin>();
+export const LoginForm: FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const state = location.state as LocationState;
+  const from = state?.from?.pathname || '/';
 
-  const onSubmit: SubmitHandler<ILogin> = (user) => {
-    login(user);
-    reset();
+  const dispatch = useAppDispatch();
+
+  const errRef = useRef<HTMLParagraphElement>(null);
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+    setErrorMessage('');
+  }, [email, password]);
+
+  const onSubmit = async (event: SyntheticEvent) => {
+    event.preventDefault();
+    try {
+      const data = { email, password };
+      const res = await authService.login(data);
+      const username = res.username;
+      const accessToken = res.accessToken;
+      const role = res.role;
+      dispatch(
+        setCredentials({ username, password, email, role, accessToken })
+      );
+      setEmail('');
+      setPassword('');
+      navigate(from, { replace: true });
+    } catch (error) {
+      const err = error as AxiosError;
+      if (!err?.response) {
+        setErrorMessage('No Server Response');
+      } else if (err.response?.status === 400) {
+        setErrorMessage('Missing email or pasword');
+      } else if (err.response?.status === 401) {
+        setErrorMessage('Wrong email or password');
+      } else {
+        setErrorMessage('Login failed');
+      }
+      if (errRef.current) {
+        errRef.current.focus();
+      }
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate>
-      <label htmlFor="email">Email</label>
-      <input
-        type="text"
-        id="email"
-        {...register('email', {
-          required: true,
-        })}
-      />
-      {errors.email && (
-        <p className={styles.error} role="alert">
-          Please enter your Email
-        </p>
-      )}
-      <label htmlFor="password">Password</label>
-      <input
-        id="password"
-        type="password"
-        {...register('password', {
-          required: true,
-        })}
-      />
-      {errors.password && (
-        <p className={styles.error} role="alert">
-          Please enter your password
-        </p>
-      )}
-      <Button label="Login" type="primary" />
-    </form>
+    <section>
+      <p
+        ref={errRef}
+        className={errorMessage ? 'errmsg' : 'offscreen'}
+        aria-live="assertive"
+      >
+        {errorMessage}
+      </p>
+      <h1>Login</h1>
+      <form onSubmit={onSubmit}>
+        <label htmlFor="email">Email</label>
+        <input
+          type="text"
+          id="email"
+          onChange={(e) => setEmail(e.target.value)}
+          value={email}
+          required
+        />
+        <label htmlFor="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          onChange={(e) => setPassword(e.target.value)}
+          value={password}
+          required
+        />
+        <button>Login</button>
+      </form>
+      <p>
+        Need an account?
+        <br />
+        <span className="line">
+          <Link to="/signup">Register</Link>
+        </span>
+      </p>
+    </section>
   );
 };
-
-export default LoginForm;

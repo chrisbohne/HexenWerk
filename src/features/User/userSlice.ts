@@ -1,55 +1,43 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { authService } from '../../api';
-import { ILogin, IRegistration } from './interfaces';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '../../app/store';
 
-interface IState {
-  user: object;
-  status: string;
-  error: undefined | string;
+interface UserState {
+  username: string;
+  email: string;
+  password: string;
+  role: string;
+  accessToken: string;
 }
 
-const initialState: IState = {
-  user: {},
-  status: 'idle',
-  error: '',
+const initialState: UserState = {
+  username: '',
+  email: '',
+  password: '',
+  role: '',
+  accessToken: '',
 };
-
-export const registerUser = createAsyncThunk(
-  'user/registerUser',
-  async (data: IRegistration) => {
-    const response = await authService.register(data);
-    return response;
-  }
-);
-
-export const loginUser = createAsyncThunk(
-  'user/loginUser',
-  async (data: ILogin) => {
-    const response = await authService.login(data);
-    return response;
-  }
-);
 
 const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {},
-  extraReducers(builder) {
-    builder
-      .addCase(registerUser.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(registerUser.fulfilled, (state, action) => {
-        console.log(action);
-        state.status = 'succeeded';
-      })
-      .addCase(registerUser.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.error.message;
-      });
+  reducers: {
+    setCredentials: (
+      state,
+      {
+        payload: { username, email, password, role, accessToken },
+      }: PayloadAction<UserState>
+    ) => {
+      state.username = username;
+      state.email = email;
+      state.password = password;
+      state.role = role;
+      state.accessToken = accessToken;
+    },
   },
 });
 
-export const userSelector = (state: IState) => state.user;
+export const { setCredentials } = userSlice.actions;
 
 export default userSlice.reducer;
+
+export const selectCurrentUser = (state: RootState) => state.user;

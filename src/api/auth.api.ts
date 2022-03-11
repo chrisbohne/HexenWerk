@@ -1,38 +1,49 @@
-import axios from 'axios';
+import axios from './axios';
 import { ILogin, IRegistration } from '../features/User/interfaces';
 
 export const authService = {
   register,
+  usernameTaken,
   login,
   logout,
 };
 
-const baseUrl = 'http://localhost:3000/auth';
-
-async function register(user: IRegistration) {
-  try {
-    const response = await axios.post(baseUrl + '/register', user);
-    return response.data;
-  } catch (error) {
-    console.log(error);
-  }
+async function register(
+  user: IRegistration
+): Promise<{ username: string; email: string; id: number }> {
+  const response = await axios.post('/auth/register', user, {
+    headers: { 'Content-Type': 'application/json' },
+    withCredentials: true,
+  });
+  // if (response.data) {
+  //   localStorage.setItem('user', JSON.stringify(response.data));
+  // }
+  return response.data;
 }
 
-async function login(user: ILogin) {
-  try {
-    const response = await axios.post(baseUrl + '/login', user, {
-      withCredentials: true,
-    });
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
+async function usernameTaken(username: string) {
+  const response = await axios.get(`users/taken/${username}`);
+  return response.data;
+}
+
+async function login(user: ILogin): Promise<{
+  username: string;
+  email: string;
+  id: number;
+  accessToken: string;
+  role: string;
+}> {
+  const response = await axios.post('/auth/login', user, {
+    headers: { 'Content-Type': 'application/json' },
+    withCredentials: true,
+  });
+  return response.data;
 }
 
 async function logout() {
   try {
     const response = await axios.post(
-      baseUrl + '/logout',
+      '/auth/logout',
       {},
       {
         withCredentials: true,
