@@ -7,7 +7,10 @@ export interface AuthState {
   password: string;
   role: string;
   accessToken: string;
+  persist: boolean;
 }
+
+const persist = JSON.parse(localStorage.getItem('persist') || 'false');
 
 const initialState: AuthState = {
   username: '',
@@ -15,6 +18,7 @@ const initialState: AuthState = {
   password: '',
   role: '',
   accessToken: '',
+  persist: persist,
 };
 
 const authSlice = createSlice({
@@ -24,7 +28,7 @@ const authSlice = createSlice({
     setCredentials: (
       state,
       {
-        payload: { username, email, password, role, accessToken },
+        payload: { username, email, password, role, accessToken, persist },
       }: PayloadAction<AuthState>
     ) => {
       state.username = username;
@@ -32,6 +36,7 @@ const authSlice = createSlice({
       state.password = password;
       state.role = role;
       state.accessToken = accessToken;
+      state.persist = persist;
     },
     removeCredentials: (state) => {
       state.username = '';

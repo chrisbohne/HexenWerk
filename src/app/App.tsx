@@ -13,6 +13,7 @@ import RequireAuth from '../components/RequireAuth/RequireAuth';
 import PersistentLogin from '../components/PersistLogin/PersistLogin';
 import Unauthorized from '../pages/Unauthorized/Unauthorized';
 import Profile from '../pages/Profile/Profile';
+import NotFound from '../pages/NotFound/NotFound';
 
 const App = () => {
   return (
@@ -45,6 +46,7 @@ const App = () => {
               <Route path="/admin" element={<Admin />} />
             </Route>
           </Route>
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
     </>

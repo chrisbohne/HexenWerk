@@ -1,8 +1,6 @@
 import { FC, useRef, useState, useEffect, SyntheticEvent } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { authService } from '../../api';
-// import { useAppDispatch } from '../../app/hooks';
-import { setCredentials } from './authSlice';
 import './Register.scss';
 import { AxiosError } from 'axios';
 import { useAuth } from '../../hooks';
@@ -19,7 +17,6 @@ export const LoginForm: FC = () => {
   const state = location.state as LocationState;
   const from = state?.from?.pathname || '/';
 
-  // const dispatch = useAppDispatch();
   const { setAuth } = useAuth();
 
   const errRef = useRef<HTMLParagraphElement>(null);
@@ -27,6 +24,7 @@ export const LoginForm: FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [persist, setPersist] = useState(false);
 
   useEffect(() => {
     setErrorMessage('');
@@ -40,10 +38,7 @@ export const LoginForm: FC = () => {
       const username = res.username;
       const accessToken = res.accessToken;
       const role = res.role;
-      // dispatch(
-      //   setCredentials({ username, password, email, role, accessToken })
-      // );
-      setAuth({ username, password, email, role, accessToken });
+      setAuth({ username, password, email, role, accessToken, persist });
       setEmail('');
       setPassword('');
       navigate(from, { replace: true });
@@ -63,6 +58,14 @@ export const LoginForm: FC = () => {
       }
     }
   };
+
+  const togglePersist = () => {
+    setPersist((prev) => !prev);
+  };
+
+  useEffect(() => {
+    localStorage.setItem('persist', JSON.stringify(persist));
+  }, [persist]);
 
   return (
     <section>
@@ -92,6 +95,15 @@ export const LoginForm: FC = () => {
           required
         />
         <button>Login</button>
+        <div className="persistCheck">
+          <input
+            type="checkbox"
+            id="persisit"
+            onChange={togglePersist}
+            checked={persist}
+          />
+          <label htmlFor="persisit">Trust this device</label>
+        </div>
       </form>
       <p>
         Need an account?
