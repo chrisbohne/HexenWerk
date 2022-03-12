@@ -5,7 +5,9 @@ const getLocalValue = (key: string, initValue: (() => string) | string) => {
   if (typeof window === 'undefined') return initValue;
 
   // if value already stored
-  const localValue = JSON.parse(localStorage.getItem(key) || '');
+  const item = localStorage.getItem(key);
+  const localValue = item !== null ? JSON.parse(item) : '';
+  // const localValue = JSON.parse(localStorage.getItem(key));
   if (localValue) return localValue;
 
   // return result of function
@@ -17,9 +19,9 @@ const getLocalValue = (key: string, initValue: (() => string) | string) => {
 getLocalValue('hello', 'test');
 
 export const useLocalStorage = (key: string, initValue: string) => {
-  const [value, setValue] = useState(
-    JSON.parse(localStorage.getItem(key) || '') || initValue
-  );
+  const [value, setValue] = useState(() => {
+    return getLocalValue(key, initValue);
+  });
 
   useEffect(() => {
     localStorage.setItem(key, JSON.stringify(value));
