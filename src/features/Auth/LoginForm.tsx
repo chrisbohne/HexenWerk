@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { authService } from '../../api';
 import './Register.scss';
 import { AxiosError } from 'axios';
-import { useAuth } from '../../hooks';
+import { useAuth, useLocalStorage } from '../../hooks';
 
 interface LocationState {
   from: {
@@ -21,7 +21,7 @@ export const LoginForm: FC = () => {
 
   const errRef = useRef<HTMLParagraphElement>(null);
 
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useLocalStorage('email', ''); //useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [persist, setPersist] = useState(false);
