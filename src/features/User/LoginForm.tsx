@@ -1,10 +1,11 @@
 import { FC, useRef, useState, useEffect, SyntheticEvent } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { authService } from '../../api';
-import { useAppDispatch } from '../../app/hooks';
+// import { useAppDispatch } from '../../app/hooks';
 import { setCredentials } from './userSlice';
 import './Register.scss';
 import { AxiosError } from 'axios';
+import { useAuth } from '../../hooks';
 
 interface LocationState {
   from: {
@@ -18,7 +19,8 @@ export const LoginForm: FC = () => {
   const state = location.state as LocationState;
   const from = state?.from?.pathname || '/';
 
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
+  const { setAuth } = useAuth();
 
   const errRef = useRef<HTMLParagraphElement>(null);
 
@@ -38,9 +40,10 @@ export const LoginForm: FC = () => {
       const username = res.username;
       const accessToken = res.accessToken;
       const role = res.role;
-      dispatch(
-        setCredentials({ username, password, email, role, accessToken })
-      );
+      // dispatch(
+      //   setCredentials({ username, password, email, role, accessToken })
+      // );
+      setAuth({ username, password, email, role, accessToken });
       setEmail('');
       setPassword('');
       navigate(from, { replace: true });

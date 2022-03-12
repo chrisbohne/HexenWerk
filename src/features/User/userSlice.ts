@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 
-interface UserState {
+export interface UserState {
   username: string;
   email: string;
   password: string;
@@ -33,10 +33,17 @@ const userSlice = createSlice({
       state.role = role;
       state.accessToken = accessToken;
     },
+    removeCredentials: (state) => {
+      state.username = '';
+      state.email = '';
+      state.password = '';
+      state.role = '';
+      state.accessToken = '';
+    },
   },
 });
 
-export const { setCredentials } = userSlice.actions;
+export const { setCredentials, removeCredentials } = userSlice.actions;
 
 export default userSlice.reducer;
 

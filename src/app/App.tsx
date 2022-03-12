@@ -10,6 +10,7 @@ import Login from '../pages/Login/Login';
 import Registration from '../pages/Registration/Registration';
 import Admin from '../pages/Admin/Admin';
 import RequireAuth from '../components/RequireAuth/RequireAuth';
+import PersistentLogin from '../components/PersistLogin/PersistLogin';
 import Unauthorized from '../pages/Unauthorized/Unauthorized';
 import Profile from '../pages/Profile/Profile';
 
@@ -28,19 +29,21 @@ const App = () => {
           {/* public routes */}
           <Route path="/" element={<Home />} />
           <Route path="/playground" element={<Playground />} />
-          <Route path="/discover" element={<Discover />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/about" element={<About />} />
+          <Route path="/discover" element={<Discover />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Registration />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
-          {/* protected routes for logged in users */}
-          <Route element={<RequireAuth allowedRoles={['USER']} />}>
-            <Route path="/profile" element={<Profile />} />
-          </Route>
-          {/* protected routes for admins */}
-          <Route element={<RequireAuth allowedRoles={['ADMIN']} />}>
-            <Route path="/admin" element={<Admin />} />
+          <Route element={<PersistentLogin />}>
+            {/* protected routes for logged in users */}
+            <Route element={<RequireAuth allowedRoles={['USER']} />}>
+              <Route path="/profile" element={<Profile />} />
+            </Route>
+            {/* protected routes for admins */}
+            <Route element={<RequireAuth allowedRoles={['ADMIN']} />}>
+              <Route path="/admin" element={<Admin />} />
+            </Route>
           </Route>
         </Routes>
       </Router>

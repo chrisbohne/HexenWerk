@@ -15,9 +15,6 @@ async function register(
     headers: { 'Content-Type': 'application/json' },
     withCredentials: true,
   });
-  // if (response.data) {
-  //   localStorage.setItem('user', JSON.stringify(response.data));
-  // }
   return response.data;
 }
 
@@ -41,16 +38,8 @@ async function login(user: ILogin): Promise<{
 }
 
 async function logout() {
-  try {
-    const response = await axios.post(
-      '/auth/logout',
-      {},
-      {
-        withCredentials: true,
-      }
-    );
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
+  const response = await axios('/auth/logout', {
+    withCredentials: true,
+  });
+  return response.data;
 }

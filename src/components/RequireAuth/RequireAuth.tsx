@@ -8,11 +8,11 @@ interface IProps {
 
 const RequireAuth: FC<IProps> = ({ allowedRoles }) => {
   const location = useLocation();
-  const user = useAuth();
+  const { auth } = useAuth();
 
-  return allowedRoles.includes(user.role) ? (
+  return allowedRoles.includes(auth.role) ? (
     <Outlet />
-  ) : user.username ? (
+  ) : auth.username ? (
     <Navigate to="/unauthorized" state={{ from: location }} replace />
   ) : (
     <Navigate to="/login" state={{ from: location }} replace />
