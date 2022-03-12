@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useAuth, useRefreshToken } from '../../hooks';
+import { useAuth } from '../../hooks';
 import { useLogout } from '../../hooks';
 import { Link } from 'react-router-dom';
 import { BiMenuAltRight } from 'react-icons/bi';
@@ -13,7 +13,6 @@ interface ISize {
 
 const Nav = () => {
   const { auth } = useAuth();
-  const refresh = useRefreshToken();
   const logout = useLogout();
   const [menuOpen, setMenuOpen] = useState(false);
   const [size, setSize] = useState<ISize>({

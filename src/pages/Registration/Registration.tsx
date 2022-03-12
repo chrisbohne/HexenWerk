@@ -1,4 +1,4 @@
-import { RegisterForm } from '../../features/User/RegistrationForm';
+import { RegisterForm } from '../../features/Auth/RegistrationForm';
 
 const Registration = () => {
   return (

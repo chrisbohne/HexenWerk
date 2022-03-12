@@ -3,13 +3,13 @@ import {
   selectCurrentUser,
   setCredentials,
   removeCredentials,
-  UserState,
-} from '../features/User/userSlice';
+  AuthState,
+} from '../features/Auth/authSlice';
 
 export const useAuth = () => {
   const dispatch = useAppDispatch();
   const auth = useAppSelector(selectCurrentUser);
-  const setAuth = (data: Partial<UserState>) => {
+  const setAuth = (data: Partial<AuthState>) => {
     dispatch(setCredentials({ ...auth, ...data }));
   };
   const removeAuth = () => {

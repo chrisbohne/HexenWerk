@@ -1,5 +1,5 @@
 import axios from './axios';
-import { ILogin, IRegistration } from '../features/User/interfaces';
+import { ILogin, IRegistration } from '../features/Auth/interfaces';
 
 export const authService = {
   register,

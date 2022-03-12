@@ -2,7 +2,7 @@ import { FC, useRef, useState, useEffect, SyntheticEvent } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { authService } from '../../api';
 // import { useAppDispatch } from '../../app/hooks';
-import { setCredentials } from './userSlice';
+import { setCredentials } from './authSlice';
 import './Register.scss';
 import { AxiosError } from 'axios';
 import { useAuth } from '../../hooks';
