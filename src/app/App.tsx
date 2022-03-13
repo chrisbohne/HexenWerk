@@ -1,11 +1,10 @@
-import { Route, Routes, BrowserRouter as Router, Link } from 'react-router-dom';
+import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
 import Nav from './Nav/Nav';
 import Blog from '../pages/Blog/Blog';
 import Discover from '../pages/Discover/Discover';
 import Home from '../pages/Home/Home';
 import Playground from '../pages/Playground/Playground';
 import About from '../pages/About/About';
-import '../style/styles.scss';
 import Login from '../pages/Login/Login';
 import Registration from '../pages/Registration/Registration';
 import Admin from '../pages/Admin/Admin';
@@ -14,18 +13,16 @@ import PersistentLoginOutlet from '../components/PersistLogin/PersistLoginOutlet
 import Unauthorized from '../pages/Unauthorized/Unauthorized';
 import Profile from '../pages/Profile/Profile';
 import NotFound from '../pages/NotFound/NotFound';
+import '../style/styles.scss';
+import PersistLoginWrapper from '../components/PersistLogin/PersistLoginWrapper';
 
 const App = () => {
   return (
     <>
       <Router>
-        <Nav />
-        <button>
-          <Link to="/admin">Admin</Link>
-        </button>
-        <button>
-          <Link to="/profile">Profile</Link>
-        </button>
+        <PersistLoginWrapper>
+          <Nav />
+        </PersistLoginWrapper>
         <Routes>
           {/* public routes */}
           <Route path="/" element={<Home />} />

@@ -37,7 +37,7 @@ export const UsersList = () => {
       isMounted = false;
       controller.abort();
     };
-  }, []);
+  }, [axiosPrivate, location, navigate]);
 
   return (
     <article>
