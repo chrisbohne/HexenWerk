@@ -26,7 +26,7 @@ const PersistentLoginOutlet = () => {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [auth.accessToken, refresh]);
 
   return <>{!persist ? <Outlet /> : isLoading ? <Spinner /> : <Outlet />}</>;
 };
