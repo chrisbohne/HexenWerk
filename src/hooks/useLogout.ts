@@ -5,6 +5,7 @@ export const useLogout = () => {
   const axiosPrivate = useAxiosPrivate();
 
   const logout = async () => {
+    localStorage.setItem('persist', JSON.stringify(false));
     removeAuth();
     try {
       await axiosPrivate.get('/auth/logout');

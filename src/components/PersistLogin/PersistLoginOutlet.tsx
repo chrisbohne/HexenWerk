@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import { useAuth, useRefreshToken } from '../../hooks';
+import { useAuth, useLocalStorage, useRefreshToken } from '../../hooks';
 import { Spinner } from '../Spinner/Spinner ';
 
-const PersistentLogin = () => {
+const PersistentLoginOutlet = () => {
   const [isLoading, setIsLoading] = useState(true);
   const refresh = useRefreshToken();
   const { auth } = useAuth();
+  const [persist] = useLocalStorage('persist', false);
 
   useEffect(() => {
     let isMounted = true;
@@ -27,9 +28,7 @@ const PersistentLogin = () => {
     };
   }, []);
 
-  return (
-    <>{!auth.persist ? <Outlet /> : isLoading ? <Spinner /> : <Outlet />}</>
-  );
+  return <>{!persist ? <Outlet /> : isLoading ? <Spinner /> : <Outlet />}</>;
 };
 
-export default PersistentLogin;
+export default PersistentLoginOutlet;

@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 
-const getLocalValue = (key: string, initValue: (() => string) | string) => {
+const getLocalValue = (
+  key: string,
+  initValue: (() => string) | string | boolean
+) => {
   // Server Side Rendering
   if (typeof window === 'undefined') return initValue;
 
@@ -18,7 +21,10 @@ const getLocalValue = (key: string, initValue: (() => string) | string) => {
 
 getLocalValue('hello', 'test');
 
-export const useLocalStorage = (key: string, initValue: string) => {
+export const useLocalStorage = (
+  key: string,
+  initValue: (() => string) | string | boolean
+) => {
   const [value, setValue] = useState(() => {
     return getLocalValue(key, initValue);
   });

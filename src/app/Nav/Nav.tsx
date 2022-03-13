@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '../../hooks';
+import { useAuth, useRefreshToken } from '../../hooks';
 import { useLogout } from '../../hooks';
 import { Link } from 'react-router-dom';
 import { BiMenuAltRight } from 'react-icons/bi';
@@ -19,6 +19,19 @@ const Nav = () => {
     width: undefined,
     height: undefined,
   });
+  const refresh = useRefreshToken();
+
+  useEffect(() => {
+    const verifyRefreshToken = async () => {
+      try {
+        await refresh();
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    console.log('in here');
+    !auth.accessToken && verifyRefreshToken();
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {

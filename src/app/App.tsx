@@ -10,7 +10,7 @@ import Login from '../pages/Login/Login';
 import Registration from '../pages/Registration/Registration';
 import Admin from '../pages/Admin/Admin';
 import RequireAuth from '../components/RequireAuth/RequireAuth';
-import PersistentLogin from '../components/PersistLogin/PersistLogin';
+import PersistentLoginOutlet from '../components/PersistLogin/PersistLoginOutlet';
 import Unauthorized from '../pages/Unauthorized/Unauthorized';
 import Profile from '../pages/Profile/Profile';
 import NotFound from '../pages/NotFound/NotFound';
@@ -36,7 +36,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Registration />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
-          <Route element={<PersistentLogin />}>
+          <Route element={<PersistentLoginOutlet />}>
             {/* protected routes for logged in users */}
             <Route element={<RequireAuth allowedRoles={['USER']} />}>
               <Route path="/profile" element={<Profile />} />

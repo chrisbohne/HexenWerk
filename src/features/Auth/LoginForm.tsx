@@ -3,7 +3,8 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { authService } from '../../api';
 import './Register.scss';
 import { AxiosError } from 'axios';
-import { useAuth, useLocalStorage } from '../../hooks';
+import { useAuth, useInput } from '../../hooks';
+import { useToggle } from '../../hooks';
 
 interface LocationState {
   from: {
@@ -18,13 +19,16 @@ export const LoginForm: FC = () => {
   const from = state?.from?.pathname || '/';
 
   const { setAuth } = useAuth();
+  const [check, toggleCheck] = useToggle('persist', false);
 
   const errRef = useRef<HTMLParagraphElement>(null);
 
-  const [email, setEmail] = useLocalStorage('email', ''); //useState('');
+  const [email, resetEmail, emailAttribs] = useInput('email', '');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [persist, setPersist] = useState(false);
+  // const item = localStorage.getItem('persist');
+  // const localPersist = item !== null ? JSON.parse(item) : '';
+  // const [persist, setPersist] = useState<boolean>(localPersist);
 
   useEffect(() => {
     setErrorMessage('');
@@ -38,8 +42,8 @@ export const LoginForm: FC = () => {
       const username = res.username;
       const accessToken = res.accessToken;
       const role = res.role;
-      setAuth({ username, password, email, role, accessToken, persist });
-      setEmail('');
+      setAuth({ username, password, email, role, accessToken });
+      resetEmail();
       setPassword('');
       navigate(from, { replace: true });
     } catch (error) {
@@ -59,13 +63,13 @@ export const LoginForm: FC = () => {
     }
   };
 
-  const togglePersist = () => {
-    setPersist((prev) => !prev);
-  };
+  // const togglePersist = () => {
+  //   setPersist((prev) => !prev);
+  // };
 
-  useEffect(() => {
-    localStorage.setItem('persist', JSON.stringify(persist));
-  }, [persist]);
+  // useEffect(() => {
+  //   localStorage.setItem('persist', JSON.stringify(persist));
+  // }, [persist]);
 
   return (
     <section>
@@ -79,13 +83,7 @@ export const LoginForm: FC = () => {
       <h1>Login</h1>
       <form onSubmit={onSubmit}>
         <label htmlFor="email">Email</label>
-        <input
-          type="text"
-          id="email"
-          onChange={(e) => setEmail(e.target.value)}
-          value={email}
-          required
-        />
+        <input type="text" id="email" {...emailAttribs} required />
         <label htmlFor="password">Password</label>
         <input
           type="password"
@@ -99,8 +97,8 @@ export const LoginForm: FC = () => {
           <input
             type="checkbox"
             id="persisit"
-            onChange={togglePersist}
-            checked={persist}
+            onChange={toggleCheck}
+            checked={check}
           />
           <label htmlFor="persisit">Trust this device</label>
         </div>
