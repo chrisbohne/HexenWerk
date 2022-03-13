@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useAuth, useRefreshToken } from '../../hooks';
+import { useLogout } from '../../hooks';
 import { Link } from 'react-router-dom';
 import { BiMenuAltRight } from 'react-icons/bi';
 import { AiOutlineClose } from 'react-icons/ai';
-import Modal from '../../components/Modal/Modal';
 import styles from './Nav.module.scss';
-// import Login from '../../containers/Login/Login';
-// import Register from '../../containers/Register/Register';
 
 interface ISize {
   width: number | undefined;
@@ -13,35 +12,26 @@ interface ISize {
 }
 
 const Nav = () => {
+  const { auth } = useAuth();
+  const logout = useLogout();
   const [menuOpen, setMenuOpen] = useState(false);
   const [size, setSize] = useState<ISize>({
     width: undefined,
     height: undefined,
   });
-  const [showModal, setShowModal] = useState(false);
-  const [isLogin, setIsLogin] = useState(false);
+  const refresh = useRefreshToken();
 
-  const toggleModal = () => {
-    setShowModal((p) => !p);
-  };
-
-  const showLogin = () => {
-    setIsLogin(true);
-    toggleModal();
-  };
-
-  const showRegister = () => {
-    setIsLogin(false);
-    toggleModal();
-  };
-
-  const login = async (data: any) => {
-    toggleModal();
-  };
-
-  const signup = async (data: any) => {
-    toggleModal();
-  };
+  useEffect(() => {
+    const verifyRefreshToken = async () => {
+      try {
+        await refresh();
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    console.log('in here');
+    !auth.accessToken && verifyRefreshToken();
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -64,6 +54,10 @@ const Nav = () => {
 
   const menuToggleHandler = () => {
     setMenuOpen((p) => !p);
+  };
+
+  const signout = async () => {
+    await logout();
   };
 
   return (
@@ -89,14 +83,27 @@ const Nav = () => {
           </li>
         </ul>
         <ul>
-          <li>
-            {/* <button onClick={showLogin}>Login</button> */}
-            <Link to="/login">Login</Link>
-          </li>
-          <li>
-            {/* <button onClick={showRegister}>Register</button> */}
-            <Link to="/signup">Register</Link>
-          </li>
+          {auth.accessToken ? (
+            <li>
+              <div
+                tabIndex={0}
+                role="button"
+                onClick={signout}
+                onKeyDown={signout}
+              >
+                Logout
+              </div>
+            </li>
+          ) : (
+            <>
+              <li>
+                <Link to="/login">Login</Link>
+              </li>
+              <li>
+                <Link to="/signup">Register</Link>
+              </li>
+            </>
+          )}
         </ul>
       </div>
       <div className={styles.navbar__toggle}>
@@ -106,11 +113,6 @@ const Nav = () => {
           <BiMenuAltRight onClick={menuToggleHandler} />
         )}
       </div>
-      {/* {showModal ? (
-        <Modal onClose={toggleModal}>
-          {isLogin ? <Login login={login} /> : <Register signUp={signup} />}
-        </Modal>
-      ) : null} */}
     </nav>
   );
 };

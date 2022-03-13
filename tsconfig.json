@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
-    "target": "ES6",
+    "target": "es2022",
     "module": "commonjs",
     "jsx": "preserve",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
+    // "useUnkownInCatchVariables": false
   },
   "include": ["src/**/*", "public/declarations.d.ts"]
 }

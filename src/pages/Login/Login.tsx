@@ -1,10 +1,9 @@
-import LoginForm from '../../features/User/LoginForm';
+import { LoginForm } from '../../features/Auth';
 
 const Login = () => {
   return (
     <div>
-      <h2>Login</h2>
-      <LoginForm login={() => alert('Logged In')} />
+      <LoginForm />
     </div>
   );
 };

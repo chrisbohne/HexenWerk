@@ -11,6 +11,10 @@
   font-family: inherit;
   color: $neutral-100;
   border: 2px solid transparent;
+
+  &:disabled {
+    background-color: grey;
+  }
 }
 
 .primary {

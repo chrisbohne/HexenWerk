@@ -1,10 +1,9 @@
-import RegistrationForm from '../../features/User/RegistrationForm';
+import { RegisterForm } from '../../features/Auth/RegistrationForm';
 
 const Registration = () => {
   return (
     <div>
-      <h2>Registration</h2>
-      <RegistrationForm signUp={() => alert('Logged In')} />
+      <RegisterForm />
     </div>
   );
 };
