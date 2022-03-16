@@ -13,9 +13,18 @@ html {
 
 body {
   margin: 0;
+  text-align: center;
   font-family: $primary-font;
   background-color: $primary-400;
   color: $neutral-100;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  margin: 0;
 }
 
 h1 {
@@ -32,4 +41,20 @@ h4 {
 }
 h5 {
   font-size: $header5;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
 }

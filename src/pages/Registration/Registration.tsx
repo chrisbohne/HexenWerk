@@ -1,8 +1,9 @@
 import { RegisterForm } from '../../features/Auth/RegistrationForm';
+import styles from './Registration.module.scss';
 
 const Registration = () => {
   return (
-    <div>
+    <div className={styles.container}>
       <RegisterForm />
     </div>
   );

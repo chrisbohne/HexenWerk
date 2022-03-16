@@ -1,4 +1,4 @@
-import axios from './axios';
+import { axiosPublic, axiosPrivate } from './';
 import { ILogin, IRegistration } from '../features/Auth/interfaces';
 
 export const authService = {
@@ -11,7 +11,7 @@ export const authService = {
 async function register(
   user: IRegistration
 ): Promise<{ username: string; email: string; id: number }> {
-  const response = await axios.post('/auth/register', user, {
+  const response = await axiosPublic.post('/auth/register', user, {
     headers: { 'Content-Type': 'application/json' },
     withCredentials: true,
   });
@@ -19,7 +19,7 @@ async function register(
 }
 
 async function usernameTaken(username: string) {
-  const response = await axios.get(`users/taken/${username}`);
+  const response = await axiosPublic.get(`users/taken/${username}`);
   return response.data;
 }
 
@@ -30,7 +30,7 @@ async function login(user: ILogin): Promise<{
   accessToken: string;
   role: string;
 }> {
-  const response = await axios.post('/auth/login', user, {
+  const response = await axiosPublic.post('/auth/login', user, {
     headers: { 'Content-Type': 'application/json' },
     withCredentials: true,
   });
@@ -38,8 +38,5 @@ async function login(user: ILogin): Promise<{
 }
 
 async function logout() {
-  const response = await axios('/auth/logout', {
-    withCredentials: true,
-  });
-  return response.data;
+  await axiosPrivate.get('/auth/logout');
 }

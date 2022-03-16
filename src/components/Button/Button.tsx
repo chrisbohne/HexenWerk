@@ -1,48 +1,35 @@
-import { FC, ReactElement } from 'react';
+import { FC, ReactNode } from 'react';
 import styles from './Button.module.scss';
 
 interface IButton {
-  label: string;
+  children: ReactNode;
   type: string;
   disabled?: boolean;
   onClick?: () => void;
 }
 
-interface ICloseButton {
-  onClick(): void;
-}
-
 interface IIconButton {
-  icon: ReactElement;
+  children: ReactNode;
   onClick?: () => void;
 }
 
-export const Button: FC<IButton> = ({ disabled, label, type, onClick }) => {
+export const Button: FC<IButton> = ({ disabled, children, type, onClick }) => {
   return (
     <button
       onClick={onClick}
       data-testid="button"
       className={`${styles[type]} ${styles.button}`}
-      data-content={label}
       disabled={disabled}
     >
-      {label}
+      {children}
     </button>
   );
 };
 
-export const CloseButton: FC<ICloseButton> = ({ onClick }) => {
-  return (
-    <button className={styles.button__close} onClick={onClick}>
-      x
-    </button>
-  );
-};
-
-export const IconButton: FC<IIconButton> = ({ icon, onClick }) => {
+export const IconButton: FC<IIconButton> = ({ children, onClick }) => {
   return (
     <button className={styles.button__icon} onClick={onClick}>
-      {icon}
+      {children}
     </button>
   );
 };

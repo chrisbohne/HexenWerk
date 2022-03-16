@@ -1,8 +1,9 @@
 import { LoginForm } from '../../features/Auth';
+import styles from './Login.module.scss';
 
 const Login = () => {
   return (
-    <div>
+    <div className={styles.container}>
       <LoginForm />
     </div>
   );

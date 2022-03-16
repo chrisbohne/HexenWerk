@@ -13,8 +13,8 @@ import PersistentLoginOutlet from '../components/PersistLogin/PersistLoginOutlet
 import Unauthorized from '../pages/Unauthorized/Unauthorized';
 import Profile from '../pages/Profile/Profile';
 import NotFound from '../pages/NotFound/NotFound';
-import '../style/styles.scss';
 import PersistLoginWrapper from '../components/PersistLogin/PersistLoginWrapper';
+import './style/styles.scss';
 
 const App = () => {
   return (
