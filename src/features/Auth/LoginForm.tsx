@@ -1,10 +1,11 @@
 import { FC, useRef, useState, useEffect, SyntheticEvent } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { authService } from '../../api';
-import './Register.scss';
 import { AxiosError } from 'axios';
 import { useAuth, useInput } from '../../hooks';
 import { useToggle } from '../../hooks';
+import styles from './AuthForm.module.scss';
+import { Button } from '../../components/Button/Button';
 
 interface LocationState {
   from: {
@@ -26,9 +27,6 @@ export const LoginForm: FC = () => {
   const [email, resetEmail, emailAttribs] = useInput('email', '');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  // const item = localStorage.getItem('persist');
-  // const localPersist = item !== null ? JSON.parse(item) : '';
-  // const [persist, setPersist] = useState<boolean>(localPersist);
 
   useEffect(() => {
     setErrorMessage('');
@@ -63,19 +61,11 @@ export const LoginForm: FC = () => {
     }
   };
 
-  // const togglePersist = () => {
-  //   setPersist((prev) => !prev);
-  // };
-
-  // useEffect(() => {
-  //   localStorage.setItem('persist', JSON.stringify(persist));
-  // }, [persist]);
-
   return (
-    <section>
+    <section className={styles.formContainer}>
       <p
         ref={errRef}
-        className={errorMessage ? 'errmsg' : 'offscreen'}
+        className={errorMessage ? styles.errmsg : styles.offscreen}
         aria-live="assertive"
       >
         {errorMessage}
@@ -92,8 +82,8 @@ export const LoginForm: FC = () => {
           value={password}
           required
         />
-        <button>Login</button>
-        <div className="persistCheck">
+        <Button type="primary">Login</Button>
+        <div className={styles.persistCheck}>
           <input
             type="checkbox"
             id="persisit"
@@ -106,7 +96,7 @@ export const LoginForm: FC = () => {
       <p>
         Need an account?
         <br />
-        <span className="line">
+        <span className={styles.line}>
           <Link to="/signup">Register</Link>
         </span>
       </p>

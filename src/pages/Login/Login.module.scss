@@ -1,0 +1,9 @@
+@import '../../app/style/variables.scss';
+
+.container {
+  height: calc(100vh - #{$nav-height});
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

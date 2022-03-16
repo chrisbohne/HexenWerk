@@ -1,14 +1,14 @@
-import { useAuth, useAxiosPrivate } from '.';
+import { useAuth } from '.';
+import { authService } from '../api';
 
 export const useLogout = () => {
   const { removeAuth } = useAuth();
-  const axiosPrivate = useAxiosPrivate();
 
   const logout = async () => {
     localStorage.setItem('persist', JSON.stringify(false));
-    removeAuth();
     try {
-      await axiosPrivate.get('/auth/logout');
+      await authService.logout();
+      removeAuth();
     } catch (error) {
       console.error(error);
     }

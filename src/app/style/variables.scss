@@ -5,7 +5,7 @@ $primary-font: 'Poppins', sans-serif;
 
 // color
 $primary-100: #ff7d00;
-$primary-200: #f9dc5c;
+$primary-200: #fcf7f8;
 $primary-300: #93a3b1;
 $primary-400: #34495e;
 $primary-500: #2c3e50;
@@ -39,15 +39,20 @@ $spacing-lg: 32px;
 $border-radius: 12px;
 
 // header height
-$nav-height: 60px;
+$nav-height: 80px;
 
 // points
-$sm: 37.5em;
+$sm: 30em;
 $md: 48.5em;
 $lg: 64em;
 $xl: 75em;
 
 @mixin breakpoint($point) {
+  @if $point == sm {
+    @media (min-width: $sm) {
+      @content;
+    }
+  }
   @if $point == md {
     @media (min-width: $md) {
       @content;

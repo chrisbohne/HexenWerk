@@ -1,6 +1,6 @@
 const About = () => {
   return (
-    <div>
+    <div style={{ fontSize: '2rem' }}>
       <h1>About HexFinder</h1>
     </div>
   );

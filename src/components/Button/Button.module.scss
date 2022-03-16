@@ -1,8 +1,7 @@
-@import '../../style/variables.scss';
+@import '../../app/style/variables.scss';
 
 .button {
   cursor: pointer;
-  margin: 5;
   outline: none;
   padding: $spacing-sm $spacing-md;
   border-radius: $border-radius;
@@ -13,7 +12,11 @@
   border: 2px solid transparent;
 
   &:disabled {
-    background-color: grey;
+    background-color: $neutral-400;
+    &:hover {
+      background-color: $neutral-400;
+      cursor: not-allowed;
+    }
   }
 }
 
@@ -21,7 +24,7 @@
   background: $primary-100;
   transition: background 0.8s;
   background-position: center;
-  box-shadow: 0 5px 4px rgba(black, 0.3);
+  // box-shadow: 0 5px 4px rgba(black, 0.3);
 
   &:hover {
     background: rgba($primary-100, 0.8)
@@ -38,7 +41,6 @@
 
 .secondary {
   overflow: hidden;
-  position: relative;
   background: linear-gradient(
     to right,
     $primary-100,
@@ -64,21 +66,6 @@
     &:active {
       -webkit-text-fill-color: rgb(116, 65, 3);
     }
-  }
-}
-
-.button__close {
-  background: none;
-  cursor: pointer;
-  border: none;
-  color: black;
-  position: absolute;
-  top: 2%;
-  right: 2%;
-  border-radius: 0.2rem;
-
-  &:hover {
-    background: $neutral-200;
   }
 }
 

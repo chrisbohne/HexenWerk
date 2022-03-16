@@ -8,7 +8,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { authService } from '../../api';
 import { AxiosError } from 'axios';
 
-import './Register.scss';
+import styles from './AuthForm.module.scss';
+import { Button } from '../../components/Button/Button';
 
 const USERNAME_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const EMAIL_REGEX =
@@ -108,10 +109,10 @@ export const RegisterForm: FC = () => {
   }, [username, validUsername]);
 
   return (
-    <section>
+    <section className={styles.formContainer}>
       <p
         ref={errRef}
-        className={errorMessage ? 'errmsg' : 'offscreen'}
+        className={errorMessage ? styles.errmsg : styles.offscreen}
         aria-live="assertive"
       >
         {errorMessage}
@@ -120,14 +121,18 @@ export const RegisterForm: FC = () => {
       <form onSubmit={onSubmit}>
         <label htmlFor="username">
           Username:
-          <span className={validUsername && uniqueUsername ? 'valid' : 'hide'}>
+          <span
+            className={
+              validUsername && uniqueUsername ? styles.valid : styles.hide
+            }
+          >
             <AiOutlineCheck />
           </span>
           <span
             className={
               (validUsername && uniqueUsername) || !username
-                ? 'hide'
-                : 'invalid'
+                ? styles.hide
+                : styles.valid
             }
           >
             <AiOutlineClose />
@@ -148,8 +153,8 @@ export const RegisterForm: FC = () => {
           id="uidnote"
           className={
             usernameFocus && username && !validUsername
-              ? 'instructions'
-              : 'offscreen'
+              ? styles.instructions
+              : styles.offscreen
           }
         >
           <AiFillInfoCircle />
@@ -162,10 +167,10 @@ export const RegisterForm: FC = () => {
 
         <label htmlFor="email">
           Email:
-          <span className={validEmail ? 'valid' : 'hide'}>
+          <span className={validEmail ? styles.valid : styles.hide}>
             <AiOutlineCheck />
           </span>
-          <span className={validEmail || !email ? 'hide' : 'invalid'}>
+          <span className={validEmail || !email ? styles.hide : styles.invalid}>
             <AiOutlineClose />
           </span>
         </label>
@@ -182,7 +187,9 @@ export const RegisterForm: FC = () => {
         <p
           id="emailnote"
           className={
-            emailFocus && email && !validEmail ? 'instructions' : 'offscreen'
+            emailFocus && email && !validEmail
+              ? styles.instructions
+              : styles.offscreen
           }
         >
           <AiFillInfoCircle />
@@ -191,10 +198,14 @@ export const RegisterForm: FC = () => {
 
         <label htmlFor="password">
           Password:
-          <span className={validPassword ? 'valid' : 'hide'}>
+          <span className={validPassword ? styles.valid : styles.hide}>
             <AiOutlineCheck />
           </span>
-          <span className={validPassword || !password ? 'hide' : 'invalid'}>
+          <span
+            className={
+              validPassword || !password ? styles.hide : styles.invalid
+            }
+          >
             <AiOutlineClose />
           </span>
         </label>
@@ -212,8 +223,8 @@ export const RegisterForm: FC = () => {
           id="pwdnote"
           className={
             passwordFocus && password && !validPassword
-              ? 'instructions'
-              : 'offscreen'
+              ? styles.instructions
+              : styles.offscreen
           }
         >
           <AiFillInfoCircle />
@@ -234,14 +245,18 @@ export const RegisterForm: FC = () => {
           Confirm Password:
           <span
             className={
-              validPasswordConfirm && passwordConfirm ? 'valid' : 'hide'
+              validPasswordConfirm && passwordConfirm
+                ? styles.valid
+                : styles.hide
             }
           >
             <AiOutlineCheck />
           </span>
           <span
             className={
-              validPasswordConfirm || !passwordConfirm ? 'hide' : 'invalid'
+              validPasswordConfirm || !passwordConfirm
+                ? styles.hide
+                : styles.invalid
             }
           >
             <AiOutlineClose />
@@ -261,15 +276,16 @@ export const RegisterForm: FC = () => {
           id="confirmnote"
           className={
             passwordConfirmFocus && passwordConfirm && !validPasswordConfirm
-              ? 'instructions'
-              : 'offscreen'
+              ? styles.instructions
+              : styles.offscreen
           }
         >
           <AiFillInfoCircle />
           Must match password.
         </p>
 
-        <button
+        <Button
+          type="primary"
           disabled={
             !validUsername ||
             !uniqueUsername ||
@@ -281,12 +297,12 @@ export const RegisterForm: FC = () => {
           }
         >
           Register
-        </button>
+        </Button>
       </form>
-      <p>
+      <p className={styles.test}>
         Already registered?
         <br />
-        <span className="line">
+        <span className={styles.line}>
           <Link to="/login">Login</Link>
         </span>
       </p>

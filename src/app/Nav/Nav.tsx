@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../../hooks';
 import { useLogout } from '../../hooks';
 import { Link } from 'react-router-dom';
-import { BiMenuAltRight } from 'react-icons/bi';
-import { AiOutlineClose } from 'react-icons/ai';
+import { Button } from '../../components/Button/Button';
+import Icon from '../../components/Icon/Icon';
 import styles from './Nav.module.scss';
 
 interface ISize {
@@ -33,14 +33,25 @@ const Nav = () => {
   }, []);
 
   useEffect(() => {
-    if (!size.width) return;
-    if (size.width > 768 && menuOpen) {
+    if (size.width && size.width > 1024 && menuOpen) {
       setMenuOpen(false);
+    }
+
+    if (menuOpen) {
+      document.body.style.overflow = 'hidden';
+    }
+
+    if (!menuOpen) {
+      document.body.style.overflow = 'unset';
     }
   }, [size.width, menuOpen]);
 
   const menuToggleHandler = () => {
     setMenuOpen((p) => !p);
+  };
+
+  const menuCloseHandler = () => {
+    setMenuOpen(false);
   };
 
   const signout = async () => {
@@ -50,23 +61,35 @@ const Nav = () => {
   return (
     <nav className={styles.navbar}>
       <div className={styles.navbar__logo}>
-        <Link to="/">HexFinder</Link>
+        <Link onClick={menuCloseHandler} to="/">
+          HexFinder
+        </Link>
       </div>
       <div
-        className={`${styles.navbar__menu} ${menuOpen ? styles.isMenu : ''}`}
+        className={`${styles.navbar__menu} ${
+          menuOpen ? styles['navbar__menu-isOpen'] : ''
+        }`}
       >
         <ul>
           <li data-testid="test-nav-item">
-            <Link to="/playground">Playground</Link>
+            <Link onClick={menuCloseHandler} to="/playground">
+              Playground
+            </Link>
           </li>
           <li>
-            <Link to="/about">About</Link>
+            <Link onClick={menuCloseHandler} to="/about">
+              About
+            </Link>
           </li>
           <li>
-            <Link to="/discover">Discover</Link>
+            <Link onClick={menuCloseHandler} to="/discover">
+              Discover
+            </Link>
           </li>
           <li>
-            <Link to="/blog">Blog</Link>
+            <Link onClick={menuCloseHandler} to="/blog">
+              Blog
+            </Link>
           </li>
         </ul>
         <ul>
@@ -74,9 +97,13 @@ const Nav = () => {
             <>
               <li>
                 {auth.role === 'USER' ? (
-                  <Link to="/profile">Profile</Link>
+                  <Link onClick={menuCloseHandler} to="/profile">
+                    Profile
+                  </Link>
                 ) : (
-                  <Link to="/admin">Admin</Link>
+                  <Link onClick={menuCloseHandler} to="/admin">
+                    Admin
+                  </Link>
                 )}
               </li>
               <li>
@@ -93,10 +120,16 @@ const Nav = () => {
           ) : (
             <>
               <li>
-                <Link to="/login">Login</Link>
+                <Link onClick={menuCloseHandler} to="/login">
+                  Login
+                </Link>
               </li>
               <li>
-                <Link to="/signup">Register</Link>
+                <Button type="primary">
+                  <Link onClick={menuCloseHandler} to="/signup">
+                    Register
+                  </Link>
+                </Button>
               </li>
             </>
           )}
@@ -104,9 +137,9 @@ const Nav = () => {
       </div>
       <div className={styles.navbar__toggle}>
         {menuOpen ? (
-          <AiOutlineClose onClick={menuToggleHandler} />
+          <Icon name="close" onClick={menuToggleHandler} />
         ) : (
-          <BiMenuAltRight onClick={menuToggleHandler} />
+          <Icon name="hamburger" onClick={menuToggleHandler} />
         )}
       </div>
     </nav>
