@@ -9,7 +9,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  // z-index: 100;
+  background-color: $primary-400;
+  position: relative;
+  z-index: 100;
   padding: 0 $spacing-md;
   @include breakpoint(lg) {
     padding: 0 $spacing-lg;
@@ -19,7 +21,7 @@
     font-size: 1.4rem;
     color: $neutral-100;
     margin-right: $spacing-lg;
-    z-index: 100000;
+    z-index: 102;
     @include breakpoint(lg) {
       font-size: 1.6rem;
     }

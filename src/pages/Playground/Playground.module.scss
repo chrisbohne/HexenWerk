@@ -4,6 +4,12 @@
   width: 100vw;
   height: calc(100vh - #{$nav-height});
 
+  &__canvas {
+    width: 100vw;
+    height: calc(100vh - #{$nav-height} - 70px);
+    background-color: antiquewhite;
+  }
+
   &__menu {
     height: 70px;
     background-color: $primary-500;
@@ -15,7 +21,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
     ul {
       width: 100%;
       display: flex;

@@ -1,0 +1,37 @@
+import React, { useCallback, useRef, useState } from 'react';
+import { Point } from '../features/Map/utils';
+
+const ORIGIN = Object.freeze({ x: 0, y: 0 });
+
+export const usePan = (): [Point, (e: React.MouseEvent) => void] => {
+  const [panState, setPanState] = useState(ORIGIN);
+  const lastPointRef = useRef(ORIGIN);
+
+  const pan = useCallback((event: MouseEvent) => {
+    const lastPoint = lastPointRef.current;
+    const point = { x: event.pageX, y: event.pageY };
+    lastPointRef.current = point;
+
+    setPanState((prevState) => {
+      const delta = { x: point.x - lastPoint.x, y: point.y - lastPoint.y };
+      const offset = { x: prevState.x + delta.x, y: prevState.y + delta.y };
+      return offset;
+    });
+  }, []);
+
+  const endPan = useCallback(() => {
+    document.removeEventListener('mousemove', pan);
+    document.removeEventListener('mouseup', endPan);
+  }, [pan]);
+
+  const startPan = useCallback(
+    (event: React.MouseEvent) => {
+      document.addEventListener('mousemove', pan);
+      document.addEventListener('mouseup', endPan);
+      lastPointRef.current = { x: event.pageX, y: event.pageY };
+    },
+    [pan, endPan]
+  );
+
+  return [panState, startPan];
+};
