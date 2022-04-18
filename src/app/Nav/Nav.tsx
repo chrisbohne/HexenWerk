@@ -1,39 +1,18 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '../../hooks';
-import { useLogout } from '../../hooks';
+import { useAuth, useLogout, useHandleResize } from '../../hooks';
 import { Link } from 'react-router-dom';
 import { Button } from '../../components/Button/Button';
 import Icon from '../../components/Icon/Icon';
 import styles from './Nav.module.scss';
 
-interface ISize {
-  width: number | undefined;
-  height: number | undefined;
-}
-
 const Nav = () => {
   const { auth } = useAuth();
   const logout = useLogout();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [size, setSize] = useState<ISize>({
-    width: undefined,
-    height: undefined,
-  });
+  const windowSize = useHandleResize();
 
   useEffect(() => {
-    const handleResize = () => {
-      setSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    };
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  useEffect(() => {
-    if (size.width && size.width > 1024 && menuOpen) {
+    if (windowSize.width && windowSize.width > 1024 && menuOpen) {
       setMenuOpen(false);
     }
 
@@ -44,7 +23,7 @@ const Nav = () => {
     if (!menuOpen) {
       document.body.style.overflow = 'unset';
     }
-  }, [size.width, menuOpen]);
+  }, [windowSize.width, menuOpen]);
 
   const menuToggleHandler = () => {
     setMenuOpen((p) => !p);

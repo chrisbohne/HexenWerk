@@ -6,30 +6,7 @@
 
   &__canvas {
     width: 100vw;
-    height: calc(100vh - #{$nav-height} - 70px);
+    height: calc(100vh - #{$nav-height});
     background-color: antiquewhite;
-  }
-
-  &__menu {
-    height: 70px;
-    background-color: $primary-500;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    font-size: 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    ul {
-      width: 100%;
-      display: flex;
-      justify-content: space-around;
-
-      li {
-        display: flex;
-        align-items: center;
-      }
-    }
   }
 }

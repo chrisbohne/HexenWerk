@@ -1,12 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
-import Icon from '../../components/Icon/Icon';
-import { Canvas } from '../../features/Map';
+import {
+  Canvas,
+  EditorMenuDesktop,
+  EditorMenuMobile,
+} from '../../features/Map';
+import { useHandleResize } from '../../hooks';
 import styles from './Playground.module.scss';
 
 const Playground = () => {
   const canvasRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
+  const windowSize = useHandleResize();
 
   useEffect(() => {
     const handleResize = () => {
@@ -22,26 +27,14 @@ const Playground = () => {
 
   return (
     <div className={styles.playground} data-testid="test-playground">
-      {console.log(width, height)}
       <div ref={canvasRef} className={styles.playground__canvas}>
         <Canvas canvasHeight={height} canvasWidth={width} />
       </div>
-      <div className={styles.playground__menu}>
-        <ul>
-          <li>
-            <Icon name="puzzle" />
-          </li>
-          <li>
-            <Icon name="eraser" />
-          </li>
-          <li>
-            <Icon name="slider" />
-          </li>
-          <li>
-            <Icon name="settings" />
-          </li>
-        </ul>
-      </div>
+      {windowSize.width && windowSize.width < 1024 ? (
+        <EditorMenuMobile />
+      ) : (
+        <EditorMenuDesktop />
+      )}
     </div>
   );
 };

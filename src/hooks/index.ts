@@ -5,3 +5,4 @@ export * from './useLogout';
 export * from './useLocalStorage';
 export * from './useInput';
 export * from './useToggle';
+export * from './useHandleResize';
