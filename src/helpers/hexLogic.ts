@@ -1,6 +1,6 @@
-import { IOrientation, IHex, IPoint, ILayout } from './interfaces';
+import { IOrientation, IHex, IPoint, ILayout, IOffsetHex } from './interfaces';
 
-// flat or pointy Layout
+// Layout for flat or pointy and for stretched hexagons
 
 const Orientation = ({
   f0,
@@ -50,13 +50,9 @@ export const pointyLayout = Orientation({
   startAngle: 0.5,
 });
 
-// Point on Screen
+// Operations
 export const Point = (x: number, y: number) => ({ x, y });
-
-// Hex Element (sum needs to equal 0)
 export const Hex = (x: number, y: number, z: number) => ({ x, y, z });
-
-// calculating with Hex
 const hexAdd = (a: IHex, b: IHex) => Hex(a.x + b.x, a.y + b.y, a.z + b.z);
 const hexSubstract = (a: IHex, b: IHex) => Hex(a.x - b.x, a.y - b.y, a.z - b.z);
 
@@ -95,8 +91,8 @@ export const pixelToHex = (layout: ILayout, point: IPoint) => {
     (point.y - origin.y) / size.y
   );
   const x = M.b0 * pt.x + M.b1 * pt.y;
-  const z = M.b2 * pt.x + M.b3 * pt.y;
-  return Hex(x, -x - z, z);
+  const y = M.b2 * pt.x + M.b3 * pt.y;
+  return Hex(x, y, -x - y);
 };
 
 export const hexRound = (hex: IHex) => {
@@ -114,6 +110,19 @@ export const hexRound = (hex: IHex) => {
     zR = -xR - yR;
   }
   return Hex(xR, yR, zR);
+};
+
+export const offsetFromCube = (hex: IHex) => {
+  const col = hex.x;
+  const row = hex.y + (hex.x - (hex.x & 1)) / 2;
+  return { col, row };
+};
+
+export const offsetToCube = (hex: IOffsetHex) => {
+  const x = hex.col;
+  const y = hex.row - (hex.col - (hex.col & 1)) / 2;
+  const z = -x - y;
+  return Hex(x, y, z);
 };
 
 // create Hex Corners

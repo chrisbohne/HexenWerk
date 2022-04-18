@@ -3,15 +3,16 @@ import { Point } from '../utils';
 
 const ORIGIN = Object.freeze({ x: 0, y: 0 });
 
-export const usePan = (): [Point, (e: React.MouseEvent) => void] => {
+export const usePan = (): [Point, (e: React.MouseEvent) => void, boolean] => {
   const [panState, setPanState] = useState(ORIGIN);
   const lastPointRef = useRef(ORIGIN);
+  const [isPanning, setIsPanning] = useState(false);
 
   const pan = useCallback((event: MouseEvent) => {
     const lastPoint = lastPointRef.current;
     const point = { x: event.pageX, y: event.pageY };
     lastPointRef.current = point;
-
+    setIsPanning(true);
     setPanState((prevState) => {
       const delta = { x: point.x - lastPoint.x, y: point.y - lastPoint.y };
       const offset = { x: prevState.x + delta.x, y: prevState.y + delta.y };
@@ -33,5 +34,5 @@ export const usePan = (): [Point, (e: React.MouseEvent) => void] => {
     [pan, endPan]
   );
 
-  return [panState, startPan];
+  return [panState, startPan, isPanning];
 };

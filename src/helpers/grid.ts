@@ -1,9 +1,19 @@
-import { flatLayout, Layout, pixelToHex, Point, hexCorners } from './hexLogic';
+import {
+  flatLayout,
+  Layout,
+  pixelToHex,
+  Point,
+  hexCorners,
+  hexToPixel,
+  hexRound,
+} from './hexLogic';
 
 const centerPoint = Point(0, 0);
 
-const flat = Layout(flatLayout, Point(10, 10), centerPoint);
+const flat = Layout(flatLayout, Point(100, 50), centerPoint);
 
-export const centerHex = pixelToHex(flat, centerPoint);
+export const getCorners = (point: { x: number; y: number }) =>
+  hexCorners(flat, pixelToHex(flat, point));
 
-export const corners = hexCorners(flat, { x: 0, y: 0, z: 0 });
+export const getHex = (point: { x: number; y: number }) =>
+  hexRound(pixelToHex(flat, point));

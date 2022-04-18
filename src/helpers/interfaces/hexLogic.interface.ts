@@ -16,6 +16,11 @@ export interface IHex {
   z: number;
 }
 
+export interface IOffsetHex {
+  col: number;
+  row: number;
+}
+
 export interface IPoint {
   x: number;
   y: number;
