@@ -5,20 +5,26 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { useAppSelector, useAppDispatch } from '../../app/store';
+import { useAppSelector, useAppDispatch } from '../../../app/store';
 import styles from './Canvas.module.scss';
-import Street from '../../assets/images/Street52.svg';
-import { addPoints, diffPoints, ORIGIN, scalePoint } from './utils';
+import Street from '../../../assets/images/Street52.svg';
+import {
+  addPoints,
+  diffPoints,
+  ORIGIN,
+  scalePoint,
+} from '../utils/canvasHelpers';
 import {
   addTile,
   removeTile,
   updateScale,
   updateViewPortTopLeft,
-} from './mapSlice';
-import { useMousePos, usePan } from './hooks';
-import { drawHexGrid, loadImages } from './grid';
-import { getHex } from '../../helpers/grid';
-import { offsetFromCube } from '../../helpers/hexLogic';
+} from '../mapSlice';
+import { useMousePos, usePan } from '../hooks';
+import { drawHexGrid, loadImages } from '../utils/drawGridHelpers';
+import { getHex } from '../../../helpers/grid';
+import { offsetFromCube } from '../../../helpers/hexLogic';
+import { allTiles } from '..';
 
 const ZOOM_SENSITIVITY = 500;
 interface CanvasProps {
@@ -29,14 +35,14 @@ interface CanvasProps {
 export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
   const dispatch = useAppDispatch();
   // scale and current top left point of visible canvas
-  const { scale, viewPortTopLeft, selectedTile, map } = useAppSelector(
+  const { scale, viewPortTopLeft, map, activeSelector } = useAppSelector(
     (state) => state.map
   );
   // reference with canvas once canvas loaded, and state for context
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [context, setContext] = useState<CanvasRenderingContext2D | null>(null);
   // custom hook for getting current panning state without zoom
-  const [offset, startPan, isPanning] = usePan();
+  const [offset, startPan, isPanning] = usePan(canvasRef);
   const lastOffset = useRef(ORIGIN);
   // custom hook for
   const mousePosRef = useMousePos(canvasRef);
@@ -64,6 +70,10 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
     if (!canvasRef.current) return;
     const renderContext = canvasRef.current.getContext('2d');
     if (!renderContext) return;
+    // canvasRef.current.oncontextmenu = (e) => {
+    //   e.preventDefault();
+    //   e.stopPropagation();
+    // };
     renderContext.canvas.width = canvasWidth;
     renderContext.canvas.height = canvasHeight;
     renderContext.scale(scale, scale);
@@ -95,7 +105,6 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
     };
     const currentTopLeftHex = offsetFromCube(getHex(viewPortTopLeft));
     const currentBottomRightHex = offsetFromCube(getHex(viewPortBottomRight));
-    console.log(currentTopLeftHex, 'hex');
     const gridRange = {
       rowStart: currentTopLeftHex.row,
       rowEnd: currentBottomRightHex.row,
@@ -105,6 +114,7 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
     drawHexGrid(
       context,
       map,
+      allTiles,
       gridRange.rowStart,
       gridRange.rowEnd,
       gridRange.colStart,
@@ -171,8 +181,8 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
       };
       const hexPos = getHex(clickPos);
       const offsetPos = offsetFromCube(hexPos);
-      console.log(offsetPos, 'pos');
-      dispatch(addTile(offsetPos));
+      if (activeSelector === 'eraser') dispatch(removeTile(offsetPos));
+      if (activeSelector === 'hand') dispatch(addTile(offsetPos));
     }
   };
 
@@ -185,7 +195,6 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
       <canvas
         className={styles.canvas}
         ref={canvasRef}
-        // onMouseDown={startPan}
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}

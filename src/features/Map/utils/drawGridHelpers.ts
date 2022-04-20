@@ -1,21 +1,20 @@
-import { getCorners } from '../../helpers/grid';
-import { Point } from './utils';
-import streetTiles from '../../assets/tiles/streetTiles';
+// import { getCorners } from './hexHelper';
+import { Point } from '../interfaces';
 
 const tileHeight = Math.sqrt(3) * 50;
 const tileWidth = 200;
 
-const drawHex = (context: CanvasRenderingContext2D, center: Point) => {
-  const corners = getCorners(center);
-  context.beginPath();
-  context.moveTo(corners[0].x, corners[0].y);
-  for (let i = 1; i < 6; i++) {
-    context.lineTo(corners[i].x, corners[i].y);
-  }
-  context.closePath();
-  context.lineWidth = 0;
-  context.fill();
-};
+// const drawHex = (context: CanvasRenderingContext2D, center: Point) => {
+//   const corners = getCorners(center);
+//   context.beginPath();
+//   context.moveTo(corners[0].x, corners[0].y);
+//   for (let i = 1; i < 6; i++) {
+//     context.lineTo(corners[i].x, corners[i].y);
+//   }
+//   context.closePath();
+//   context.lineWidth = 0;
+//   context.fill();
+// };
 
 const drawImage = (
   context: CanvasRenderingContext2D,
@@ -50,8 +49,9 @@ export const loadImages = (images: string[]) => {
 export const drawHexGrid = (
   context: CanvasRenderingContext2D,
   map: {
-    [key: string]: number;
+    [key: string]: string;
   },
+  tileObj: any,
   rowStart: number,
   rowEnd: number,
   colStart: number,
@@ -65,7 +65,7 @@ export const drawHexGrid = (
     ) {
       const hash = '' + row + evenCol;
       if (map[hash]) {
-        const tile = streetTiles[map[hash]];
+        const tile = tileObj[map[hash]];
         const center = {
           x: ((evenCol * 3) / 4) * tileWidth - tileWidth / 2,
           y: row * tileHeight - tileHeight / 2 - (tile.height - tileHeight),
@@ -80,7 +80,7 @@ export const drawHexGrid = (
     ) {
       const hash = '' + row + oddCol;
       if (map[hash]) {
-        const tile = streetTiles[map[hash]];
+        const tile = tileObj[map[hash]];
         const center = {
           x: ((oddCol * 3) / 4) * tileWidth - tileWidth / 2,
           y: row * tileHeight - (tile.height - tileHeight),

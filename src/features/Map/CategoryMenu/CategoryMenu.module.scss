@@ -1,0 +1,40 @@
+@import '../../../app/style/variables.scss';
+
+.categoryMenu {
+  position: absolute;
+  bottom: 0;
+  margin-left: -10vw;
+  width: 360px;
+  height: calc(100vh - #{$nav-height});
+  background: $primary-400;
+  opacity: 0;
+  display: none;
+  transition: margin 0.5s ease, opacity 0.5s ease;
+  z-index: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-auto-rows: 100px;
+  gap: 10px;
+  padding: 20px 0 0 20px;
+
+  &__tile {
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    cursor: pointer;
+  }
+
+  &__close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 40px;
+    height: 40px;
+  }
+
+  &-open {
+    margin-left: 20vw;
+    opacity: 1;
+    display: grid;
+  }
+}

@@ -1,7 +1,4 @@
-export interface Point {
-  x: number;
-  y: number;
-}
+import { Point } from '../interfaces';
 
 export const ORIGIN = Object.freeze({ x: 0, y: 0 });
 

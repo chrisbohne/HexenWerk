@@ -1,5 +1,6 @@
 import { RefObject, useCallback, useEffect, useState } from 'react';
-import { addPoints, ORIGIN, Point } from '../utils';
+import { Point } from '../interfaces';
+import { addPoints, ORIGIN } from '../utils/canvasHelpers';
 import { useMousePos } from './useMousePos';
 
 const ZOOM_SENSITIVITY = 500;

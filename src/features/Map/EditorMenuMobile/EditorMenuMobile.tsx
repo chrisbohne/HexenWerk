@@ -1,4 +1,4 @@
-import Icon from '../../components/Icon/Icon';
+import Icon from '../../../components/Icon/Icon';
 import styles from './EditorMenuMobile.module.scss';
 
 export const EditorMenuMobile = () => {

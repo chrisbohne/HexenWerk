@@ -2,8 +2,10 @@ import { FC } from 'react';
 import './Icon.scss';
 import {
   CloseIcon,
+  CursorIcon,
   EraserIcon,
   HamburgerIcon,
+  HandIcon,
   PuzzleIcon,
   SettingsIcon,
   SliderIcon,
@@ -29,6 +31,10 @@ const Icon: FC<IIconsProps> = (props) => {
       return <PuzzleIcon {...props} />;
     case 'eraser':
       return <EraserIcon {...props} />;
+    case 'cursor':
+      return <CursorIcon {...props} />;
+    case 'hand':
+      return <HandIcon {...props} />;
     default:
       return <div />;
   }
