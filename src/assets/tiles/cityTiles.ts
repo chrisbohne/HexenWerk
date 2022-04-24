@@ -1,13 +1,40 @@
-import Town from '../images/Town.svg';
+import Town from '../images/cities/Town.svg';
+import City from '../images/cities/City.svg';
+import Village from '../images/cities/Village.svg';
+import Sight from '../images/cities/Sight.svg';
 import { ITileCategory } from './interfaces';
 
 export const cityTiles: ITileCategory = {
-  7: {
+  64: {
     svg: Town,
     height: 212.6,
     category: 'city',
     streetConnections: [0, 1, 2, 3, 4, 5],
     railConnections: [0, 1, 2, 3, 4, 5],
+    airport: false,
+  },
+  65: {
+    svg: City,
+    height: 204.6,
+    category: 'city',
+    streetConnections: [0, 1, 2, 3, 4, 5],
+    railConnections: [0, 1, 2, 3, 4, 5],
+    airport: true,
+  },
+  66: {
+    svg: Village,
+    height: 159.88,
+    category: 'city',
+    streetConnections: [0, 1, 2, 3, 4, 5],
+    railConnections: undefined,
+    airport: false,
+  },
+  67: {
+    svg: Sight,
+    height: 178.88,
+    category: 'city',
+    streetConnections: [0, 1, 2, 3, 4, 5],
+    railConnections: undefined,
     airport: false,
   },
 };

@@ -1,42 +1,28 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Point } from './interfaces';
-
-interface MapState {
-  scale: number;
-  viewPortTopLeft: Point;
-  activeSelector: 'cursor' | 'eraser' | 'hand';
-  selectedTile: string;
-  selectedCategory: string;
-  mapSize: number;
-  map: {
-    [key: string]: string;
-  };
-  streetWeight: number;
-  railWeight: number;
-  flightWeight: number;
-}
-
-interface GridPosition {
-  row: number;
-  col: number;
-}
-
-export const availableTiles = {};
+import { GridPosition, MapState, Point } from './interfaces';
 
 const initialState: MapState = {
   scale: 1,
   viewPortTopLeft: { x: 0, y: 0 },
-  selectedTile: '1',
+  selectedTile: '0',
   selectedCategory: '',
   map: {
-    '00': '1',
-    '01': '1',
-    '02': '1',
-    '11': '1',
-    '21': '1',
-    '22': '1',
-    '31': '1',
-    '32': '1',
+    '0,0': '1',
+    '0,1': '1',
+    '0,2': '1',
+    '1,1': '1',
+    '2,1': '1',
+    '2,2': '1',
+    '3,1': '1',
+    '3,2': '1',
+    '0,3': '1',
+    '0,4': '1',
+    '0,5': '1',
+    '0,6': '1',
+    '0,7': '1',
+    '0,8': '1',
+    '0,9': '1',
+    '0,10': '1',
   },
   mapSize: 0,
   activeSelector: 'cursor',
@@ -105,7 +91,7 @@ const mapSlice = createSlice({
 });
 
 function hash(gridPosition: GridPosition) {
-  return '' + gridPosition.row + gridPosition.col;
+  return '' + gridPosition.row + ',' + gridPosition.col;
 }
 
 export const {

@@ -66,7 +66,8 @@ const hexDirections = [
   Hex(0, 1, -1), // top
 ];
 
-const hexDirection = (direction: number): IHex => hexDirections[direction];
+export const hexDirection = (direction: number): IHex =>
+  hexDirections[direction];
 
 export const hexNeighbor = (hex: IHex, direction: number) =>
   hexAdd(hex, hexDirection(direction));

@@ -64,7 +64,9 @@ export const EditorMenuDesktop = () => {
           console.log('hello');
         }}
         className={`${styles['editorMenu__tileSelection-tileBackground']} ${
-          selectedCategory === element.id ? styles.activeCategory : ''
+          selectedCategory === element.id && categoryMenuOpen
+            ? styles.activeCategory
+            : ''
         }`}
         key={element.id}
       >
@@ -86,7 +88,10 @@ export const EditorMenuDesktop = () => {
 
   const updateSelector = (selector: 'eraser' | 'hand' | 'cursor') => {
     dispatch(changeSelector(selector));
-    if (selector !== 'hand') dispatch(changeSelectedCategory(''));
+    if (selector !== 'hand') {
+      dispatch(changeSelectedCategory(''));
+      setCategoryMenuOpen(false);
+    }
   };
 
   return (

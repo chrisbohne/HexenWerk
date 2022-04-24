@@ -1,6 +1,14 @@
 // import { getCorners } from './hexHelper';
+import {
+  cityTiles,
+  natureTiles,
+  railTiles,
+  streetTiles,
+} from '../../../assets/tiles';
 import { Point } from '../interfaces';
 
+// const tileHeight = Math.sqrt(3) * 100;
+// const tileWidth = 400;
 const tileHeight = Math.sqrt(3) * 50;
 const tileWidth = 200;
 
@@ -16,14 +24,63 @@ const tileWidth = 200;
 //   context.fill();
 // };
 
+const availableTiles = {
+  ...streetTiles,
+  ...railTiles,
+  ...cityTiles,
+  ...natureTiles,
+};
+
+const numTiles = Object.keys(availableTiles).length;
+
+// preload all images on seperate canvas as kind of sprite
+const preCanvas = document.createElement('canvas');
+// preCanvas.width = 420 * 8;
+// preCanvas.height = 800;
+preCanvas.width = 210 * numTiles;
+preCanvas.height = 400;
+const preCtx = preCanvas.getContext('2d');
+for (let i = 0; i < numTiles; i++) {
+  const img = new Image();
+  img.src = availableTiles[i].svg;
+  img.onload = () => {
+    preCtx?.drawImage(img, i * 210, 0);
+  };
+}
+// preCtx?.scale(2, 2);
+
 const drawImage = (
   context: CanvasRenderingContext2D,
   center: Point,
-  src: string
+  id: string,
+  height: number,
+  tile: any
 ) => {
-  const image = new Image();
-  image.src = src;
-  context.drawImage(image, center.x, center.y);
+  // context.drawImage(
+  //   preCanvas,
+  //   420 * +id,
+  //   0,
+  //   400,
+  //   height * 2,
+  //   center.x,
+  //   center.y,
+  //   400,
+  //   height * 2
+  // );
+  context.drawImage(
+    preCanvas,
+    210 * +id,
+    0,
+    200,
+    height,
+    center.x,
+    center.y,
+    200,
+    height
+  );
+  // const img = new Image();
+  // img.src = tile.svg;
+  // context.drawImage(img, center.x, center.y);
 };
 
 export const loadImages = (images: string[]) => {
@@ -51,7 +108,6 @@ export const drawHexGrid = (
   map: {
     [key: string]: string;
   },
-  tileObj: any,
   rowStart: number,
   rowEnd: number,
   colStart: number,
@@ -63,14 +119,15 @@ export const drawHexGrid = (
       evenCol <= colEnd + 1;
       evenCol += 2
     ) {
-      const hash = '' + row + evenCol;
+      const hash = '' + row + ',' + evenCol;
       if (map[hash]) {
-        const tile = tileObj[map[hash]];
+        const tile = availableTiles[map[hash]];
         const center = {
           x: ((evenCol * 3) / 4) * tileWidth - tileWidth / 2,
+          // y: row * tileHeight - tileHeight / 2 - (tile.height * 2 - tileHeight),
           y: row * tileHeight - tileHeight / 2 - (tile.height - tileHeight),
         };
-        drawImage(context, center, tile.svg);
+        drawImage(context, center, map[hash], tile.height, tile);
       }
     }
     for (
@@ -78,14 +135,15 @@ export const drawHexGrid = (
       oddCol <= colEnd + 1;
       oddCol += 2
     ) {
-      const hash = '' + row + oddCol;
+      const hash = '' + row + ',' + oddCol;
       if (map[hash]) {
-        const tile = tileObj[map[hash]];
+        const tile = availableTiles[map[hash]];
         const center = {
           x: ((oddCol * 3) / 4) * tileWidth - tileWidth / 2,
+          // y: row * tileHeight - (tile.height * 2 - tileHeight),
           y: row * tileHeight - (tile.height - tileHeight),
         };
-        drawImage(context, center, tile.svg);
+        drawImage(context, center, map[hash], tile.height, tile);
       }
     }
   }

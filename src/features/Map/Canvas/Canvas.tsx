@@ -7,7 +7,6 @@ import React, {
 } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../app/store';
 import styles from './Canvas.module.scss';
-import Street from '../../../assets/images/Street52.svg';
 import {
   addPoints,
   diffPoints,
@@ -22,9 +21,10 @@ import {
 } from '../mapSlice';
 import { useMousePos, usePan } from '../hooks';
 import { drawHexGrid, loadImages } from '../utils/drawGridHelpers';
-import { getHex } from '../../../helpers/grid';
-import { offsetFromCube } from '../../../helpers/hexLogic';
-import { allTiles } from '..';
+// import { getHex } from '../../../helpers/grid';
+import { getHex } from '../utils/hexHelper';
+// import { offsetFromCube } from '../../../helpers/hexLogic';
+import { offsetFromCube } from '../utils/hexLogic';
 
 const ZOOM_SENSITIVITY = 500;
 interface CanvasProps {
@@ -81,8 +81,6 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
     setContext(renderContext);
     // hacky way of waiting for width to be correct with and not 0
     if (canvasWidth !== 0) setDidMount(true);
-    const images = loadImages([Street]);
-    setLoadedImages(images);
   }, [canvasHeight, canvasWidth, scale, viewPortTopLeft, didMount]);
 
   // // draw on Canvas
@@ -114,7 +112,6 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
     drawHexGrid(
       context,
       map,
-      allTiles,
       gridRange.rowStart,
       gridRange.rowEnd,
       gridRange.colStart,
@@ -187,8 +184,21 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
   };
 
   const handleMouseMove = () => {
+    // const currentMousePos = {
+    //   x: mousePosRef.current.x / scale + viewPortTopLeft.x,
+    //   y: mousePosRef.current.y / scale + viewPortTopLeft.y,
+    // };
+    // const currentHexPos = getHex(currentMousePos);
+    // const currentOffsetPos = offsetFromCube(currentHexPos);
+    // setHoveredGrid(currentOffsetPos);
     setIsMoving(true);
   };
+
+  // useLayoutEffect(() => {
+  //   if (hoveredGrid) {
+  //     dispatch(addTile(hoveredGrid));
+  //   }
+  // }, [hoveredGrid, dispatch]);
 
   return (
     <>
