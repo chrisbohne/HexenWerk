@@ -1,4 +1,3 @@
-// import { getCorners } from './hexHelper';
 import {
   cityTiles,
   natureTiles,
@@ -7,21 +6,23 @@ import {
 } from '../../../assets/tiles';
 import { Point } from '../interfaces';
 
-// const tileHeight = Math.sqrt(3) * 100;
-// const tileWidth = 400;
 const tileHeight = Math.sqrt(3) * 50;
 const tileWidth = 200;
 
-// const drawHex = (context: CanvasRenderingContext2D, center: Point) => {
-//   const corners = getCorners(center);
+// export const drawHex = (context: CanvasRenderingContext2D, point: Point) => {
+//   const corners = getCorners(point);
+//   context.globalAlpha = 0.4;
 //   context.beginPath();
 //   context.moveTo(corners[0].x, corners[0].y);
 //   for (let i = 1; i < 6; i++) {
 //     context.lineTo(corners[i].x, corners[i].y);
 //   }
 //   context.closePath();
-//   context.lineWidth = 0;
+//   // context.lineWidth = 4;
+//   // context.strokeStyle = 'white';
+//   // context.stroke();
 //   context.fill();
+//   context.globalAlpha = 1;
 // };
 
 const availableTiles = {
@@ -35,8 +36,6 @@ const numTiles = Object.keys(availableTiles).length;
 
 // preload all images on seperate canvas as kind of sprite
 const preCanvas = document.createElement('canvas');
-// preCanvas.width = 420 * 8;
-// preCanvas.height = 800;
 preCanvas.width = 210 * numTiles;
 preCanvas.height = 400;
 const preCtx = preCanvas.getContext('2d');
@@ -47,26 +46,20 @@ for (let i = 0; i < numTiles; i++) {
     preCtx?.drawImage(img, i * 210, 0);
   };
 }
-// preCtx?.scale(2, 2);
 
 const drawImage = (
   context: CanvasRenderingContext2D,
   center: Point,
   id: string,
   height: number,
-  tile: any
+  isHovered: boolean,
+  // isEraser: boolean
+  mode: string
 ) => {
-  // context.drawImage(
-  //   preCanvas,
-  //   420 * +id,
-  //   0,
-  //   400,
-  //   height * 2,
-  //   center.x,
-  //   center.y,
-  //   400,
-  //   height * 2
-  // );
+  if (isHovered) {
+    context.globalAlpha = 0.6;
+    if (mode === 'eraser') context.filter = 'grayscale(100%)';
+  }
   context.drawImage(
     preCanvas,
     210 * +id,
@@ -78,29 +71,8 @@ const drawImage = (
     200,
     height
   );
-  // const img = new Image();
-  // img.src = tile.svg;
-  // context.drawImage(img, center.x, center.y);
-};
-
-export const loadImages = (images: string[]) => {
-  let loadCount = 0;
-  const loadTotal = images.length;
-  let preLoaded = false;
-
-  const loadedImages = [];
-  for (let i = 0; i < images.length; i++) {
-    const image = new Image();
-    image.onload = function () {
-      loadCount++;
-      if (loadCount === loadTotal) {
-        preLoaded = true;
-      }
-    };
-    image.src = images[i];
-    loadedImages[i] = image;
-  }
-  return loadedImages;
+  context.globalAlpha = 1;
+  context.filter = 'none';
 };
 
 export const drawHexGrid = (
@@ -111,7 +83,11 @@ export const drawHexGrid = (
   rowStart: number,
   rowEnd: number,
   colStart: number,
-  colEnd: number
+  colEnd: number,
+  hoveredHex: string,
+  selectedTile: string,
+  // isEraser: boolean
+  mode: string
 ) => {
   for (let row = rowStart; row <= rowEnd + 1; row++) {
     for (
@@ -119,32 +95,57 @@ export const drawHexGrid = (
       evenCol <= colEnd + 1;
       evenCol += 2
     ) {
-      const hash = '' + row + ',' + evenCol;
-      if (map[hash]) {
-        const tile = availableTiles[map[hash]];
-        const center = {
-          x: ((evenCol * 3) / 4) * tileWidth - tileWidth / 2,
-          // y: row * tileHeight - tileHeight / 2 - (tile.height * 2 - tileHeight),
-          y: row * tileHeight - tileHeight / 2 - (tile.height - tileHeight),
-        };
-        drawImage(context, center, map[hash], tile.height, tile);
-      }
+      displayTile(row, evenCol, context, map, hoveredHex, selectedTile, mode);
     }
     for (
       let oddCol = colStart % 2 === 0 ? colStart + 1 : colStart;
       oddCol <= colEnd + 1;
       oddCol += 2
     ) {
-      const hash = '' + row + ',' + oddCol;
-      if (map[hash]) {
-        const tile = availableTiles[map[hash]];
-        const center = {
-          x: ((oddCol * 3) / 4) * tileWidth - tileWidth / 2,
-          // y: row * tileHeight - (tile.height * 2 - tileHeight),
-          y: row * tileHeight - (tile.height - tileHeight),
-        };
-        drawImage(context, center, map[hash], tile.height, tile);
-      }
+      displayTile(row, oddCol, context, map, hoveredHex, selectedTile, mode);
     }
   }
 };
+
+function displayTile(
+  row: number,
+  col: number,
+  context: CanvasRenderingContext2D,
+  map: {
+    [key: string]: string;
+  },
+  hoveredHex: string,
+  selectedTile: string,
+  mode: string
+) {
+  const hash = '' + row + ',' + col;
+  let tileNum = '';
+  let tile;
+  let isHovered = false;
+  if (hash === hoveredHex && mode === 'eraser' && map[hash]) {
+    tileNum = map[hash];
+    tile = availableTiles[+tileNum];
+    isHovered = true;
+  } else if (
+    hash === hoveredHex &&
+    map[hash] !== selectedTile &&
+    mode !== 'eraser'
+  ) {
+    tileNum = selectedTile;
+    tile = availableTiles[+selectedTile];
+    isHovered = true;
+  } else if (map[hash]) {
+    tileNum = map[hash];
+    tile = availableTiles[+tileNum];
+  }
+  if (tile) {
+    const center = {
+      x: ((col * 3) / 4) * tileWidth - tileWidth / 2,
+      y:
+        row * tileHeight -
+        (col % 2 === 0 ? tileHeight / 2 : 0) -
+        (tile.height - tileHeight),
+    };
+    drawImage(context, center, tileNum, tile.height, isHovered, mode);
+  }
+}

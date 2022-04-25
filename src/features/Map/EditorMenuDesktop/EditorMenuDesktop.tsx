@@ -117,7 +117,7 @@ export const EditorMenuDesktop = () => {
             onClick={() => updateSelector('cursor')}
           />
           <Icon
-            name="hand"
+            name="puzzle"
             className={`${styles.editorMenu__icon} ${
               activeSelector === 'hand' ? styles.activated : ''
             }`}

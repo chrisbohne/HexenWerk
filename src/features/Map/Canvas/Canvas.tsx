@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../app/store';
 import styles from './Canvas.module.scss';
 import {
@@ -20,7 +14,7 @@ import {
   updateViewPortTopLeft,
 } from '../mapSlice';
 import { useMousePos, usePan } from '../hooks';
-import { drawHexGrid, loadImages } from '../utils/drawGridHelpers';
+import { drawHexGrid } from '../utils/drawGridHelpers';
 // import { getHex } from '../../../helpers/grid';
 import { getHex } from '../utils/hexHelper';
 // import { offsetFromCube } from '../../../helpers/hexLogic';
@@ -35,30 +29,19 @@ interface CanvasProps {
 export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
   const dispatch = useAppDispatch();
   // scale and current top left point of visible canvas
-  const { scale, viewPortTopLeft, map, activeSelector } = useAppSelector(
-    (state) => state.map
-  );
+  const { scale, viewPortTopLeft, map, activeSelector, selectedTile } =
+    useAppSelector((state) => state.map);
   // reference with canvas once canvas loaded, and state for context
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [context, setContext] = useState<CanvasRenderingContext2D | null>(null);
   // custom hook for getting current panning state without zoom
-  const [offset, startPan, isPanning] = usePan(canvasRef);
+  const [offset, startPan] = usePan(canvasRef);
   const lastOffset = useRef(ORIGIN);
   // custom hook for
   const mousePosRef = useMousePos(canvasRef);
   const [didMount, setDidMount] = useState(false);
-  const [didLoad, setDidLoad] = useState(false);
-  // image preloading
-  const [loadedImages, setLoadedImages] = useState<any>([]);
-  // const [isLoaded, setIsLoaded] = useState(false);
-  const [isMoving, setIsMoving] = useState(false);
 
-  // Preload Images
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setIsLoaded(true);
-  //   }, 1000);
-  // }, []);
+  const [isMoving, setIsMoving] = useState(false);
 
   useEffect(() => {
     lastOffset.current = offset;
@@ -83,41 +66,66 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
     if (canvasWidth !== 0) setDidMount(true);
   }, [canvasHeight, canvasWidth, scale, viewPortTopLeft, didMount]);
 
-  // // draw on Canvas
-  // const draw = useCallback(() => {
-  //   const image = new Image();
-  //   image.src = Street;
-  //   context?.drawImage(loadedImages[0], 0, 0);
-  // }, [context, loadedImages]);
-
   useLayoutEffect(() => {
     if (!context) return;
-    context.save();
-    context.setTransform(1, 0, 0, 1, 0, 0);
-    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-    context.restore();
-    // draw();
-    const viewPortBottomRight = {
-      x: viewPortTopLeft.x + canvasWidth / scale,
-      y: viewPortTopLeft.y + canvasHeight / scale,
+    let requestId: number;
+    const render = () => {
+      context.save();
+      context.setTransform(1, 0, 0, 1, 0, 0);
+      context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+      context.restore();
+      const viewPortBottomRight = {
+        x: viewPortTopLeft.x + canvasWidth / scale,
+        y: viewPortTopLeft.y + canvasHeight / scale,
+      };
+      const currentTopLeftHex = offsetFromCube(getHex(viewPortTopLeft));
+      const currentBottomRightHex = offsetFromCube(getHex(viewPortBottomRight));
+      const gridRange = {
+        rowStart: currentTopLeftHex.row,
+        rowEnd: currentBottomRightHex.row,
+        colStart: currentTopLeftHex.col,
+        colEnd: currentBottomRightHex.col,
+      };
+      let hoveredHex = '';
+      if (activeSelector === 'hand' || activeSelector === 'eraser') {
+        const currentMousePos = {
+          x: mousePosRef.current.x / scale + viewPortTopLeft.x,
+          y: mousePosRef.current.y / scale + viewPortTopLeft.y,
+        };
+        const hexPos = getHex(currentMousePos);
+        const offsetPos = offsetFromCube(hexPos);
+        hoveredHex = '' + offsetPos.row + ',' + offsetPos.col;
+      }
+
+      drawHexGrid(
+        context,
+        map,
+        gridRange.rowStart,
+        gridRange.rowEnd,
+        gridRange.colStart,
+        gridRange.colEnd,
+        hoveredHex,
+        selectedTile,
+        activeSelector
+      );
+      requestId = requestAnimationFrame(render);
     };
-    const currentTopLeftHex = offsetFromCube(getHex(viewPortTopLeft));
-    const currentBottomRightHex = offsetFromCube(getHex(viewPortBottomRight));
-    const gridRange = {
-      rowStart: currentTopLeftHex.row,
-      rowEnd: currentBottomRightHex.row,
-      colStart: currentTopLeftHex.col,
-      colEnd: currentBottomRightHex.col,
+
+    render();
+    return () => {
+      cancelAnimationFrame(requestId);
     };
-    drawHexGrid(
-      context,
-      map,
-      gridRange.rowStart,
-      gridRange.rowEnd,
-      gridRange.colStart,
-      gridRange.colEnd
-    );
-  }, [context, viewPortTopLeft, scale, canvasHeight, canvasWidth, map]);
+  }, [
+    context,
+    viewPortTopLeft,
+    scale,
+    canvasHeight,
+    canvasWidth,
+    map,
+    mousePosRef,
+    activeSelector,
+    selectedTile,
+  ]);
 
   // update new canvas position based on current offset and last offset
   useLayoutEffect(() => {
@@ -184,13 +192,6 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
   };
 
   const handleMouseMove = () => {
-    // const currentMousePos = {
-    //   x: mousePosRef.current.x / scale + viewPortTopLeft.x,
-    //   y: mousePosRef.current.y / scale + viewPortTopLeft.y,
-    // };
-    // const currentHexPos = getHex(currentMousePos);
-    // const currentOffsetPos = offsetFromCube(currentHexPos);
-    // setHoveredGrid(currentOffsetPos);
     setIsMoving(true);
   };
 
