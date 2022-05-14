@@ -11,6 +11,7 @@ export const natureTiles: ITileCategory = {
     streetConnections: undefined,
     railConnections: undefined,
     airport: false,
+    shipping: true,
   },
   69: {
     svg: Mountain,
@@ -19,6 +20,7 @@ export const natureTiles: ITileCategory = {
     streetConnections: undefined,
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   70: {
     svg: Forest,
@@ -27,5 +29,6 @@ export const natureTiles: ITileCategory = {
     streetConnections: undefined,
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
 };

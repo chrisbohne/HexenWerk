@@ -12,6 +12,7 @@ export const cityTiles: ITileCategory = {
     streetConnections: [0, 1, 2, 3, 4, 5],
     railConnections: [0, 1, 2, 3, 4, 5],
     airport: false,
+    shipping: true,
   },
   65: {
     svg: City,
@@ -20,6 +21,7 @@ export const cityTiles: ITileCategory = {
     streetConnections: [0, 1, 2, 3, 4, 5],
     railConnections: [0, 1, 2, 3, 4, 5],
     airport: true,
+    shipping: true,
   },
   66: {
     svg: Village,
@@ -28,6 +30,7 @@ export const cityTiles: ITileCategory = {
     streetConnections: [0, 1, 2, 3, 4, 5],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   67: {
     svg: Sight,
@@ -36,5 +39,6 @@ export const cityTiles: ITileCategory = {
     streetConnections: [0, 1, 2, 3, 4, 5],
     railConnections: undefined,
     airport: false,
+    shipping: true,
   },
 };

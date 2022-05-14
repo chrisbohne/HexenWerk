@@ -5,6 +5,7 @@ export interface ITile {
   streetConnections: number[] | undefined;
   railConnections: number[] | undefined;
   airport: boolean;
+  shipping: boolean;
 }
 
 export interface ITileCategory {

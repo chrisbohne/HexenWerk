@@ -57,6 +57,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [5, 2],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   1: {
     svg: Street41,
@@ -65,6 +66,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [4, 1],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   2: {
     svg: Street30,
@@ -73,6 +75,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [3, 0],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   3: {
     svg: Street31,
@@ -81,6 +84,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [3, 1],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   4: {
     svg: Street40,
@@ -89,6 +93,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [4, 0],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   5: {
     svg: Street20,
@@ -97,6 +102,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [2, 0],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   6: {
     svg: Street42,
@@ -105,6 +111,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [4, 2],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   7: {
     svg: Street53,
@@ -113,6 +120,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [5, 3],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   8: {
     svg: Street51,
@@ -121,6 +129,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [5, 1],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   9: {
     svg: Street32,
@@ -129,6 +138,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [3, 2],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   10: {
     svg: Street21,
@@ -137,6 +147,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [2, 1],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   11: {
     svg: Street50,
@@ -145,6 +156,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [5, 0],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   12: {
     svg: Street54,
@@ -153,6 +165,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [5, 4],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   13: {
     svg: Street43,
@@ -161,6 +174,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [4, 3],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   14: {
     svg: Street10,
@@ -169,6 +183,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [1, 0],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   15: {
     svg: Street431,
@@ -177,6 +192,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [4, 3, 1],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   16: {
     svg: Street421,
@@ -185,6 +201,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [4, 2, 1],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   17: {
     svg: Street541,
@@ -193,6 +210,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [5, 4, 1],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   18: {
     svg: Street410,
@@ -201,6 +219,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [4, 1, 0],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   19: {
     svg: Street310,
@@ -209,6 +228,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [3, 1, 0],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   20: {
     svg: Street320,
@@ -217,6 +237,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [3, 2, 0],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   21: {
     svg: Street530,
@@ -225,6 +246,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [5, 3, 0],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   22: {
     svg: Street430,
@@ -233,6 +255,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [4, 3, 0],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   23: {
     svg: Street520,
@@ -241,6 +264,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [5, 2, 0],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   24: {
     svg: Street542,
@@ -249,6 +273,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [5, 4, 2],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   25: {
     svg: Street532,
@@ -257,6 +282,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [5, 3, 2],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   26: {
     svg: Street521,
@@ -265,6 +291,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [5, 2, 1],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   27: {
     svg: Street4310,
@@ -273,6 +300,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [4, 3, 1, 0],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   28: {
     svg: Street4321,
@@ -281,6 +309,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [4, 3, 2, 1],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   29: {
     svg: Street5431,
@@ -289,6 +318,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [5, 4, 3, 1],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   30: {
     svg: Street5410,
@@ -297,6 +327,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [5, 4, 1, 0],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   31: {
     svg: Street4210,
@@ -305,6 +336,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [4, 2, 1, 0],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   32: {
     svg: Street5421,
@@ -313,6 +345,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [5, 4, 2, 1],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   33: {
     svg: Street3210,
@@ -321,6 +354,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [3, 2, 1, 0],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   34: {
     svg: Street5310,
@@ -329,6 +363,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [5, 3, 1, 0],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   35: {
     svg: Street5430,
@@ -337,6 +372,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [5, 4, 3, 0],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   36: {
     svg: Street4320,
@@ -345,6 +381,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [4, 3, 2, 0],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   37: {
     svg: Street5320,
@@ -353,6 +390,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [5, 3, 2, 0],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   38: {
     svg: Street5420,
@@ -361,6 +399,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [5, 4, 2, 0],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   39: {
     svg: Street5321,
@@ -369,6 +408,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [5, 3, 2, 1],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   40: {
     svg: Street5432,
@@ -377,6 +417,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [5, 4, 3, 2],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   41: {
     svg: Street5210,
@@ -385,6 +426,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [5, 2, 1, 0],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   42: {
     svg: Street54321,
@@ -393,6 +435,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [5, 4, 3, 2, 1],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   43: {
     svg: Street53210,
@@ -401,6 +444,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [5, 3, 2, 1, 0],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   44: {
     svg: Street54320,
@@ -409,6 +453,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [5, 4, 3, 2, 0],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   45: {
     svg: Street54210,
@@ -417,6 +462,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [5, 4, 2, 1, 0],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   46: {
     svg: Street43210,
@@ -425,6 +471,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [4, 3, 2, 1, 0],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   47: {
     svg: Street54310,
@@ -433,6 +480,7 @@ export const streetTiles: ITileCategory = {
     streetConnections: [5, 4, 3, 1, 0],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
   48: {
     svg: Street543210,
@@ -441,5 +489,6 @@ export const streetTiles: ITileCategory = {
     streetConnections: [5, 4, 3, 2, 1, 0],
     railConnections: undefined,
     airport: false,
+    shipping: false,
   },
 };

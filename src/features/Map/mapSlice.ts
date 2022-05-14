@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { GridPosition, MapState, Point } from './interfaces';
+import { getHexHash } from './utils/drawGridHelpers';
 
 const initialState: MapState = {
   scale: 1,
@@ -8,10 +9,15 @@ const initialState: MapState = {
   selectedCategory: '',
   map: {},
   mapSize: 0,
-  activeSelector: 'cursor',
-  streetWeight: 1,
-  railWeight: 1,
-  flightWeight: 1,
+  mode: 'none',
+  startingPoint: undefined,
+  destination: undefined,
+  weights: {
+    street: 1,
+    rail: 2,
+    flight: 10,
+    shipping: 5,
+  },
 };
 
 const mapSlice = createSlice({
@@ -34,7 +40,7 @@ const mapSlice = createSlice({
       state,
       { payload: gridPosition }: PayloadAction<GridPosition>
     ) => {
-      const id = hash(gridPosition);
+      const id = getHexHash(gridPosition);
       if (!Object.prototype.hasOwnProperty.call(state.map, id)) {
         state.map[id] = state.selectedTile;
         state.mapSize++;
@@ -46,17 +52,25 @@ const mapSlice = createSlice({
       state,
       { payload: gridPosition }: PayloadAction<GridPosition>
     ) => {
-      const id = hash(gridPosition);
+      const id = getHexHash(gridPosition);
       if (Object.prototype.hasOwnProperty.call(state.map, id)) {
         delete state.map[id];
         state.mapSize--;
       }
     },
-    changeSelector: (
+    changeMode: (
       state,
-      { payload: newFunction }: PayloadAction<'eraser' | 'hand' | 'cursor'>
+      {
+        payload: newMode,
+      }: PayloadAction<
+        | 'eraser'
+        | 'none'
+        | 'append'
+        | 'destinationSelection'
+        | 'startingPointSelection'
+      >
     ) => {
-      state.activeSelector = newFunction;
+      state.mode = newMode;
     },
     changeSelectedTile: (
       state,
@@ -70,11 +84,31 @@ const mapSlice = createSlice({
     ) => {
       state.selectedCategory = newCategory;
     },
+    changeStartingPoint: (
+      state,
+      { payload: newPoint }: PayloadAction<GridPosition | undefined>
+    ) => {
+      state.startingPoint = newPoint;
+    },
+    changeDestination: (
+      state,
+      { payload: newPoint }: PayloadAction<GridPosition | undefined>
+    ) => {
+      state.destination = newPoint;
+    },
+    changeWeights: (
+      state,
+      { payload: updatedWeight }: PayloadAction<ChangeWeight>
+    ) => {
+      state.weights[updatedWeight.type as keyof typeof state.weights] =
+        updatedWeight.value;
+    },
   },
 });
 
-function hash(gridPosition: GridPosition) {
-  return '' + gridPosition.row + ',' + gridPosition.col;
+interface ChangeWeight {
+  type: string;
+  value: number;
 }
 
 export const {
@@ -82,9 +116,12 @@ export const {
   updateViewPortTopLeft,
   addTile,
   removeTile,
-  changeSelector,
+  changeMode,
   changeSelectedTile,
   changeSelectedCategory,
+  changeStartingPoint,
+  changeDestination,
+  changeWeights,
 } = mapSlice.actions;
 
 export default mapSlice.reducer;

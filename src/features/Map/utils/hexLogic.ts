@@ -1,4 +1,10 @@
-import { IOrientation, IHex, IPoint, ILayout, IOffsetHex } from '../interfaces';
+import {
+  IOrientation,
+  ICubeHex,
+  IPoint,
+  ILayout,
+  IOffsetHex,
+} from '../interfaces';
 
 // Layout for flat or pointy and for stretched hexagons
 
@@ -53,28 +59,31 @@ export const pointyLayout = Orientation({
 // Operations
 export const Point = (x: number, y: number) => ({ x, y });
 export const Hex = (x: number, y: number, z: number) => ({ x, y, z });
-const hexAdd = (a: IHex, b: IHex) => Hex(a.x + b.x, a.y + b.y, a.z + b.z);
-const hexSubstract = (a: IHex, b: IHex) => Hex(a.x - b.x, a.y - b.y, a.z - b.z);
+export const Offset = (row: number, col: number) => ({ row, col });
+const hexCubeAdd = (a: ICubeHex, b: ICubeHex) =>
+  Hex(a.x + b.x, a.y + b.y, a.z + b.z);
+const hexCubeSubstract = (a: ICubeHex, b: ICubeHex) =>
+  Hex(a.x - b.x, a.y - b.y, a.z - b.z);
 
 // Get Neighbors
-const hexDirections = [
-  Hex(1, 0, -1), // top right
-  Hex(1, -1, 0), // bottom right
-  Hex(0, -1, 1), // bottom
-  Hex(-1, 0, 1), // bottom left
-  Hex(-1, 1, 0), // top left
-  Hex(0, 1, -1), // top
+const hexCubeDirections = [
+  Hex(1, -1, 0), // top right
+  Hex(1, 0, -1), // bottom right
+  Hex(0, 1, -1), // bottom
+  Hex(-1, 1, 0), // bottom left
+  Hex(-1, 0, 1), // top left
+  Hex(0, -1, 1), // top
 ];
 
-export const hexDirection = (direction: number): IHex =>
-  hexDirections[direction];
+export const hexCubeDirection = (direction: number): ICubeHex =>
+  hexCubeDirections[direction];
 
-export const hexNeighbor = (hex: IHex, direction: number) =>
-  hexAdd(hex, hexDirection(direction));
+export const hexCubeNeighbor = (hex: ICubeHex, direction: number) =>
+  hexCubeAdd(hex, hexCubeDirection(direction));
 
 // Converting Point and Hex
 
-export const hexToPixel = (layout: ILayout, hex: IHex) => {
+export const hexToPixel = (layout: ILayout, hex: ICubeHex) => {
   const M = layout.orientation;
   const size = layout.size;
   const origin = layout.origin;
@@ -96,7 +105,7 @@ export const pixelToHex = (layout: ILayout, point: IPoint) => {
   return Hex(x, y, -x - y);
 };
 
-export const hexRound = (hex: IHex) => {
+export const hexRound = (hex: ICubeHex) => {
   let xR = Math.round(hex.x);
   let yR = Math.round(hex.y);
   let zR = Math.round(hex.z);
@@ -113,7 +122,7 @@ export const hexRound = (hex: IHex) => {
   return Hex(xR, yR, zR);
 };
 
-export const offsetFromCube = (hex: IHex) => {
+export const offsetFromCube = (hex: ICubeHex) => {
   const col = hex.x;
   const row = hex.y + (hex.x - (hex.x & 1)) / 2;
   return { col, row };
@@ -135,7 +144,7 @@ const hexCornerOffset = (layout: ILayout, corner: number) => {
   return Point(size.x * Math.cos(angle), size.y * Math.sin(angle));
 };
 
-export const hexCorners = (layout: ILayout, hex: IHex) => {
+export const hexCorners = (layout: ILayout, hex: ICubeHex) => {
   const corners = [];
   const center = hexToPixel(layout, hex);
   for (let i = 0; i < 6; i++) {
@@ -147,8 +156,9 @@ export const hexCorners = (layout: ILayout, hex: IHex) => {
 
 // get direct distances between two hexagons
 
-const hexLength = (hex: IHex) => {
+const hexLength = (hex: ICubeHex) => {
   return (Math.abs(hex.x) + Math.abs(hex.y) + Math.abs(hex.z)) / 2;
 };
 
-export const hexDistance = (a: IHex, b: IHex) => hexLength(hexSubstract(a, b));
+export const hexDistance = (a: ICubeHex, b: ICubeHex) =>
+  hexLength(hexCubeSubstract(a, b));

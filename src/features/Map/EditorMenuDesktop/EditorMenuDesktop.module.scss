@@ -5,7 +5,7 @@
   bottom: 0;
   height: calc(100vh - #{$nav-height});
   background-color: $primary-500;
-  width: 20vw;
+  width: 250px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -21,6 +21,8 @@
       margin: 10px;
       padding: 10px;
       border-radius: 10px;
+      border: none;
+      display: block;
     }
     &-tileImage {
       width: 100%;
@@ -31,14 +33,29 @@
     }
   }
 
-  &__selectedTile {
+  &__selectedTileContainer {
     width: 125px;
     height: 125px;
-    background: white;
+    background: $primary-400;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__selectedTile {
+    width: 100px;
+    height: 100px;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    border-radius: 10px;
+  }
+
+  &__iconContainer {
+    width: 60%;
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
   }
 
   &__icon {
@@ -51,9 +68,9 @@
   fill: $primary-500;
   background: white;
   border-radius: 5px;
+  outline: solid white;
 }
 
 .activeCategory {
-  // border: 2px solid white;
   outline: solid white;
 }

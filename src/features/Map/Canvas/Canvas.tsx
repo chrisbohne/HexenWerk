@@ -9,15 +9,21 @@ import {
 } from '../utils/canvasHelpers';
 import {
   addTile,
+  changeDestination,
+  changeStartingPoint,
   removeTile,
   updateScale,
   updateViewPortTopLeft,
 } from '../mapSlice';
 import { useMousePos, usePan } from '../hooks';
-import { drawHexGrid } from '../utils/drawGridHelpers';
-// import { getHex } from '../../../helpers/grid';
+import {
+  availableTiles,
+  drawGrid,
+  drawStartingPointAndDestination,
+  getHoveredHex,
+  getVisibleGridRange,
+} from '../utils/drawGridHelpers';
 import { getHex } from '../utils/hexHelper';
-// import { offsetFromCube } from '../../../helpers/hexLogic';
 import { offsetFromCube } from '../utils/hexLogic';
 
 const ZOOM_SENSITIVITY = 500;
@@ -29,8 +35,15 @@ interface CanvasProps {
 export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
   const dispatch = useAppDispatch();
   // scale and current top left point of visible canvas
-  const { scale, viewPortTopLeft, map, activeSelector, selectedTile } =
-    useAppSelector((state) => state.map);
+  const {
+    scale,
+    viewPortTopLeft,
+    map,
+    mode,
+    selectedTile,
+    startingPoint,
+    destination,
+  } = useAppSelector((state) => state.map);
   // reference with canvas once canvas loaded, and state for context
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [context, setContext] = useState<CanvasRenderingContext2D | null>(null);
@@ -42,6 +55,7 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
   const [didMount, setDidMount] = useState(false);
 
   const [isMoving, setIsMoving] = useState(false);
+  const [hoveredHexTest, setHoveredHexTest] = useState('');
 
   useEffect(() => {
     lastOffset.current = offset;
@@ -53,16 +67,12 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
     if (!canvasRef.current) return;
     const renderContext = canvasRef.current.getContext('2d');
     if (!renderContext) return;
-    // canvasRef.current.oncontextmenu = (e) => {
-    //   e.preventDefault();
-    //   e.stopPropagation();
-    // };
     renderContext.canvas.width = canvasWidth;
     renderContext.canvas.height = canvasHeight;
     renderContext.scale(scale, scale);
     renderContext.translate(-viewPortTopLeft.x, -viewPortTopLeft.y);
     setContext(renderContext);
-    // hacky way of waiting for width to be correct with and not 0
+    // hacky way of waiting for width to be correct width and not 0
     if (canvasWidth !== 0) setDidMount(true);
   }, [canvasHeight, canvasWidth, scale, viewPortTopLeft, didMount]);
 
@@ -70,44 +80,54 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
     if (!context) return;
     let requestId: number;
     const render = () => {
+      if (!canvasRef.current) return;
       context.save();
       context.setTransform(1, 0, 0, 1, 0, 0);
       context.clearRect(0, 0, context.canvas.width, context.canvas.height);
       context.restore();
-      const viewPortBottomRight = {
-        x: viewPortTopLeft.x + canvasWidth / scale,
-        y: viewPortTopLeft.y + canvasHeight / scale,
-      };
-      const currentTopLeftHex = offsetFromCube(getHex(viewPortTopLeft));
-      const currentBottomRightHex = offsetFromCube(getHex(viewPortBottomRight));
-      const gridRange = {
-        rowStart: currentTopLeftHex.row,
-        rowEnd: currentBottomRightHex.row,
-        colStart: currentTopLeftHex.col,
-        colEnd: currentBottomRightHex.col,
-      };
-      let hoveredHex = '';
-      if (activeSelector === 'hand' || activeSelector === 'eraser') {
-        const currentMousePos = {
-          x: mousePosRef.current.x / scale + viewPortTopLeft.x,
-          y: mousePosRef.current.y / scale + viewPortTopLeft.y,
-        };
-        const hexPos = getHex(currentMousePos);
-        const offsetPos = offsetFromCube(hexPos);
-        hoveredHex = '' + offsetPos.row + ',' + offsetPos.col;
-      }
 
-      drawHexGrid(
+      const visibleGridRange = getVisibleGridRange(
+        viewPortTopLeft,
+        scale,
+        canvasWidth,
+        canvasHeight
+      );
+
+      const canvasData = {
+        x: viewPortTopLeft.x,
+        y: viewPortTopLeft.y,
+        width: canvasWidth / scale,
+        height: canvasHeight / scale,
+      };
+
+      const hoveredHex = getHoveredHex(
+        mousePosRef.current,
+        viewPortTopLeft,
+        scale
+      );
+
+      setHoveredHexTest(hoveredHex);
+
+      drawGrid(
         context,
         map,
-        gridRange.rowStart,
-        gridRange.rowEnd,
-        gridRange.colStart,
-        gridRange.colEnd,
+        visibleGridRange,
+        mode,
         hoveredHex,
         selectedTile,
-        activeSelector
+        canvasData
       );
+
+      if (mode === 'destinationSelection' || mode === 'startingPointSelection')
+        drawStartingPointAndDestination(
+          context,
+          map,
+          hoveredHex,
+          startingPoint,
+          destination,
+          mode
+        );
+
       requestId = requestAnimationFrame(render);
     };
 
@@ -123,8 +143,10 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
     canvasWidth,
     map,
     mousePosRef,
-    activeSelector,
+    mode,
     selectedTile,
+    destination,
+    startingPoint,
   ]);
 
   // update new canvas position based on current offset and last offset
@@ -186,8 +208,36 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
       };
       const hexPos = getHex(clickPos);
       const offsetPos = offsetFromCube(hexPos);
-      if (activeSelector === 'eraser') dispatch(removeTile(offsetPos));
-      if (activeSelector === 'hand') dispatch(addTile(offsetPos));
+      const hoveredHex = '' + offsetPos.row + ',' + offsetPos.col;
+      // const hoveredHex = getHoveredHex(mousePosRef.current, viewPortTopLeft, scale)
+      if (mode === 'eraser') dispatch(removeTile(offsetPos));
+      if (mode === 'append') dispatch(addTile(offsetPos));
+
+      if (mode === 'startingPointSelection') {
+        const tileNum = map[hoveredHex];
+        if (tileNum && availableTiles[+tileNum].category === 'city') {
+          dispatch(changeStartingPoint(offsetPos));
+
+          if (
+            offsetPos.col === destination?.col &&
+            offsetPos.row === destination?.row
+          ) {
+            dispatch(changeDestination(undefined));
+          }
+        }
+      }
+      if (mode === 'destinationSelection') {
+        const tileNum = map[hoveredHex];
+        if (tileNum && availableTiles[+tileNum].category === 'city') {
+          dispatch(changeDestination(offsetPos));
+          if (
+            offsetPos.col === startingPoint?.col &&
+            offsetPos.row === startingPoint?.row
+          ) {
+            dispatch(changeStartingPoint(undefined));
+          }
+        }
+      }
     }
   };
 
@@ -195,15 +245,15 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
     setIsMoving(true);
   };
 
-  // useLayoutEffect(() => {
-  //   if (hoveredGrid) {
-  //     dispatch(addTile(hoveredGrid));
-  //   }
-  // }, [hoveredGrid, dispatch]);
-
   return (
     <>
       <canvas
+        style={{
+          cursor:
+            mode === 'append' || (mode === 'eraser' && map[hoveredHexTest])
+              ? 'pointer'
+              : 'default',
+        }}
         className={styles.canvas}
         ref={canvasRef}
         onMouseDown={handleMouseDown}

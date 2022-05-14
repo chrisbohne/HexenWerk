@@ -1,9 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import {
-  Canvas,
-  EditorMenuDesktop,
-  EditorMenuMobile,
-} from '../../features/Map';
+import { Canvas, DesktopControls } from '../../features/Map';
 import { useHandleResize } from '../../hooks';
 import styles from './Playground.module.scss';
 
@@ -31,9 +27,9 @@ const Playground = () => {
         <Canvas canvasHeight={height} canvasWidth={width} />
       </div>
       {windowSize.width && windowSize.width < 1024 ? (
-        <EditorMenuMobile />
+        <DesktopControls />
       ) : (
-        <EditorMenuDesktop />
+        <DesktopControls />
       )}
     </div>
   );
