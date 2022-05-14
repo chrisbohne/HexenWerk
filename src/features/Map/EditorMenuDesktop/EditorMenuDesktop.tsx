@@ -12,7 +12,7 @@ import { useDispatch } from 'react-redux';
 import {
   changeSelectedCategory,
   changeSelectedTile,
-  changeSelector,
+  changeMode,
 } from '../mapSlice';
 import StreetPreview from '../../../assets/images/StreetPreview.svg';
 import RailPreview from '../../../assets/images/RailPreview.svg';
@@ -27,9 +27,23 @@ export const allTiles = {
   ...natureTiles,
 };
 
-export const EditorMenuDesktop = () => {
+interface EditorMenuProps {
+  closeCategoryMenu: () => void;
+  categoryMenuOpen: boolean;
+  openCategoryMenu: () => void;
+  closeSettingsMenu: () => void;
+  closeDirectionsMenu: () => void;
+}
+
+export const EditorMenuDesktop = ({
+  closeCategoryMenu,
+  categoryMenuOpen,
+  openCategoryMenu,
+  closeSettingsMenu,
+  closeDirectionsMenu,
+}: EditorMenuProps) => {
   const dispatch = useDispatch();
-  const { activeSelector, selectedTile, selectedCategory } = useAppSelector(
+  const { mode, selectedTile, selectedCategory } = useAppSelector(
     (state) => state.map
   );
 
@@ -46,25 +60,22 @@ export const EditorMenuDesktop = () => {
     natureTiles,
   };
 
-  const [categoryMenuOpen, setCategoryMenuOpen] = useState(false);
   const [selectedCategoryTiles, setSelectedCategoryTiles] = useState({});
 
-  const tileSelection = previewTiles.map((element, index) => {
+  const tileSelection = previewTiles.map((element) => {
     return (
-      <div
-        role="button"
-        tabIndex={index}
+      <button
         onClick={() => {
-          setCategoryMenuOpen(true);
-          const tiles = categoryTiles[element.id];
+          openCategoryMenu();
+          closeSettingsMenu();
+          const tiles = categoryTiles[element.id as keyof typeof categoryTiles];
           dispatch(changeSelectedCategory(element.id));
           setSelectedCategoryTiles(tiles);
         }}
-        onKeyDown={() => {
-          console.log('hello');
-        }}
         className={`${styles['editorMenu__tileSelection-tileBackground']} ${
-          selectedCategory === element.id ? styles.activeCategory : ''
+          selectedCategory === element.id && categoryMenuOpen
+            ? styles.activeCategory
+            : ''
         }`}
         key={element.id}
       >
@@ -72,21 +83,26 @@ export const EditorMenuDesktop = () => {
           className={styles['editorMenu__tileSelection-tileImage']}
           style={{ backgroundImage: `url(${element.img})` }}
         />
-      </div>
+      </button>
     );
   });
 
   const closeMenu = () => {
-    setCategoryMenuOpen(false);
+    closeCategoryMenu();
   };
 
   const updateSelectedTile = (tile: string) => {
     dispatch(changeSelectedTile(tile));
   };
 
-  const updateSelector = (selector: 'eraser' | 'hand' | 'cursor') => {
-    dispatch(changeSelector(selector));
-    if (selector !== 'hand') dispatch(changeSelectedCategory(''));
+  const updateMode = (mode: 'eraser' | 'append' | 'none') => {
+    dispatch(changeMode(mode));
+    closeSettingsMenu();
+    closeDirectionsMenu();
+    if (mode !== 'append') {
+      dispatch(changeSelectedCategory(''));
+      closeCategoryMenu();
+    }
   };
 
   return (
@@ -94,36 +110,40 @@ export const EditorMenuDesktop = () => {
       <div className={styles.editorMenu}>
         <div className={styles.editorMenu__tileSelection}>{tileSelection}</div>
 
-        <div
-          style={{
-            backgroundImage:
-              activeSelector === 'hand'
-                ? `url(${allTiles[selectedTile].svg})`
-                : '',
-          }}
-          className={styles.editorMenu__selectedTile}
-        ></div>
-        <div>
+        <div className={styles.editorMenu__selectedTileContainer}>
+          <div
+            className={styles.editorMenu__selectedTile}
+            style={{
+              backgroundImage:
+                mode === 'append' ? `url(${allTiles[+selectedTile].svg})` : '',
+            }}
+          ></div>
+        </div>
+        <div className={styles.editorMenu__iconContainer}>
           <Icon
             name="cursor"
             className={`${styles.editorMenu__icon} ${
-              activeSelector === 'cursor' ? styles.activated : ''
+              mode === 'none' ||
+              mode === 'destinationSelection' ||
+              mode === 'startingPointSelection'
+                ? styles.activated
+                : ''
             }`}
-            onClick={() => updateSelector('cursor')}
+            onClick={() => updateMode('none')}
           />
           <Icon
-            name="hand"
+            name="puzzle"
             className={`${styles.editorMenu__icon} ${
-              activeSelector === 'hand' ? styles.activated : ''
+              mode === 'append' ? styles.activated : ''
             }`}
-            onClick={() => updateSelector('hand')}
+            onClick={() => updateMode('append')}
           />
           <Icon
             className={`${styles.editorMenu__icon} ${
-              activeSelector === 'eraser' ? styles.activated : ''
+              mode === 'eraser' ? styles.activated : ''
             }`}
             name="eraser"
-            onClick={() => updateSelector('eraser')}
+            onClick={() => updateMode('eraser')}
           />
         </div>
       </div>
@@ -132,7 +152,7 @@ export const EditorMenuDesktop = () => {
         closeMenu={closeMenu}
         selectedCategoryTiles={selectedCategoryTiles}
         updateSelectedTile={updateSelectedTile}
-        updateSelector={() => updateSelector('hand')}
+        updateSelector={() => updateMode('append')}
       />
     </>
   );

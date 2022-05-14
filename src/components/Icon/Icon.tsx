@@ -3,12 +3,15 @@ import './Icon.scss';
 import {
   CloseIcon,
   CursorIcon,
+  DotsIcon,
   EraserIcon,
   HamburgerIcon,
   HandIcon,
   PuzzleIcon,
   SettingsIcon,
   SliderIcon,
+  DeleteIcon,
+  RouteIcon,
 } from '../../assets/icons';
 
 export interface IIconsProps {
@@ -35,6 +38,12 @@ const Icon: FC<IIconsProps> = (props) => {
       return <CursorIcon {...props} />;
     case 'hand':
       return <HandIcon {...props} />;
+    case 'dots':
+      return <DotsIcon {...props} />;
+    case 'delete':
+      return <DeleteIcon {...props} />;
+    case 'route':
+      return <RouteIcon {...props} />;
     default:
       return <div />;
   }

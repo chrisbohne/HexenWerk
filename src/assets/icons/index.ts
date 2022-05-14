@@ -6,3 +6,6 @@ export * from './puzzle';
 export * from './eraser';
 export * from './cursor';
 export * from './hand';
+export * from './dots';
+export * from './delete';
+export * from './route';

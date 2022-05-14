@@ -20,12 +20,16 @@ export const useMousePos = (ref: RefObject<HTMLElement | null>) => {
     };
 
     if (!canvas) return;
-    canvas.addEventListener('wheel', handleUpdateMouse);
-    canvas.addEventListener('mousemove', handleUpdateMouse);
+    // canvas.addEventListener('wheel', handleUpdateMouse);
+    // canvas.addEventListener('mousemove', handleUpdateMouse);
+    document.addEventListener('wheel', handleUpdateMouse);
+    document.addEventListener('mousemove', handleUpdateMouse);
 
     return () => {
-      canvas.removeEventListener('wheel', handleUpdateMouse);
-      canvas.removeEventListener('mousemove', handleUpdateMouse);
+      // canvas.removeEventListener('wheel', handleUpdateMouse);
+      // canvas.removeEventListener('mousemove', handleUpdateMouse);
+      document.removeEventListener('wheel', handleUpdateMouse);
+      document.removeEventListener('mousemove', handleUpdateMouse);
     };
   }, [ref]);
 

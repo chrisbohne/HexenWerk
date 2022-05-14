@@ -1,13 +1,6 @@
-import React, {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../app/store';
 import styles from './Canvas.module.scss';
-import Street from '../../../assets/images/Street52.svg';
 import {
   addPoints,
   diffPoints,
@@ -16,15 +9,22 @@ import {
 } from '../utils/canvasHelpers';
 import {
   addTile,
+  changeDestination,
+  changeStartingPoint,
   removeTile,
   updateScale,
   updateViewPortTopLeft,
 } from '../mapSlice';
 import { useMousePos, usePan } from '../hooks';
-import { drawHexGrid, loadImages } from '../utils/drawGridHelpers';
-import { getHex } from '../../../helpers/grid';
-import { offsetFromCube } from '../../../helpers/hexLogic';
-import { allTiles } from '..';
+import {
+  availableTiles,
+  drawGrid,
+  drawStartingPointAndDestination,
+  getHoveredHex,
+  getVisibleGridRange,
+} from '../utils/drawGridHelpers';
+import { getHex } from '../utils/hexHelper';
+import { offsetFromCube } from '../utils/hexLogic';
 
 const ZOOM_SENSITIVITY = 500;
 interface CanvasProps {
@@ -35,30 +35,27 @@ interface CanvasProps {
 export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
   const dispatch = useAppDispatch();
   // scale and current top left point of visible canvas
-  const { scale, viewPortTopLeft, map, activeSelector } = useAppSelector(
-    (state) => state.map
-  );
+  const {
+    scale,
+    viewPortTopLeft,
+    map,
+    mode,
+    selectedTile,
+    startingPoint,
+    destination,
+  } = useAppSelector((state) => state.map);
   // reference with canvas once canvas loaded, and state for context
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [context, setContext] = useState<CanvasRenderingContext2D | null>(null);
   // custom hook for getting current panning state without zoom
-  const [offset, startPan, isPanning] = usePan(canvasRef);
+  const [offset, startPan] = usePan(canvasRef);
   const lastOffset = useRef(ORIGIN);
   // custom hook for
   const mousePosRef = useMousePos(canvasRef);
   const [didMount, setDidMount] = useState(false);
-  const [didLoad, setDidLoad] = useState(false);
-  // image preloading
-  const [loadedImages, setLoadedImages] = useState<any>([]);
-  // const [isLoaded, setIsLoaded] = useState(false);
-  const [isMoving, setIsMoving] = useState(false);
 
-  // Preload Images
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setIsLoaded(true);
-  //   }, 1000);
-  // }, []);
+  const [isMoving, setIsMoving] = useState(false);
+  const [hoveredHexTest, setHoveredHexTest] = useState('');
 
   useEffect(() => {
     lastOffset.current = offset;
@@ -70,57 +67,87 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
     if (!canvasRef.current) return;
     const renderContext = canvasRef.current.getContext('2d');
     if (!renderContext) return;
-    // canvasRef.current.oncontextmenu = (e) => {
-    //   e.preventDefault();
-    //   e.stopPropagation();
-    // };
     renderContext.canvas.width = canvasWidth;
     renderContext.canvas.height = canvasHeight;
     renderContext.scale(scale, scale);
     renderContext.translate(-viewPortTopLeft.x, -viewPortTopLeft.y);
     setContext(renderContext);
-    // hacky way of waiting for width to be correct with and not 0
+    // hacky way of waiting for width to be correct width and not 0
     if (canvasWidth !== 0) setDidMount(true);
-    const images = loadImages([Street]);
-    setLoadedImages(images);
   }, [canvasHeight, canvasWidth, scale, viewPortTopLeft, didMount]);
-
-  // // draw on Canvas
-  // const draw = useCallback(() => {
-  //   const image = new Image();
-  //   image.src = Street;
-  //   context?.drawImage(loadedImages[0], 0, 0);
-  // }, [context, loadedImages]);
 
   useLayoutEffect(() => {
     if (!context) return;
-    context.save();
-    context.setTransform(1, 0, 0, 1, 0, 0);
-    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-    context.restore();
-    // draw();
-    const viewPortBottomRight = {
-      x: viewPortTopLeft.x + canvasWidth / scale,
-      y: viewPortTopLeft.y + canvasHeight / scale,
+    let requestId: number;
+    const render = () => {
+      if (!canvasRef.current) return;
+      context.save();
+      context.setTransform(1, 0, 0, 1, 0, 0);
+      context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+      context.restore();
+
+      const visibleGridRange = getVisibleGridRange(
+        viewPortTopLeft,
+        scale,
+        canvasWidth,
+        canvasHeight
+      );
+
+      const canvasData = {
+        x: viewPortTopLeft.x,
+        y: viewPortTopLeft.y,
+        width: canvasWidth / scale,
+        height: canvasHeight / scale,
+      };
+
+      const hoveredHex = getHoveredHex(
+        mousePosRef.current,
+        viewPortTopLeft,
+        scale
+      );
+
+      setHoveredHexTest(hoveredHex);
+
+      drawGrid(
+        context,
+        map,
+        visibleGridRange,
+        mode,
+        hoveredHex,
+        selectedTile,
+        canvasData
+      );
+
+      if (mode === 'destinationSelection' || mode === 'startingPointSelection')
+        drawStartingPointAndDestination(
+          context,
+          map,
+          hoveredHex,
+          startingPoint,
+          destination,
+          mode
+        );
+
+      requestId = requestAnimationFrame(render);
     };
-    const currentTopLeftHex = offsetFromCube(getHex(viewPortTopLeft));
-    const currentBottomRightHex = offsetFromCube(getHex(viewPortBottomRight));
-    const gridRange = {
-      rowStart: currentTopLeftHex.row,
-      rowEnd: currentBottomRightHex.row,
-      colStart: currentTopLeftHex.col,
-      colEnd: currentBottomRightHex.col,
+
+    render();
+    return () => {
+      cancelAnimationFrame(requestId);
     };
-    drawHexGrid(
-      context,
-      map,
-      allTiles,
-      gridRange.rowStart,
-      gridRange.rowEnd,
-      gridRange.colStart,
-      gridRange.colEnd
-    );
-  }, [context, viewPortTopLeft, scale, canvasHeight, canvasWidth, map]);
+  }, [
+    context,
+    viewPortTopLeft,
+    scale,
+    canvasHeight,
+    canvasWidth,
+    map,
+    mousePosRef,
+    mode,
+    selectedTile,
+    destination,
+    startingPoint,
+  ]);
 
   // update new canvas position based on current offset and last offset
   useLayoutEffect(() => {
@@ -181,8 +208,36 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
       };
       const hexPos = getHex(clickPos);
       const offsetPos = offsetFromCube(hexPos);
-      if (activeSelector === 'eraser') dispatch(removeTile(offsetPos));
-      if (activeSelector === 'hand') dispatch(addTile(offsetPos));
+      const hoveredHex = '' + offsetPos.row + ',' + offsetPos.col;
+      // const hoveredHex = getHoveredHex(mousePosRef.current, viewPortTopLeft, scale)
+      if (mode === 'eraser') dispatch(removeTile(offsetPos));
+      if (mode === 'append') dispatch(addTile(offsetPos));
+
+      if (mode === 'startingPointSelection') {
+        const tileNum = map[hoveredHex];
+        if (tileNum && availableTiles[+tileNum].category === 'city') {
+          dispatch(changeStartingPoint(offsetPos));
+
+          if (
+            offsetPos.col === destination?.col &&
+            offsetPos.row === destination?.row
+          ) {
+            dispatch(changeDestination(undefined));
+          }
+        }
+      }
+      if (mode === 'destinationSelection') {
+        const tileNum = map[hoveredHex];
+        if (tileNum && availableTiles[+tileNum].category === 'city') {
+          dispatch(changeDestination(offsetPos));
+          if (
+            offsetPos.col === startingPoint?.col &&
+            offsetPos.row === startingPoint?.row
+          ) {
+            dispatch(changeStartingPoint(undefined));
+          }
+        }
+      }
     }
   };
 
@@ -193,6 +248,12 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
   return (
     <>
       <canvas
+        style={{
+          cursor:
+            mode === 'append' || (mode === 'eraser' && map[hoveredHexTest])
+              ? 'pointer'
+              : 'default',
+        }}
         className={styles.canvas}
         ref={canvasRef}
         onMouseDown={handleMouseDown}

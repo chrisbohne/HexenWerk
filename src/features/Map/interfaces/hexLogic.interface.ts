@@ -10,7 +10,7 @@ export interface IOrientation {
   startAngle: number;
 }
 
-export interface IHex {
+export interface ICubeHex {
   x: number;
   y: number;
   z: number;

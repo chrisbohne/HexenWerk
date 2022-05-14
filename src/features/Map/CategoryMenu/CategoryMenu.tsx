@@ -19,15 +19,16 @@ export const CategoryMenu = ({
 }: IProps) => {
   const tiles = Object.entries(selectedCategoryTiles).map(([id, tile]) => {
     return (
-      <div
+      <button
         style={{ backgroundImage: `url(${tile.svg})` }}
         className={styles.categoryMenu__tile}
         key={id}
         onClick={() => {
           updateSelectedTile(id);
           updateSelector();
+          closeMenu();
         }}
-      ></div>
+      ></button>
     );
   });
 
@@ -37,12 +38,14 @@ export const CategoryMenu = ({
         isOpen && styles['categoryMenu-open']
       }`}
     >
-      <Icon
-        className={styles.categoryMenu__close}
-        name="close"
-        onClick={closeMenu}
-      />
-      {tiles}
+      <div className={styles.categoryMenu__closeContainer}>
+        <Icon
+          className={styles.categoryMenu__closeButton}
+          name="close"
+          onClick={closeMenu}
+        />
+      </div>
+      <div className={styles.categoryMenu__tileGalery}>{tiles}</div>
     </div>
   );
 };
