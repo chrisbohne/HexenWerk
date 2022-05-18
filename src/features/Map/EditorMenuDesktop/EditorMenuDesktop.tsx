@@ -125,6 +125,7 @@ export const EditorMenuDesktop = ({
             className={`${styles.editorMenu__icon} ${
               mode === 'none' ||
               mode === 'destinationSelection' ||
+              mode === 'direction' ||
               mode === 'startingPointSelection'
                 ? styles.activated
                 : ''

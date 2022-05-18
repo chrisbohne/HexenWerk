@@ -4,6 +4,16 @@ export interface mapData {
   [key: string]: string;
 }
 
+export interface PathSection {
+  tile: string;
+  type: string;
+}
+
+export interface Route {
+  distance: number;
+  path: PathSection[];
+}
+
 export interface MapState {
   scale: number;
   viewPortTopLeft: Point;
@@ -12,9 +22,11 @@ export interface MapState {
   selectedCategory: string;
   mapSize: number;
   map: mapData;
+  mapName: string;
   startingPoint: GridPosition | undefined;
   destination: GridPosition | undefined;
   weights: Weights;
+  route: Route | undefined;
 }
 
 export interface GridPosition {
@@ -34,4 +46,5 @@ export type mapMode =
   | 'eraser'
   | 'append'
   | 'destinationSelection'
-  | 'startingPointSelection';
+  | 'startingPointSelection'
+  | 'direction';

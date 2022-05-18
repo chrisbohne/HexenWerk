@@ -1,0 +1,88 @@
+@mixin animate($animation, $duration) {
+  animation: $animation $duration;
+}
+
+@mixin keyframes($name) {
+  @keyframes #{$name} {
+    @content;
+  }
+}
+
+@include keyframes(slideLeft) {
+  0% {
+    margin-left: 120%;
+  }
+
+  100% {
+    margin-left: 0;
+  }
+}
+
+@include keyframes(slideRight) {
+  0% {
+    margin-left: 0;
+  }
+
+  100% {
+    margin-left: 120%;
+  }
+}
+
+.notification {
+  &__wrapper {
+    position: fixed;
+    bottom: 0px;
+    right: 10px;
+    width: 250px;
+    z-index: 1000;
+  }
+
+  &__item {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    overflow: hidden;
+    background: white;
+    color: gray;
+    margin-bottom: 20px;
+    width: 250px;
+    @include animate(slideLeft, 0.4s);
+    position: relative;
+
+    & p {
+      margin: 0;
+      padding: 15px 0;
+    }
+  }
+
+  &__bar {
+    height: 5px;
+  }
+
+  &__closeButton {
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: gray;
+    font-size: 18px;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
+
+.success {
+  background-color: rgb(0, 208, 0);
+}
+
+.error {
+  background-color: rgb(227, 1, 1);
+}
+
+.info {
+  background-color: rgb(6, 6, 236);
+}
+
+.close {
+  @include animate(slideRight, 0.4s);
+  animation-fill-mode: forwards;
+}

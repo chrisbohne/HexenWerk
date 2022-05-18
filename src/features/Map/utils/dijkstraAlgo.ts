@@ -14,7 +14,7 @@ export function dijkstra(graph: Graph, startVertex: string, endVertex: string) {
 
   // add children of startVertex to distances and tracking
   graph.getVertex(startVertex)?.edges.forEach((child) => {
-    parents[child.value] = { parent: startVertex, type: 'start' };
+    parents[child.value] = { parent: startVertex, type: child.type };
     distances[child.value] = child.weight;
   });
 
@@ -30,9 +30,7 @@ export function dijkstra(graph: Graph, startVertex: string, endVertex: string) {
         const newDistance = distance + child.weight;
         if (!distances[child.value] || distances[child.value] > newDistance) {
           distances[child.value] = newDistance;
-          if (detail.category === 'city')
-            parents[child.value] = { parent: vertex, type: 'city' };
-          else parents[child.value] = { parent: vertex, type: child.type };
+          parents[child.value] = { parent: vertex, type: child.type };
         }
       }
     });

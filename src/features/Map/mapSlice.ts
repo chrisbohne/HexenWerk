@@ -1,5 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { GridPosition, MapState, Point } from './interfaces';
+import {
+  GridPosition,
+  mapData,
+  mapMode,
+  MapState,
+  Point,
+  Route,
+} from './interfaces';
 import { getHexHash } from './utils/drawGridHelpers';
 
 const initialState: MapState = {
@@ -8,6 +15,7 @@ const initialState: MapState = {
   selectedTile: '0',
   selectedCategory: '',
   map: {},
+  mapName: 'newMap',
   mapSize: 0,
   mode: 'none',
   startingPoint: undefined,
@@ -18,6 +26,7 @@ const initialState: MapState = {
     flight: 10,
     shipping: 5,
   },
+  route: undefined,
 };
 
 const mapSlice = createSlice({
@@ -58,18 +67,7 @@ const mapSlice = createSlice({
         state.mapSize--;
       }
     },
-    changeMode: (
-      state,
-      {
-        payload: newMode,
-      }: PayloadAction<
-        | 'eraser'
-        | 'none'
-        | 'append'
-        | 'destinationSelection'
-        | 'startingPointSelection'
-      >
-    ) => {
+    changeMode: (state, { payload: newMode }: PayloadAction<mapMode>) => {
       state.mode = newMode;
     },
     changeSelectedTile: (
@@ -103,6 +101,18 @@ const mapSlice = createSlice({
       state.weights[updatedWeight.type as keyof typeof state.weights] =
         updatedWeight.value;
     },
+    changeMap: (state, { payload: map }: PayloadAction<mapData>) => {
+      state.map = map;
+    },
+    changeMapName: (state, { payload: newMapName }: PayloadAction<string>) => {
+      state.mapName = newMapName;
+    },
+    changeRoute: (
+      state,
+      { payload: newRoute }: PayloadAction<Route | undefined>
+    ) => {
+      state.route = newRoute;
+    },
   },
 });
 
@@ -122,6 +132,9 @@ export const {
   changeStartingPoint,
   changeDestination,
   changeWeights,
+  changeMap,
+  changeMapName,
+  changeRoute,
 } = mapSlice.actions;
 
 export default mapSlice.reducer;

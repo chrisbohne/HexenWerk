@@ -15,11 +15,13 @@ import Profile from '../pages/Profile/Profile';
 import NotFound from '../pages/NotFound/NotFound';
 import PersistLoginWrapper from '../components/PersistLogin/PersistLoginWrapper';
 import './style/styles.scss';
+import { NotificationProvider } from '../components/Notification';
 
 const App = () => {
   return (
     <>
       <Router>
+        <NotificationProvider />
         <PersistLoginWrapper>
           <Nav />
         </PersistLoginWrapper>

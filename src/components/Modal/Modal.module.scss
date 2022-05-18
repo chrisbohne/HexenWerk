@@ -1,4 +1,4 @@
-@import '../../style/variables.scss';
+@import '../../app/style/variables.scss';
 
 .modal__container {
   position: fixed;
@@ -14,7 +14,7 @@
 }
 
 .modal {
-  background-color: white;
+  background-color: $primary-500;
   display: flex;
   width: 400px;
   height: 500px;

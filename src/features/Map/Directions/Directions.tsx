@@ -1,4 +1,4 @@
-import { useAppDispatch } from '../../../app/store';
+import { useAppDispatch, useAppSelector } from '../../../app/store';
 import Icon from '../../../components/Icon/Icon';
 import { changeMode } from '../mapSlice';
 import { DirectionsMenu } from '../DirectionsMenu/DirectionsMenu';
@@ -18,6 +18,7 @@ export const Directions = ({
   closeCategoryMenu,
 }: DirectionsProps) => {
   const dispatch = useAppDispatch();
+  const { mode } = useAppSelector((state) => state.map);
 
   return (
     <>
@@ -29,13 +30,24 @@ export const Directions = ({
         onClick={() => {
           openDirectionsMenu();
           closeCategoryMenu();
-          dispatch(changeMode('none'));
+          dispatch(changeMode('direction'));
         }}
         className={`${styles.directions__icon} ${
           directionsMenuOpen && styles['directions__icon--hide']
         }`}
-        name="dots"
+        name="slider"
       />
+      {(mode === 'destinationSelection' ||
+        mode === 'startingPointSelection') && (
+        <div className={styles.hint}>
+          <h4>{`Choose ${
+            mode === 'destinationSelection' ? 'Destination' : 'Starting Point'
+          }`}</h4>
+          <button onClick={() => dispatch(changeMode('direction'))}>
+            Cancel
+          </button>
+        </div>
+      )}
     </>
   );
 };

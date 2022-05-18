@@ -3,6 +3,7 @@
 .playground {
   width: 100vw;
   height: calc(100vh - #{$nav-height});
+  overflow: hidden;
 
   &__canvas {
     width: 100vw;

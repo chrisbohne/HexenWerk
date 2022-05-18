@@ -162,3 +162,25 @@ const hexLength = (hex: ICubeHex) => {
 
 export const hexDistance = (a: ICubeHex, b: ICubeHex) =>
   hexLength(hexCubeSubstract(a, b));
+
+// draw a "line" between two hexagons
+
+const hexLinearInterpolation = (a: ICubeHex, b: ICubeHex, t: number) => {
+  return Hex(
+    a.x * (1.0 - t) + b.x * t,
+    a.y * (1.0 - t) + b.y * t,
+    a.z * (1.0 - t) + b.z * t
+  );
+};
+
+export const hexDrawLine = (a: ICubeHex, b: ICubeHex) => {
+  const N = hexDistance(a, b);
+  const a_nudge = Hex(a.x + 1e-6, a.y + 1e-6, a.z - 2e-6);
+  const b_nudge = Hex(b.x + 1e-6, b.y + 1e-6, b.z - 2e-6);
+  const result = [];
+  const step = 1.0 / Math.max(N, 1);
+  for (let i = 0; i <= N; i++) {
+    result.push(hexRound(hexLinearInterpolation(a_nudge, b_nudge, step * i)));
+  }
+  return result;
+};

@@ -11,11 +11,12 @@ import {
   IOffsetHex,
   mapData,
   mapMode,
+  PathSection,
   Point,
 } from '../interfaces';
 import StartingLocation from '../../../assets/images/StartingLocation.svg';
 import DestinationLocation from '../../../assets/images/DestinationLocation.svg';
-import { offsetFromCube } from './hexLogic';
+import { hexDrawLine, offsetFromCube, offsetToCube } from './hexLogic';
 import { getHex } from './hexHelper';
 
 interface ICity {
@@ -252,6 +253,7 @@ function highlightLocations(
   locationsToHighlight: ICity[]
 ) {
   context.globalAlpha = 0.3;
+  context.fillStyle = 'black';
   if (canvasData)
     context.fillRect(
       canvasData.x,
@@ -316,6 +318,62 @@ export function drawStartingPointAndDestination(
       );
     }
   });
+}
+
+export function drawRoute(
+  context: CanvasRenderingContext2D,
+  path: PathSection[]
+) {
+  context.lineWidth = 10;
+  context.fillStyle = 'salmon';
+  context.strokeStyle = 'salmon';
+  path.forEach((el, index) => {
+    const offsetHex = HexHashToOffset(el.tile.slice(2));
+    const { col, row } = offsetHex;
+    const center = {
+      x: ((col * 3) / 4) * tileWidth,
+      y: row * tileHeight - (col % 2 === 0 ? tileHeight / 2 : 0) - 10,
+    };
+
+    if (index === 0) {
+      context.beginPath();
+      context.moveTo(center.x, center.y);
+    }
+
+    context.lineTo(center.x, center.y);
+    context.stroke();
+    context.beginPath();
+    context.arc(center.x, center.y, 25, 0, 2 * Math.PI, false);
+    context.fill();
+    context.beginPath();
+    context.moveTo(center.x, center.y);
+    // check for flights and render straight 'line' to next tile
+    if (el.type === 'flight') {
+      const nextElOffsetHex = HexHashToOffset(path[index + 1].tile.slice(2));
+      const flight = hexDrawLine(
+        offsetToCube(offsetHex),
+        offsetToCube(nextElOffsetHex)
+      );
+      flight.shift();
+      if (path[index + 1].type === 'destination') flight.pop();
+      flight.forEach((el) => {
+        const { col, row } = offsetFromCube(el);
+        const center = {
+          x: ((col * 3) / 4) * tileWidth,
+          y: row * tileHeight - (col % 2 === 0 ? tileHeight / 2 : 0) - 8,
+        };
+        context.lineTo(center.x, center.y);
+        context.stroke();
+        context.beginPath();
+        context.arc(center.x, center.y, 25, 0, 2 * Math.PI, false);
+        context.fill();
+        context.beginPath();
+        context.moveTo(center.x, center.y);
+      });
+    }
+  });
+  context.stroke();
+  context.fillStyle = '';
 }
 
 // helpers

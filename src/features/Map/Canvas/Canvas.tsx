@@ -10,6 +10,8 @@ import {
 import {
   addTile,
   changeDestination,
+  changeMode,
+  changeRoute,
   changeStartingPoint,
   removeTile,
   updateScale,
@@ -19,6 +21,7 @@ import { useMousePos, usePan } from '../hooks';
 import {
   availableTiles,
   drawGrid,
+  drawRoute,
   drawStartingPointAndDestination,
   getHoveredHex,
   getVisibleGridRange,
@@ -43,6 +46,7 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
     selectedTile,
     startingPoint,
     destination,
+    route,
   } = useAppSelector((state) => state.map);
   // reference with canvas once canvas loaded, and state for context
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -56,6 +60,7 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
 
   const [isMoving, setIsMoving] = useState(false);
   const [hoveredHexTest, setHoveredHexTest] = useState('');
+  const [cityTileIsHovered, setCityTileIsHovered] = useState(false);
 
   useEffect(() => {
     lastOffset.current = offset;
@@ -108,6 +113,13 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
 
       setHoveredHexTest(hoveredHex);
 
+      const cityHovered =
+        hoveredHex &&
+        map[hoveredHex] &&
+        availableTiles[+map[hoveredHex]].category === 'city';
+
+      setCityTileIsHovered(cityHovered === true);
+
       drawGrid(
         context,
         map,
@@ -128,6 +140,29 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
           mode
         );
 
+      if (mode === 'direction' && route && route.distance !== Infinity) {
+        drawStartingPointAndDestination(
+          context,
+          map,
+          hoveredHex,
+          startingPoint,
+          destination,
+          mode
+        );
+        drawRoute(context, route.path);
+      }
+
+      if (mode === 'direction') {
+        drawStartingPointAndDestination(
+          context,
+          map,
+          hoveredHex,
+          startingPoint,
+          destination,
+          mode
+        );
+      }
+
       requestId = requestAnimationFrame(render);
     };
 
@@ -147,6 +182,7 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
     selectedTile,
     destination,
     startingPoint,
+    route,
   ]);
 
   // update new canvas position based on current offset and last offset
@@ -209,9 +245,24 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
       const hexPos = getHex(clickPos);
       const offsetPos = offsetFromCube(hexPos);
       const hoveredHex = '' + offsetPos.row + ',' + offsetPos.col;
-      // const hoveredHex = getHoveredHex(mousePosRef.current, viewPortTopLeft, scale)
-      if (mode === 'eraser') dispatch(removeTile(offsetPos));
-      if (mode === 'append') dispatch(addTile(offsetPos));
+      if (mode === 'eraser') {
+        dispatch(removeTile(offsetPos));
+        dispatch(changeRoute(undefined));
+        if (cityTileIsHovered) {
+          if (JSON.stringify(offsetPos) === JSON.stringify(destination)) {
+            dispatch(changeDestination(undefined));
+          } else if (
+            JSON.stringify(offsetPos) === JSON.stringify(startingPoint)
+          )
+            dispatch(changeStartingPoint(undefined));
+        }
+        // update graph
+      }
+      if (mode === 'append') {
+        dispatch(addTile(offsetPos));
+        dispatch(changeRoute(undefined));
+        // update graph
+      }
 
       if (mode === 'startingPointSelection') {
         const tileNum = map[hoveredHex];
@@ -224,6 +275,7 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
           ) {
             dispatch(changeDestination(undefined));
           }
+          dispatch(changeMode('direction'));
         }
       }
       if (mode === 'destinationSelection') {
@@ -236,6 +288,7 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
           ) {
             dispatch(changeStartingPoint(undefined));
           }
+          dispatch(changeMode('direction'));
         }
       }
     }
@@ -250,7 +303,11 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
       <canvas
         style={{
           cursor:
-            mode === 'append' || (mode === 'eraser' && map[hoveredHexTest])
+            mode === 'append' ||
+            (mode === 'eraser' && map[hoveredHexTest]) ||
+            ((mode === 'startingPointSelection' ||
+              mode === 'destinationSelection') &&
+              cityTileIsHovered)
               ? 'pointer'
               : 'default',
         }}
