@@ -1,0 +1,9 @@
+@import '../../app/style/variables.module.scss';
+
+.notFoundContainer {
+  height: calc(100vh - #{$nav-height});
+
+  & a {
+    text-decoration: underline;
+  }
+}

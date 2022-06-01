@@ -1,9 +1,9 @@
-const Profile = () => {
+import styles from './Profile.module.scss';
+
+export const Profile = () => {
   return (
-    <div>
+    <div className={styles.profileContainer}>
       <h1>Profile</h1>
     </div>
   );
 };
-
-export default Profile;

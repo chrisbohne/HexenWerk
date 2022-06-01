@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { store } from '../app/store';
-import { setCredentials } from '../features/Auth';
+import { updateAccessToken } from '../features/Auth';
 
 const BASE_URL = 'http://localhost:3000';
 
@@ -34,16 +34,7 @@ axiosPrivate.interceptors.response.use(
       const response = await axiosPublic.get('auth/refresh', {
         withCredentials: true,
       });
-      store.dispatch(
-        setCredentials({
-          role: response.data.role,
-          accessToken: response.data.accessToken,
-          username: response.data.username,
-          email: response.data.email,
-          password: response.data.password,
-        })
-      );
-      // const newAccessToken = 'await refresh()';
+      store.dispatch(updateAccessToken(response.data.accessToken));
       prevRequest.headers[
         'Authorization'
       ] = `Bearer ${response.data.accessToken}`;

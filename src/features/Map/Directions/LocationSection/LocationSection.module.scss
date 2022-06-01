@@ -1,0 +1,45 @@
+@import '../../../../app/style/variables.module.scss';
+
+.locationSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__heading {
+    padding: 5px 15px;
+
+    & p {
+      margin-top: 5px;
+    }
+  }
+
+  &__content {
+    position: relative;
+    margin-bottom: 10px;
+  }
+
+  &__button {
+    width: 180px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: transparent;
+    border: 2px solid $neutral-100;
+    color: $neutral-100;
+
+    &-selected {
+      background: $info-100;
+      border: 2px solid $info-100;
+    }
+  }
+
+  &__cancel {
+    position: absolute;
+    top: 50%;
+    transform: (translateY(-50%));
+    right: 0;
+    margin-right: -30px;
+    stroke: $neutral-100;
+    width: 25px;
+  }
+}

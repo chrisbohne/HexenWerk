@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+// font
+$primary-font: 'Poppins', sans-serif;
+
+// color
+$primary-100: #fa8072;
+$primary-200: #fcf7f8;
+$primary-300: #93a3b1;
+$primary-400: #34495e;
+$primary-500: #2c3e50;
+
+$neutral-100: #fff;
+$neutral-200: #f4f5f7;
+$neutral-300: #e1e1e1;
+$neutral-400: #737581;
+$neutral-500: #4a4b53;
+$neutral-600: #000;
+
+$success-100: #009b72;
+$error-100: #ec4e20;
+$warning-100: #f0c808;
+$info-100: #3772ff;
+// $info-100: #66C7F4;
+
+// typography
+$header1: 1.8rem;
+$header2: 1.6rem;
+$header3: 1.4rem;
+$header4: 1.2rem;
+$header5: 1.1rem;
+$paragraph: 1rem;
+$helper-text: 0.8rem;
+
+// spacing
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 32px;
+
+// border-radius
+$border-radius: 12px;
+
+// header height
+$nav-height: 80px;
+
+// points
+$sm: 480px;
+$md: 776px;
+$lg: 1024px;
+$xl: 1200px;
+
+@mixin breakpoint($point) {
+  @if $point == sm {
+    @media (min-width: $sm) {
+      @content;
+    }
+  }
+  @if $point == md {
+    @media (min-width: $md) {
+      @content;
+    }
+  }
+  @if $point == lg {
+    @media (min-width: $lg) {
+      @content;
+    }
+  }
+}
+
+:export {
+  lg: $lg;
+  navHeight: $nav-height;
+}

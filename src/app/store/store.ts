@@ -3,11 +3,14 @@ import { authReducer } from '../../features/Auth';
 import { mapReducer } from '../../features/Map';
 import { usersReducer } from '../../features/Users';
 
+import { notificationsReducer } from '../../components/Notification';
+
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     users: usersReducer,
     map: mapReducer,
+    notifications: notificationsReducer,
   },
 });
 

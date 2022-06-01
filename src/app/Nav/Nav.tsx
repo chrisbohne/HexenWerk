@@ -1,36 +1,37 @@
 import { useState, useEffect } from 'react';
 import { useAuth, useLogout, useHandleResize } from '../../hooks';
-import { Link } from 'react-router-dom';
-import { Button } from '../../components/Button/Button';
-import Icon from '../../components/Icon/Icon';
+import { Link, useLocation } from 'react-router-dom';
+import { Button, Icon } from '../../components';
 import styles from './Nav.module.scss';
+import variables from '../style/variables.module.scss';
 
 const Nav = () => {
   const { auth } = useAuth();
   const logout = useLogout();
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const windowSize = useHandleResize();
+  const location = useLocation();
 
   useEffect(() => {
-    if (windowSize.width && windowSize.width > 1024 && menuOpen) {
-      setMenuOpen(false);
+    if (windowSize.width && windowSize.width > variables.lg && mobileOpen) {
+      setMobileOpen(false);
     }
 
-    if (menuOpen) {
+    if (mobileOpen) {
       document.body.style.overflow = 'hidden';
     }
 
-    if (!menuOpen) {
+    if (!mobileOpen) {
       document.body.style.overflow = 'unset';
     }
-  }, [windowSize.width, menuOpen]);
+  }, [windowSize.width, mobileOpen]);
 
   const menuToggleHandler = () => {
-    setMenuOpen((p) => !p);
+    setMobileOpen((prev) => !prev);
   };
 
   const menuCloseHandler = () => {
-    setMenuOpen(false);
+    setMobileOpen(false);
   };
 
   const signout = async () => {
@@ -46,27 +47,50 @@ const Nav = () => {
       </div>
       <div
         className={`${styles.navbar__menu} ${
-          menuOpen ? styles['navbar__menu-isOpen'] : ''
+          mobileOpen ? styles['navbar__menu-isOpen'] : ''
         }`}
       >
         <ul>
           <li data-testid="test-nav-item">
-            <Link onClick={menuCloseHandler} to="/playground">
+            <Link
+              className={
+                location.pathname === '/playground' ? styles.activated : ''
+              }
+              onClick={menuCloseHandler}
+              to="/playground"
+            >
               Playground
             </Link>
           </li>
           <li>
-            <Link onClick={menuCloseHandler} to="/about">
+            <Link
+              className={location.pathname === '/about' ? styles.activated : ''}
+              onClick={menuCloseHandler}
+              to="/about"
+              state={{ from: location }}
+            >
               About
             </Link>
           </li>
           <li>
-            <Link onClick={menuCloseHandler} to="/discover">
+            <Link
+              className={
+                location.pathname === '/discover' ? styles.activated : ''
+              }
+              onClick={menuCloseHandler}
+              to="/discover"
+              state={{ from: location }}
+            >
               Discover
             </Link>
           </li>
           <li>
-            <Link onClick={menuCloseHandler} to="/blog">
+            <Link
+              className={location.pathname === '/blog' ? styles.activated : ''}
+              onClick={menuCloseHandler}
+              to="/blog"
+              state={{ from: location }}
+            >
               Blog
             </Link>
           </li>
@@ -75,13 +99,25 @@ const Nav = () => {
           {auth.accessToken ? (
             <>
               <li>
-                {auth.role === 'USER' ? (
-                  <Link onClick={menuCloseHandler} to="/profile">
-                    Profile
+                {auth.role === 'ADMIN' ? (
+                  <Link
+                    className={
+                      location.pathname === '/admin' ? styles.activated : ''
+                    }
+                    onClick={menuCloseHandler}
+                    to="/admin"
+                  >
+                    Admin
                   </Link>
                 ) : (
-                  <Link onClick={menuCloseHandler} to="/admin">
-                    Admin
+                  <Link
+                    className={
+                      location.pathname === '/profile' ? styles.activated : ''
+                    }
+                    onClick={menuCloseHandler}
+                    to="/profile"
+                  >
+                    Profile
                   </Link>
                 )}
               </li>
@@ -99,13 +135,21 @@ const Nav = () => {
           ) : (
             <>
               <li>
-                <Link onClick={menuCloseHandler} to="/login">
+                <Link
+                  onClick={menuCloseHandler}
+                  to="/login"
+                  state={{ from: location }}
+                >
                   Login
                 </Link>
               </li>
               <li>
                 <Button type="primary">
-                  <Link onClick={menuCloseHandler} to="/signup">
+                  <Link
+                    onClick={menuCloseHandler}
+                    to="/signup"
+                    state={{ from: location }}
+                  >
                     Register
                   </Link>
                 </Button>
@@ -115,7 +159,7 @@ const Nav = () => {
         </ul>
       </div>
       <div className={styles.navbar__toggle}>
-        {menuOpen ? (
+        {mobileOpen ? (
           <Icon name="close" onClick={menuToggleHandler} />
         ) : (
           <Icon name="hamburger" onClick={menuToggleHandler} />

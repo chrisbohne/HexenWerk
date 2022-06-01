@@ -1,4 +1,4 @@
-@import '../../style/variables.scss';
+@import '../../app/style/variables.module.scss';
 
 .modal__container {
   position: fixed;
@@ -9,20 +9,23 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba($color: #000000, $alpha: 0.35);
-  z-index: 100;
+  background-color: rgba($color: #000000, $alpha: 0.65);
+  z-index: 10000;
 }
 
 .modal {
-  background-color: white;
-  display: flex;
-  width: 400px;
-  height: 500px;
+  background-color: $primary-500;
+  position: relative;
   border-radius: $border-radius;
   position: relative;
-  padding: 30px;
 
   &:empty {
     display: none;
+  }
+
+  &__closeButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
   }
 }

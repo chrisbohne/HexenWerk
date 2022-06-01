@@ -1,23 +1,35 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { GridPosition, MapState, Point } from './interfaces';
-import { getHexHash } from './utils/drawGridHelpers';
+import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {
+  GridPosition,
+  mapData,
+  mapMode,
+  MapState,
+  Point,
+  Route,
+} from './_interfaces';
+import { getHexHash } from './_utils/drawGridHelpers';
+
+export const reset = createAction('reset');
 
 const initialState: MapState = {
-  scale: 1,
+  scale: 0.8,
   viewPortTopLeft: { x: 0, y: 0 },
   selectedTile: '0',
   selectedCategory: '',
   map: {},
+  mapName: '',
+  mapSaved: true,
   mapSize: 0,
   mode: 'none',
   startingPoint: undefined,
   destination: undefined,
   weights: {
-    street: 1,
-    rail: 2,
-    flight: 10,
-    shipping: 5,
+    street: 5,
+    rail: 5,
+    flight: 8,
+    shipping: 7,
   },
+  route: undefined,
 };
 
 const mapSlice = createSlice({
@@ -58,18 +70,7 @@ const mapSlice = createSlice({
         state.mapSize--;
       }
     },
-    changeMode: (
-      state,
-      {
-        payload: newMode,
-      }: PayloadAction<
-        | 'eraser'
-        | 'none'
-        | 'append'
-        | 'destinationSelection'
-        | 'startingPointSelection'
-      >
-    ) => {
+    changeMode: (state, { payload: newMode }: PayloadAction<mapMode>) => {
       state.mode = newMode;
     },
     changeSelectedTile: (
@@ -103,6 +104,32 @@ const mapSlice = createSlice({
       state.weights[updatedWeight.type as keyof typeof state.weights] =
         updatedWeight.value;
     },
+    changeMap: (state, { payload: map }: PayloadAction<mapData>) => {
+      state.map = map;
+    },
+    changeMapName: (state, { payload: newMapName }: PayloadAction<string>) => {
+      state.mapName = newMapName;
+    },
+    changeMapSaved: (state, { payload: mapSaved }: PayloadAction<boolean>) => {
+      state.mapSaved = mapSaved;
+    },
+    changeMapSize: (state, { payload: newMapSize }: PayloadAction<number>) => {
+      state.mapSize = newMapSize;
+    },
+    changeRoute: (
+      state,
+      { payload: newRoute }: PayloadAction<Route | undefined>
+    ) => {
+      state.route = newRoute;
+    },
+    reset: () => {
+      return initialState;
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(reset, () => {
+      return initialState;
+    });
   },
 });
 
@@ -122,6 +149,11 @@ export const {
   changeStartingPoint,
   changeDestination,
   changeWeights,
+  changeMap,
+  changeMapName,
+  changeMapSaved,
+  changeRoute,
+  changeMapSize,
 } = mapSlice.actions;
 
 export default mapSlice.reducer;

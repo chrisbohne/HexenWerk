@@ -1,0 +1,5 @@
+@import '../../app/style/variables.module.scss';
+
+.profileContainer {
+  height: calc(100vh - #{$nav-height});
+}

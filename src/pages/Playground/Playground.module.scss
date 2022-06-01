@@ -1,11 +1,10 @@
-@import '../../app/style/variables.scss';
+@import '../../app/style/variables.module.scss';
 
 .playground {
-  width: 100vw;
   height: calc(100vh - #{$nav-height});
+  overflow: hidden;
 
   &__canvas {
-    width: 100vw;
     height: calc(100vh - #{$nav-height});
     background-color: $primary-400;
   }

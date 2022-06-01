@@ -1,13 +1,12 @@
 import { UsersList } from '../../features/Users';
+import styles from './Admin.module.scss';
 
-const Admin = () => {
+export const Admin = () => {
   return (
-    <div>
+    <div className={styles.adminContainer}>
       <h1>Admin Page</h1>
       <br />
       <UsersList />
     </div>
   );
 };
-
-export default Admin;

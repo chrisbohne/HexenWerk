@@ -1,0 +1,50 @@
+@import '../../../../app/style/variables.module.scss';
+
+.vehicleSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__heading {
+    padding: 5px 15px;
+
+    & p {
+      margin-top: 5px;
+    }
+  }
+
+  &__content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2px 0;
+
+    & label {
+      width: 60px;
+    }
+
+    & input {
+      -webkit-appearance: none;
+      height: 6px;
+      appearance: none;
+      border-radius: 30px;
+      background: $primary-400;
+
+      &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 15px;
+        height: 15px;
+        background: $info-100;
+        cursor: pointer;
+        border-radius: 30px;
+        outline: none;
+      }
+    }
+
+    & p {
+      width: 60px;
+      margin: 0;
+    }
+  }
+}

@@ -1,0 +1,24 @@
+@import '../../../../app/style/variables.module.scss';
+
+.hint {
+  position: fixed;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: auto;
+  background: rgba($primary-500, 0.95);
+  padding: 10px 20px;
+  border-radius: 10px;
+  color: $neutral-100;
+
+  & button {
+    margin-top: 10px;
+    border-color: $error-100;
+    color: $neutral-100;
+    background: $error-100;
+  }
+
+  & p {
+    margin: 5px 0 10px 0;
+  }
+}

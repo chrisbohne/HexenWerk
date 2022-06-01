@@ -1,12 +1,10 @@
-import { RegisterForm } from '../../features/Auth/RegistrationForm';
+import { RegistrationForm } from '../../features/Auth';
 import styles from './Registration.module.scss';
 
-const Registration = () => {
+export const Registration = () => {
   return (
     <div className={styles.container}>
-      <RegisterForm />
+      <RegistrationForm />
     </div>
   );
 };
-
-export default Registration;

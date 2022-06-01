@@ -1,7 +1,6 @@
-import React, { FC } from 'react';
-import { IIconsProps } from '../../components/Icon/Icon';
+import { IconProps } from '../../components/_interfaces';
 
-export const HamburgerIcon: FC<IIconsProps> = ({ className, onClick }) => {
+export const HamburgerIcon = ({ className, onClick }: IconProps) => {
   return (
     <svg
       data-testid="test-icon"

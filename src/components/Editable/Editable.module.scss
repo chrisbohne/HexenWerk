@@ -1,0 +1,43 @@
+@import '../../app/style/variables.module.scss';
+
+.editable {
+  width: 300px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+
+  &__cancelIcon {
+    stroke: $error-100;
+  }
+
+  &__confirmIcon {
+    stroke: $success-100;
+    fill: $success-100;
+  }
+
+  & input {
+    border: none;
+    background: none;
+    color: white;
+    font-size: 16px;
+    font-family: $primary-font;
+    width: calc(100% - 50px);
+
+    &:focus {
+      outline: 2px solid white;
+      border-radius: 5px;
+    }
+  }
+
+  & p {
+    display: inline;
+    margin: 0;
+    padding-left: 2px;
+  }
+
+  &__pencil {
+    width: 20px;
+    height: 20px;
+    margin: 0 0 20px 5px;
+  }
+}

@@ -1,11 +1,11 @@
-@import './../style/variables.scss';
+@import './../style/variables.module.scss';
 
 .navbar {
   color: $neutral-100;
   margin: auto;
   height: $nav-height;
   width: 100%;
-  max-width: 1920px;
+  // max-width: 1920px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -77,20 +77,19 @@
           margin-bottom: $spacing-lg;
           @include breakpoint(lg) {
             margin-bottom: 0;
-            margin-right: $spacing-md;
+            margin: $spacing-md;
           }
         }
         a,
         div {
           cursor: pointer;
           border: none;
-          padding: $spacing-md $spacing-md;
           height: 100%;
-          border-radius: $border-radius;
           transition: 0.3s ease all;
           color: inherit;
           font-size: inherit;
           font-family: inherit;
+          padding: 0 5px 0 5px;
         }
       }
     }
@@ -114,4 +113,8 @@
       display: none;
     }
   }
+}
+
+.activated {
+  box-shadow: 0 2px 0 $primary-100;
 }

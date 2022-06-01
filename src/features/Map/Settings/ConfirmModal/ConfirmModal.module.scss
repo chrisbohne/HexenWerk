@@ -1,0 +1,8 @@
+@import '../../../../app/style/variables.module.scss';
+
+.confirmModal {
+  margin: 30px 50px;
+  & p {
+    color: $neutral-100;
+  }
+}

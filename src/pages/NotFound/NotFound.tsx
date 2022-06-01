@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
+import styles from './NotFound.module.scss';
 
-const NotFound = () => {
+export const NotFound = () => {
   return (
-    <article>
+    <article className={styles.notFoundContainer}>
       <h1>Oops!</h1>
       <p>Page Not Found</p>
       <div className="flexGrow">
@@ -11,5 +12,3 @@ const NotFound = () => {
     </article>
   );
 };
-
-export default NotFound;

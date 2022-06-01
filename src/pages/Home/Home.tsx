@@ -3,7 +3,7 @@ import Hero from '../../assets/images/Hero.svg';
 import { Button } from '../../components/Button/Button';
 import styles from './Home.module.scss';
 
-const Home = () => {
+export const Home = () => {
   return (
     <div>
       <div className={styles.hero}>
@@ -55,5 +55,3 @@ const Home = () => {
     </div>
   );
 };
-
-export default Home;
