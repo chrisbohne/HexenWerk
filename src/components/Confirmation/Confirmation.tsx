@@ -1,25 +1,32 @@
 import { Button } from '../Button/Button';
-
-interface ConfirmationProps {
-  onConfirmation: () => void;
-  onCancel: () => void;
-  message: string;
-}
+import { ConfirmationProps } from '../_interfaces';
+import styles from './Confirmation.module.scss';
 
 export const Confirmation = ({
   onConfirmation,
   onCancel,
   message,
+  confirmButtonText,
+  confirmationButtonType,
 }: ConfirmationProps) => {
   return (
-    <div>
-      <p>{message}</p>
-      <Button onClick={onConfirmation} type="primary">
-        Confirm
-      </Button>
-      <Button onClick={onCancel} type="primary">
-        Cancel
-      </Button>
+    <div className={styles.confirmation}>
+      <div className={styles.confirmation__contentContainer}>
+        <div className={styles.confirmation__messageContainer}>
+          <p>{message}</p>
+        </div>
+        <div className={styles.confirmation__buttonContainer}>
+          <Button
+            type={confirmationButtonType ? confirmationButtonType : 'info'}
+            onClick={onConfirmation}
+          >
+            {confirmButtonText}
+          </Button>
+          <Button type="cancel" onClick={onCancel}>
+            Cancel
+          </Button>
+        </div>
+      </div>
     </div>
   );
 };

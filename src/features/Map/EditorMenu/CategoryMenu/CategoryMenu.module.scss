@@ -1,0 +1,59 @@
+@import '../../../../app/style/variables.module.scss';
+
+.categoryMenu {
+  position: absolute;
+  bottom: 0;
+  margin-left: -110px;
+  width: 360px;
+  height: calc(100vh - #{$nav-height});
+  background: $primary-500;
+  transition: margin 0.5s ease;
+  z-index: 1;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    background-color: transparent;
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: white;
+    border-radius: 10px;
+  }
+
+  &__tileGalery {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-auto-rows: 100px;
+    gap: 10px;
+    margin-top: -20px;
+    padding-left: 10px;
+  }
+
+  &__tile {
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+  }
+
+  &__closeContainer {
+    position: sticky;
+    width: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: flex-end;
+    pointer-events: none;
+  }
+
+  &__closeButton {
+    pointer-events: auto;
+  }
+
+  &-open {
+    margin-left: 250px;
+  }
+}

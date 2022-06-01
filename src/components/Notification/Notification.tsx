@@ -1,13 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useAppDispatch } from '../../app/store';
+import { NotificationProps } from '../_interfaces';
 import styles from './Notification.module.scss';
 import { removeNotification } from './notificationSlice';
-
-interface NotificationProps {
-  message: string;
-  type: string;
-  id: string;
-}
 
 export const Notification = ({ message, type, id }: NotificationProps) => {
   const dispatch = useAppDispatch();
@@ -42,11 +37,20 @@ export const Notification = ({ message, type, id }: NotificationProps) => {
   }, [dispatch, handlePauseTimer, id]);
 
   useEffect(() => {
-    handleStartTimer();
+    let isMounted = true;
+    if (isMounted) handleStartTimer();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   useEffect(() => {
-    if (width === 100) handleCloseNotification();
+    let isMounted = true;
+    if (isMounted && width === 100) handleCloseNotification();
+    return () => {
+      isMounted = false;
+    };
   }, [width, handleCloseNotification]);
 
   return (

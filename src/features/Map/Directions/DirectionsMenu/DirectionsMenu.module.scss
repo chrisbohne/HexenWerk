@@ -1,0 +1,156 @@
+@import '../../../../app/style/variables.module.scss';
+
+.directionsMenu {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin-right: -300px;
+  width: 300px;
+  height: calc(100vh - #{$nav-height});
+  background: $primary-500;
+  transition: margin 0.5s ease;
+  z-index: 1;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    background-color: transparent;
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: white;
+    border-radius: 10px;
+  }
+
+  &--open {
+    margin: 0;
+  }
+
+  &__closeContainer {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: left;
+    pointer-events: none;
+  }
+
+  &__closeButton {
+    pointer-events: auto;
+  }
+
+  &__sectionHeading {
+    padding: 5px 15px;
+
+    & p {
+      margin-top: 5px;
+    }
+  }
+
+  &__locationContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__locationSection {
+    position: relative;
+    margin-bottom: 10px;
+  }
+
+  &__locationDeletion {
+    position: absolute;
+    top: 50%;
+    transform: (translateY(-50%));
+    right: 0;
+    margin-right: -40px;
+    fill: $error-100;
+    stroke: $error-100;
+  }
+
+  &__locationButton {
+    width: 180px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &-selected {
+      background: $info-100;
+    }
+  }
+
+  &__vehicleSection {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2px 0;
+
+    & label {
+      width: 60px;
+    }
+
+    & input {
+      -webkit-appearance: none;
+      height: 6px;
+      appearance: none;
+      border-radius: 30px;
+      background: $primary-400;
+
+      &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 15px;
+        height: 15px;
+        background: $info-100;
+        cursor: pointer;
+        border-radius: 30px;
+        outline: none;
+      }
+    }
+
+    & p {
+      width: 60px;
+      margin: 0;
+    }
+  }
+
+  &__routeContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    & button {
+      width: 150px;
+    }
+  }
+
+  &__routeButtonContainer {
+    position: relative;
+  }
+
+  &__routeButton {
+    width: 150px;
+  }
+
+  &__routeDeletion {
+    position: absolute;
+    top: 50%;
+    transform: (translateY(-50%));
+    right: 0;
+    stroke: $error-100;
+    margin-right: -40px;
+  }
+
+  & ul {
+    & div {
+      display: flex;
+      align-items: center;
+    }
+
+    // & li {
+    //   display: flex;
+    //   align-items: center;
+    // }
+  }
+}

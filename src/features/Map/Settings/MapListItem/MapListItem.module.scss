@@ -1,0 +1,59 @@
+@import '../../../../app/style/variables.module.scss';
+
+.mapListItem {
+  background-color: $primary-400;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  overflow: hidden;
+
+  &__content {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    &-active {
+      border: 2px solid $neutral-300;
+    }
+
+    & p {
+      margin: 10px;
+      & span {
+        display: flex;
+        align-items: center;
+        margin-left: 5px;
+      }
+      &:last-of-type {
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+
+  &__tile {
+    height: 24px;
+    width: 24px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: inline-block;
+  }
+}
+
+.grow {
+  transition: height 0.2s ease;
+  height: 0;
+  overflow: hidden;
+  background-color: $neutral-300;
+  color: $primary-500;
+  width: 100%;
+  cursor: default;
+
+  & button {
+    margin: 20px 5px;
+  }
+}

@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import './Icon.scss';
 import {
   CloseIcon,
@@ -12,15 +11,21 @@ import {
   SliderIcon,
   DeleteIcon,
   RouteIcon,
+  PencilIcon,
+  CancelIcon,
+  CheckIcon,
+  SquareIcon,
+  CheckSquareIcon,
+  Signpost1Icon,
+  Signpost2Icon,
+  ShipIcon,
+  CarIcon,
+  TrainIcon,
+  PlaneIcon,
 } from '../../assets/icons';
+import { IconProps } from '../_interfaces';
 
-export interface IIconsProps {
-  name: string;
-  onClick?: () => void;
-  className?: string;
-}
-
-const Icon: FC<IIconsProps> = (props) => {
+export const Icon = (props: IconProps) => {
   switch (props.name.toLowerCase()) {
     case 'hamburger':
       return <HamburgerIcon {...props} />;
@@ -44,9 +49,29 @@ const Icon: FC<IIconsProps> = (props) => {
       return <DeleteIcon {...props} />;
     case 'route':
       return <RouteIcon {...props} />;
+    case 'pencil':
+      return <PencilIcon {...props} />;
+    case 'cancel':
+      return <CancelIcon {...props} />;
+    case 'check':
+      return <CheckIcon {...props} />;
+    case 'checksquare':
+      return <CheckSquareIcon {...props} />;
+    case 'square':
+      return <SquareIcon {...props} />;
+    case 'signpost1':
+      return <Signpost1Icon {...props} />;
+    case 'signpost2':
+      return <Signpost2Icon {...props} />;
+    case 'ship':
+      return <ShipIcon {...props} />;
+    case 'car':
+      return <CarIcon {...props} />;
+    case 'train':
+      return <TrainIcon {...props} />;
+    case 'plane':
+      return <PlaneIcon {...props} />;
     default:
       return <div />;
   }
 };
-
-export default Icon;

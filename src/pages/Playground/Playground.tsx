@@ -1,19 +1,22 @@
 import { useEffect, useRef, useState } from 'react';
 import { Canvas, DesktopControls } from '../../features/Map';
-import { useHandleResize } from '../../hooks';
 import styles from './Playground.module.scss';
 
-const Playground = () => {
+export const Playground = () => {
   const canvasRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
-  const windowSize = useHandleResize();
+
+  // const isTouchEnabled = () => {
+  //   return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  // };
 
   useEffect(() => {
     const handleResize = () => {
       if (!canvasRef.current) return;
       const canvasWidth = canvasRef.current.clientWidth;
       const canvasHeight = canvasRef.current.clientHeight;
+
       setWidth(canvasWidth);
       setHeight(canvasHeight);
     };
@@ -23,16 +26,18 @@ const Playground = () => {
 
   return (
     <div className={styles.playground} data-testid="test-playground">
-      <div ref={canvasRef} className={styles.playground__canvas}>
-        <Canvas canvasHeight={height} canvasWidth={width} />
-      </div>
-      {windowSize.width && windowSize.width < 1024 ? (
-        <DesktopControls />
+      {window.innerWidth >= 1024 ? (
+        <>
+          <div ref={canvasRef} className={styles.playground__canvas}>
+            <Canvas canvasHeight={height} canvasWidth={width} />
+          </div>
+          <DesktopControls />
+        </>
       ) : (
-        <DesktopControls />
+        <div>
+          <h1>Mobile version comming soon...</h1>
+        </div>
       )}
     </div>
   );
 };
-
-export default Playground;

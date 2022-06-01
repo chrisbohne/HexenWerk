@@ -1,0 +1,17 @@
+@import '../../app/style/variables.module.scss';
+
+.confirmation {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  color: $primary-500;
+  &__contentContainer {
+    width: 250px;
+  }
+
+  &__buttonContainer {
+    display: flex;
+    justify-content: space-around;
+    padding-bottom: $spacing-md;
+  }
+}

@@ -1,0 +1,30 @@
+@import '../../../../app/style/variables.module.scss';
+
+.loadForm {
+  width: 500px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+
+  &__content {
+    width: 400px;
+    height: 400px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+      background-color: transparent;
+      width: 4px;
+      // display: none;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: $neutral-400;
+      border-radius: 10px;
+    }
+  }
+}

@@ -1,4 +1,4 @@
-@import './variables.scss';
+@import './variables.module.scss';
 
 html {
   box-sizing: border-box;
@@ -19,6 +19,7 @@ body {
   background-color: $primary-400;
   color: $neutral-100;
   overflow-x: hidden;
+  // margin: 0 100px;
 }
 
 h1,

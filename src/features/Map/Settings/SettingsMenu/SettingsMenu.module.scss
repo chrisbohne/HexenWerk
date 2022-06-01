@@ -1,0 +1,65 @@
+@import '../../../../app/style/variables.module.scss';
+
+.settingsMenu {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin-right: -300px;
+  width: 300px;
+  height: calc(100vh - #{$nav-height});
+  background: $primary-500;
+  transition: margin 0.5s ease;
+  z-index: 1;
+  overflow-y: auto;
+
+  & button {
+    width: 150px;
+  }
+
+  &--open {
+    margin: 0;
+  }
+
+  &__closeContainer {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: left;
+  }
+
+  &__buttonContainer {
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    & button {
+      margin: 10px;
+    }
+  }
+}
+
+.loadButton {
+  background: $primary-500;
+  border: 2px solid $neutral-100;
+  color: $neutral-100;
+}
+
+.saveButton {
+  background: $info-100;
+}
+
+.chooseButton {
+  background: $primary-500;
+  border: 2px solid $neutral-100;
+  color: $neutral-100;
+}
+
+.randomButton {
+  background: $primary-500;
+  border: 2px solid $neutral-100;
+  color: $neutral-100;
+}

@@ -1,11 +1,9 @@
 import styles from './Discover.module.scss';
 
-const Discover = () => {
+export const Discover = () => {
   return (
-    <div className={styles.container}>
+    <div className={styles.disoverContainer}>
       <h1>Discover</h1>
     </div>
   );
 };
-
-export default Discover;

@@ -1,15 +1,15 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../app/store';
-import styles from './Canvas.module.scss';
 import {
   addPoints,
   diffPoints,
   ORIGIN,
   scalePoint,
-} from '../utils/canvasHelpers';
+} from '../_utils/canvasHelpers';
 import {
   addTile,
   changeDestination,
+  changeMapSaved,
   changeMode,
   changeRoute,
   changeStartingPoint,
@@ -17,7 +17,7 @@ import {
   updateScale,
   updateViewPortTopLeft,
 } from '../mapSlice';
-import { useMousePos, usePan } from '../hooks';
+import { useMousePos, usePan } from '../_hooks';
 import {
   availableTiles,
   drawGrid,
@@ -25,19 +25,16 @@ import {
   drawStartingPointAndDestination,
   getHoveredHex,
   getVisibleGridRange,
-} from '../utils/drawGridHelpers';
-import { getHex } from '../utils/hexHelper';
-import { offsetFromCube } from '../utils/hexLogic';
+} from '../_utils/drawGridHelpers';
+import { getHex } from '../_utils/hexHelper';
+import { offsetFromCube } from '../_utils/hexLogic';
+import styles from './Canvas.module.scss';
+import { CanvasProps } from '../_interfaces';
 
 const ZOOM_SENSITIVITY = 500;
-interface CanvasProps {
-  canvasHeight: number;
-  canvasWidth: number;
-}
 
 export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
   const dispatch = useAppDispatch();
-  // scale and current top left point of visible canvas
   const {
     scale,
     viewPortTopLeft,
@@ -48,15 +45,11 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
     destination,
     route,
   } = useAppSelector((state) => state.map);
-  // reference with canvas once canvas loaded, and state for context
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [context, setContext] = useState<CanvasRenderingContext2D | null>(null);
-  // custom hook for getting current panning state without zoom
   const [offset, startPan] = usePan(canvasRef);
   const lastOffset = useRef(ORIGIN);
-  // custom hook for
   const mousePosRef = useMousePos(canvasRef);
-  const [didMount, setDidMount] = useState(false);
 
   const [isMoving, setIsMoving] = useState(false);
   const [hoveredHexTest, setHoveredHexTest] = useState('');
@@ -68,8 +61,9 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
 
   // Initial Context Setup
   useLayoutEffect(() => {
-    if (didMount) return;
     if (!canvasRef.current) return;
+    // console.log(canvasWidth);
+    if (!canvasWidth) return;
     const renderContext = canvasRef.current.getContext('2d');
     if (!renderContext) return;
     renderContext.canvas.width = canvasWidth;
@@ -77,9 +71,7 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
     renderContext.scale(scale, scale);
     renderContext.translate(-viewPortTopLeft.x, -viewPortTopLeft.y);
     setContext(renderContext);
-    // hacky way of waiting for width to be correct width and not 0
-    if (canvasWidth !== 0) setDidMount(true);
-  }, [canvasHeight, canvasWidth, scale, viewPortTopLeft, didMount]);
+  }, [canvasHeight, canvasWidth, scale, viewPortTopLeft]);
 
   useLayoutEffect(() => {
     if (!context) return;
@@ -203,8 +195,17 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
 
     function handleWheel(event: WheelEvent) {
       event.preventDefault();
+
       if (!context) return;
-      const zoom = 1 - event.deltaY / ZOOM_SENSITIVITY;
+      if (
+        (scale > 1.5 && event.deltaY < 0) ||
+        (scale < 0.3 && event.deltaY > 0)
+      )
+        return;
+      let zoom = 1 - event.deltaY / ZOOM_SENSITIVITY;
+      if (zoom * scale > 1.5) zoom = 1.5 / scale;
+      if (zoom * scale < 0.3) zoom = 0.3 / scale;
+
       context.translate(viewPortTopLeft.x, viewPortTopLeft.y);
 
       const viewportTopLeftDelta = {
@@ -247,6 +248,7 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
       const hoveredHex = '' + offsetPos.row + ',' + offsetPos.col;
       if (mode === 'eraser') {
         dispatch(removeTile(offsetPos));
+        dispatch(changeMapSaved(false));
         dispatch(changeRoute(undefined));
         if (cityTileIsHovered) {
           if (JSON.stringify(offsetPos) === JSON.stringify(destination)) {
@@ -256,14 +258,12 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
           )
             dispatch(changeStartingPoint(undefined));
         }
-        // update graph
       }
       if (mode === 'append') {
         dispatch(addTile(offsetPos));
+        dispatch(changeMapSaved(false));
         dispatch(changeRoute(undefined));
-        // update graph
       }
-
       if (mode === 'startingPointSelection') {
         const tileNum = map[hoveredHex];
         if (tileNum && availableTiles[+tileNum].category === 'city') {

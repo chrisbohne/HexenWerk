@@ -1,4 +1,4 @@
-@import '../../app/style/variables.scss';
+@import '../../app/style/variables.module.scss';
 
 .button {
   cursor: pointer;
@@ -10,6 +10,11 @@
   font-family: inherit;
   color: $neutral-100;
   border: 2px solid transparent;
+
+  &:hover {
+    transform: scale(1.1);
+    transition: 0.2s ease;
+  }
 
   &:disabled {
     background-color: $neutral-400;
@@ -69,30 +74,47 @@
   }
 }
 
+.danger {
+  background: $error-100;
+  border: 2px solid $error-100;
+  color: $neutral-100;
+  padding: 2px 4px;
+  min-width: 100px;
+  border-radius: 5px;
+}
+
+.cancel {
+  background: $neutral-400;
+  border: 2px solid $neutral-400;
+  color: $neutral-100;
+  padding: 2px 4px;
+  min-width: 100px;
+  border-radius: 5px;
+}
+
+.info {
+  background: $info-100;
+  padding: 2px 4px;
+  min-width: 100px;
+  border-radius: 5px;
+}
+
+.success {
+  background: $success-100;
+  padding: 2px 4px;
+  min-width: 100px;
+  border-radius: 5px;
+}
+
 .menu {
   background: $primary-400;
 }
 
-.button__icon {
-  cursor: pointer;
-  background-color: $primary-400;
-  outline: none;
-  border: none;
-  border-radius: 20px;
-  transition: 0.4s all ease;
-  box-shadow: 0 5px 4px rgba(black, 0.3);
-
-  &:active {
-    svg {
-      fill: $primary-100;
-    }
-  }
-
-  @include breakpoint(lg) {
-    &:hover {
-      svg {
-        fill: $primary-100;
-      }
-    }
-  }
+.closeButton {
+  width: 30px;
+  height: 30px;
+  background: white;
+  border-radius: 50px;
+  color: $primary-500;
+  margin: 5px;
 }

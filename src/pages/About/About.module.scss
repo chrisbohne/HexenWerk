@@ -1,0 +1,81 @@
+@import '../../app/style/variables.module.scss';
+
+.about {
+  width: 800px;
+  margin: auto;
+
+  & p {
+    text-align: left;
+  }
+}
+
+.aboutHeader {
+  margin-top: 50px;
+}
+
+.aboutEditor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__table {
+    font-family: $primary-font;
+    margin: 20px auto;
+    border-radius: 5px;
+    min-width: 500px;
+    overflow: hidden;
+    // border-collapse: collapse;
+    border-spacing: 0;
+    font-size: $paragraph;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.15);
+
+    & img {
+      width: 60px;
+    }
+
+    & thead {
+      background-color: $info-100;
+      color: $neutral-100;
+      text-align: left;
+    }
+
+    & tbody {
+      text-align: left;
+      background-color: $primary-400;
+      color: $primary-200;
+      & td {
+        border-bottom: 2px solid $primary-500;
+      }
+    }
+
+    & th,
+    td {
+      padding: 12px 15px;
+    }
+  }
+}
+
+.parallax {
+  width: 100vw;
+  height: 25vw;
+  margin: 20px 0;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: 65vw auto;
+  // background-size: cover;
+  background-position: 50% 0%;
+  // border-radius: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & h1 {
+    text-shadow: 2px 2px 4px black;
+  }
+}
+
+.bla {
+  height: 1200px;
+  width: 600px;
+}

@@ -1,3 +1,5 @@
+@import '../../app/style/variables.module.scss';
+
 @mixin animate($animation, $duration) {
   animation: $animation $duration;
 }
@@ -34,7 +36,7 @@
     bottom: 0px;
     right: 10px;
     width: 250px;
-    z-index: 1000;
+    z-index: 100000000;
   }
 
   &__item {
@@ -50,7 +52,7 @@
 
     & p {
       margin: 0;
-      padding: 15px 0;
+      padding: 15px 5px;
     }
   }
 
@@ -71,15 +73,15 @@
 }
 
 .success {
-  background-color: rgb(0, 208, 0);
+  background-color: $success-100;
 }
 
 .error {
-  background-color: rgb(227, 1, 1);
+  background-color: $error-100;
 }
 
 .info {
-  background-color: rgb(6, 6, 236);
+  background-color: $info-100;
 }
 
 .close {

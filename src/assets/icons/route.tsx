@@ -1,7 +1,6 @@
-import React, { FC } from 'react';
-import { IIconsProps } from '../../components/Icon/Icon';
+import { IconProps } from '../../components/_interfaces';
 
-export const RouteIcon: FC<IIconsProps> = ({ className, onClick }) => {
+export const RouteIcon = ({ className, onClick }: IconProps) => {
   return (
     <svg
       width="1em"
