@@ -5,6 +5,9 @@ import VillagePreview from '../../assets/images/cities/Village.svg';
 import SightPreview from '../../assets/images/cities/Sight.svg';
 import Example from '../../assets/images/Example.svg';
 import Zwo from '../../assets/images/2.png';
+import One from '../../assets/images/1.png';
+import StepOne from '../../assets/images/Step1.png';
+import { Carousel } from '../../components';
 
 export const About = () => {
   return (
@@ -32,7 +35,7 @@ export const About = () => {
           settings and also check out a prebuild map to get started.
         </p>
         <div
-          style={{ backgroundImage: `url(${Zwo})` }}
+          style={{ backgroundImage: `url(${Example})` }}
           className={styles.parallax}
         >
           <h1>Build your own map or just use one of the example maps!</h1>
@@ -87,8 +90,19 @@ export const About = () => {
         <p>
           Now you can start connecting the different city tiles using the
           matching transport routes. The plane can be used automatically as soon
-          as you have placed multiple tiles of type city.
+          as you have placed multiple tiles of type city. You can also use some
+          nature tiles to improve the visuals of your map.
         </p>
+
+        <div
+          style={{
+            width: '800px',
+            height: '400px',
+            boxShadow: '0 0 25px rgba(0, 0, 0, 0.15)',
+          }}
+        >
+          <Carousel slides={[StepOne, StepOne, StepOne]} />
+        </div>
 
         <div className={styles.bla}></div>
       </div>

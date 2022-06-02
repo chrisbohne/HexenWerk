@@ -20,3 +20,5 @@ export * from './ship';
 export * from './car';
 export * from './train';
 export * from './plane';
+export * from './left';
+export * from './right';

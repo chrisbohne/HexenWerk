@@ -6,3 +6,4 @@ export * from './Modal/Modal';
 export * from './Notification';
 export * from './Spinner/Spinner ';
 export * from './Divider/Divider';
+export * from './Carousel/Carousel';

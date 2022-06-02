@@ -58,12 +58,12 @@
 .parallax {
   width: 100vw;
   height: 25vw;
-  margin: 20px 0;
+  margin: 15px 0;
   background-attachment: fixed;
   background-repeat: no-repeat;
-  background-size: 65vw auto;
+  background-size: auto calc(100vh - #{$nav-height});
   // background-size: cover;
-  background-position: 50% 0%;
+  background-position: 50% 100px;
   // border-radius: 20px;
 
   display: flex;
