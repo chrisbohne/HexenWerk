@@ -22,6 +22,8 @@ import {
   CarIcon,
   TrainIcon,
   PlaneIcon,
+  LeftIcon,
+  RightIcon,
 } from '../../assets/icons';
 import { IconProps } from '../_interfaces';
 
@@ -71,6 +73,10 @@ export const Icon = (props: IconProps) => {
       return <TrainIcon {...props} />;
     case 'plane':
       return <PlaneIcon {...props} />;
+    case 'left':
+      return <LeftIcon {...props} />;
+    case 'right':
+      return <RightIcon {...props} />;
     default:
       return <div />;
   }

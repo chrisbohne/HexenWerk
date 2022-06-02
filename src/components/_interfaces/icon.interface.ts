@@ -20,6 +20,9 @@ type IconName =
   | 'car'
   | 'train'
   | 'plane'
+  | 'left'
+  | 'left'
+  | 'right'
   | 'signpost1'
   | 'signpost2';
 
