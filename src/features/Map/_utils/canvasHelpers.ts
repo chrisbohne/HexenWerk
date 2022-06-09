@@ -1,3 +1,5 @@
+import { RefObject, WheelEvent } from 'react';
+import { INTERVAL, MAX_SCALE, MIN_SCALE } from '../_constants/canvas';
 import { PathSection, Point } from '../_interfaces';
 
 export const ORIGIN = Object.freeze({ x: 0, y: 0 });
@@ -38,3 +40,35 @@ export const getRouteSections = (distance: PathSection[]) => {
 
   return sections;
 };
+
+
+export const getMouseOffset = (e: WheelEvent, scale: number, mousePosRef: RefObject<{x: number, y: number}>) => {
+  const direction = e.deltaY > 0 ? 'out' : 'in';
+  let newScale: number;
+  if (direction === 'in' && scale + INTERVAL < MAX_SCALE) {
+    newScale = +(scale + INTERVAL).toFixed(1);
+  } else if (direction === 'in') {
+    newScale = MAX_SCALE;
+  } else if (direction === 'out' && scale - INTERVAL > MIN_SCALE) {
+    newScale = +(scale - INTERVAL).toFixed(1);
+  } else if (direction === 'out') {
+    newScale = MIN_SCALE;
+  } else {
+    newScale = scale;
+  }
+
+  if(!mousePosRef.current) return {mouseOffset: {x: 0, y: 0}, newScale: scale}
+
+  const lastMousePos = {
+    x: mousePosRef.current.x / scale,
+    y: mousePosRef.current.y / scale,
+  };
+
+  const newMousePos = {
+    x: mousePosRef.current.x / newScale,
+    y: mousePosRef.current.y / newScale,
+  };
+
+  return {mouseOffset :diffPoints(lastMousePos, newMousePos), newScale};
+
+}

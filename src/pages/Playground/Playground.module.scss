@@ -6,6 +6,7 @@
 
   &__canvas {
     height: calc(100vh - #{$nav-height});
+    width: 100vw;
     background-color: $primary-400;
   }
 }

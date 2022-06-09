@@ -12,13 +12,14 @@
 }
 
 .loadingSpinner {
-  width: 64px;
-  height: 64px;
-  border: 8px solid;
-  border-color: #000 transparent #555 transparent;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  animation: spin 1.2s linear infinite;
-  color: white;
+  display: inline-block;
+  border-top: 3px solid #FFF;
+  border-right: 3px solid transparent;
+  box-sizing: border-box;
+  animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
@@ -29,3 +30,4 @@
     transform: rotate(360deg);
   }
 }
+

@@ -1,0 +1,21 @@
+
+<svg width="200" height="139" viewBox="0 0 200 139" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M150 14L200 57.3013L150 100.603H50L0 57.3013L50 14H150Z" fill="#22C55E"/>
+<path d="M50 100.603L0 57.3013V94.8003L50 138.101H150L200 94.8003V57.3013L150 100.603H50Z" fill="#A16207"/>
+<path d="M200 57.3013L150 100.603V138.101L200 94.8003V57.3013Z" fill="#713F12"/>
+<path d="M150 100.603H50V138.101H150V100.603Z" fill="#854D0E"/>
+<path d="M150 2L200 45.3013L150 88.6026H50L0 45.3013L50 2H150Z" fill="#22C55E"/>
+<path d="M137.5 0.5L175 33L137.5 65.5H62.5L25 33L62.5 0.5H137.5Z" fill="#FDE047"/>
+<path d="M137.5 0.5L175 33L137.5 65.5H62.5L25 33L62.5 0.5H137.5Z" fill="#FDE047"/>
+<path d="M62.5 78L25 45.5V33L62.5 65.5H137.5L175 33V45.5L137.5 78H62.5Z" fill="#FACC15"/>
+<path d="M175 45.5L137.5 78V65.5L175 33V45.5Z" fill="#CA8A04"/>
+<path d="M137.5 78H62.5V65.5H137.5V78Z" fill="#EAB308"/>
+<path d="M0 45.3013L50 88.6026H150L200 45.3013V57.8009L150 101.102H50L0 57.8009V45.3013Z" fill="#16A34A"/>
+<path d="M200 45.3013L150 88.6026V101.102L200 57.8009V45.3013Z" fill="#166534"/>
+<path d="M150 88.6025H50V101.102H150V88.6025Z" fill="#15803D"/>
+<rect x="54" y="18" width="91" height="4" fill="#FACC15"/>
+<rect x="42" y="31" width="116" height="4" fill="#FACC15"/>
+<rect x="54" y="44" width="91" height="4" fill="#FACC15"/>
+<rect x="62" y="57" width="75" height="4" fill="#FACC15"/>
+<rect x="62" y="5" width="75" height="4" fill="#FACC15"/>
+</svg>
