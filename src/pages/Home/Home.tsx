@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import Hero from '../../assets/images/Hero.svg';
+import Hero from '../../assets/images/Hero.png';
 import { Button } from '../../components/Button/Button';
 import styles from './Home.module.scss';
 
@@ -29,7 +29,7 @@ export const Home = () => {
           style={{ backgroundImage: `url(${Hero})` }}
         ></div>
       </div>
-      <div className={styles.explanation}>
+      {/* <div className={styles.explanation}>
         <div className={styles.explanation__description}>
           <h2>What is HexFinder?</h2>
           <Button type="secondary">Watch the Video</Button>
@@ -51,7 +51,7 @@ export const Home = () => {
             <li>Experiment</li>
           </ul>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

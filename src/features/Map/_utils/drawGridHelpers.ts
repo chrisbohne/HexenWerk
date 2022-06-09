@@ -14,10 +14,11 @@ import {
   PathSection,
   Point,
 } from '../_interfaces';
-import StartingLocation from '../../../assets/images/StartingLocation.svg';
-import DestinationLocation from '../../../assets/images/DestinationLocation.svg';
 import { hexDrawLine, offsetFromCube, offsetToCube } from './hexLogic';
 import { getHex } from './hexHelper';
+import { MAX_SCALE } from '../_constants/canvas';
+
+import Sphere from '../../../assets/images/Sphere.svg';
 
 interface ICity {
   height: number;
@@ -26,7 +27,6 @@ interface ICity {
     x: number;
     y: number;
   };
-  // isHovered: boolean;
 }
 
 const tileHeight = Math.sqrt(3) * 50;
@@ -39,44 +39,22 @@ export const availableTiles = {
   ...natureTiles,
 };
 
-const mapIcons = [StartingLocation, DestinationLocation];
-
-const numTiles = Object.keys(availableTiles).length;
-
-// preload all images on seperate canvas as kind of sprite
-const preCanvas = document.createElement('canvas');
-preCanvas.width = 210 * numTiles;
-preCanvas.height = 600;
-const preCtx = preCanvas.getContext('2d');
-for (let i = 0; i < numTiles; i++) {
-  const img = new Image();
-  img.src = availableTiles[i].svg;
-  img.onload = () => {
-    preCtx?.drawImage(img, i * 210, 0);
-  };
-}
-for (let i = 0; i < 2; i++) {
-  const img = new Image();
-  img.src = mapIcons[i];
-  img.onload = () => {
-    preCtx?.drawImage(img, i * 85, 300);
-  };
-}
-
-// draw function
-
 export const drawGrid = (
   context: CanvasRenderingContext2D,
   map: mapData,
   visibleGridRange: GridRange,
   mode: mapMode,
+  preCanvas: HTMLCanvasElement,
+  zoomLevelIndex: number,
+  scale: number,
   hoveredHex?: string,
   selectedTile?: string,
   canvasData?: CanvasData
 ) => {
   const locationsToHighlight: ICity[] = [];
   const { rowStart, rowEnd, colStart, colEnd } = visibleGridRange;
-  for (let row = rowStart; row <= rowEnd + 1; row++) {
+  // We need to render more rows because of the city tile height
+  for (let row = rowStart; row <= rowEnd + 3; row++) {
     for (
       let evenCol = colStart % 2 === 0 ? colStart : colStart - 1;
       evenCol <= colEnd + 1;
@@ -90,7 +68,10 @@ export const drawGrid = (
         mode,
         hoveredHex || '',
         selectedTile || '',
-        locationsToHighlight
+        locationsToHighlight,
+        preCanvas,
+        zoomLevelIndex,
+        scale
       );
     }
     for (
@@ -106,54 +87,24 @@ export const drawGrid = (
         mode,
         hoveredHex || '',
         selectedTile || '',
-        locationsToHighlight
+        locationsToHighlight,
+        preCanvas,
+        zoomLevelIndex,
+        scale
       );
     }
   }
 
   if (mode === 'startingPointSelection' || mode === 'destinationSelection') {
-    canvasData && highlightLocations(context, canvasData, locationsToHighlight);
-
-    //   const cityTileIsHovered = locationsToHighlight.some(
-    //     (tile) => tile.tileNum === hoveredHex
-    //   );
-
-    //   const hoveredPoint = hoveredHex?.split(',')
-    //   let hoveredPoint2
-    //   if (hoveredPoint) hoveredPoint2 = {row: hoveredPoint[0], col: hoveredPoint[1]}
-
-    //   startingPoint &&
-    //     destination &&
-    //     displayGeoPoints(context, cityTileIsHovered && mode === 'startingPointSelection' ? hoveredPoint2 : startingPoint, destination);
-    //   // if (
-    //   //   startingPoint &&
-    //   //   startingPoint.row <= rowEnd &&
-    //   //   startingPoint.row >= rowStart &&
-    //   //   startingPoint.col <= colEnd &&
-    //   //   startingPoint.col >= colStart
-    //   // ) {
-    //   //   const hash = '' + startingPoint.row + ',' + startingPoint.col;
-    //   //   const tileNum = map[hash];
-    //   //   const tile = availableTiles[+tileNum];
-    //   //   const topLeftPoint = {
-    //   //     x: ((startingPoint.col * 3) / 4) * tileWidth - tileWidth / 2,
-    //   //     y:
-    //   //       startingPoint.row * tileHeight -
-    //   //       (startingPoint.col % 2 === 0 ? tileHeight / 2 : 0) -
-    //   //       (tile.height - tileHeight),
-    //   //   };
-    //   //   context.drawImage(
-    //   //     preCanvas,
-    //   //     0,
-    //   //     300,
-    //   //     75,
-    //   //     100,
-    //   //     topLeftPoint.x + (tileWidth / 2 - 75 / 2),
-    //   //     topLeftPoint.y + (tile.height - 100 - tileHeight),
-    //   //     75,
-    //   //     100
-    //   //   );
-    //   // }
+    canvasData &&
+      highlightLocations(
+        context,
+        canvasData,
+        locationsToHighlight,
+        preCanvas,
+        zoomLevelIndex,
+        scale
+      );
   }
 };
 
@@ -166,7 +117,10 @@ function displayHexTile(
   mode: mapMode,
   hoveredHex: string,
   selectedTile: string,
-  locationsToHighlight: ICity[]
+  locationsToHighlight: ICity[],
+  preCanvas: HTMLCanvasElement,
+  zoomLevelIndex: number,
+  scale: number
 ) {
   const hash = getHexHash(gridPosition);
   const { row, col } = gridPosition;
@@ -196,7 +150,17 @@ function displayHexTile(
         topLeftPoint,
         // isHovered: hash === hoveredHex ? true : false,
       });
-    } else drawHex(context, tileNum, tile.height, topLeftPoint, effect);
+    } else
+      drawHex(
+        context,
+        tileNum,
+        tile.height,
+        topLeftPoint,
+        effect,
+        preCanvas,
+        zoomLevelIndex,
+        scale
+      );
   }
 }
 
@@ -230,15 +194,18 @@ function drawHex(
   tileNum: string,
   height: number,
   topLeftPoint: Point,
-  effect: number
+  effect: number,
+  preCanvas: HTMLCanvasElement,
+  zoomLevelIndex: number,
+  scale: number
 ) {
   context.globalAlpha = effect;
   context.drawImage(
     preCanvas,
-    210 * +tileNum,
-    0,
-    200,
-    height,
+    210 * MAX_SCALE * +tileNum,
+    340 * zoomLevelIndex * MAX_SCALE,
+    200 * scale,
+    height * scale,
     topLeftPoint.x,
     topLeftPoint.y,
     200,
@@ -250,7 +217,10 @@ function drawHex(
 function highlightLocations(
   context: CanvasRenderingContext2D,
   canvasData: CanvasData,
-  locationsToHighlight: ICity[]
+  locationsToHighlight: ICity[],
+  preCanvas: HTMLCanvasElement,
+  zoomLevelIndex: number,
+  scale: number
 ) {
   context.globalAlpha = 0.8;
   context.fillStyle = 'black';
@@ -263,7 +233,16 @@ function highlightLocations(
     );
   context.globalAlpha = 1;
   locationsToHighlight.forEach((tile) => {
-    drawHex(context, tile.tileNum, tile.height, tile.topLeftPoint, 1);
+    drawHex(
+      context,
+      tile.tileNum,
+      tile.height,
+      tile.topLeftPoint,
+      1,
+      preCanvas,
+      zoomLevelIndex,
+      scale
+    );
   });
 }
 
@@ -273,7 +252,10 @@ export function drawStartingPointAndDestination(
   hoveredHex: string,
   startingPoint: GridPosition | undefined,
   destination: GridPosition | undefined,
-  mode: mapMode
+  mode: mapMode,
+  preCanvas: HTMLCanvasElement,
+  zoomLevelIndex: number,
+  scale: number
 ) {
   const points = [
     { point: startingPoint, i: 0 },
@@ -302,19 +284,19 @@ export function drawStartingPointAndDestination(
     if (point.point) {
       const { col, row } = point.point;
       const center = {
-        x: ((col * 3) / 4) * tileWidth - 75 / 2,
-        y: row * tileHeight - (col % 2 === 0 ? tileHeight / 2 : 0) - 100,
+        x: ((col * 3) / 4) * tileWidth - 99 / 2,
+        y: row * tileHeight - (col % 2 === 0 ? tileHeight / 2 : 0) - 171,
       };
       context.drawImage(
         preCanvas,
-        85 * point.i,
-        300,
-        75,
-        100,
+        210 * MAX_SCALE * (73 + point.i),
+        340 * zoomLevelIndex * MAX_SCALE,
+        99 * scale,
+        171 * scale,
         center.x,
         center.y,
-        75,
-        100
+        99,
+        171
       );
     }
   });
@@ -325,8 +307,6 @@ export function drawRoute(
   path: PathSection[]
 ) {
   context.lineWidth = 10;
-  // context.fillStyle = 'salmon';
-  // context.strokeStyle = 'salmon';
   path.forEach((el, index) => {
     if (el.type === 'street') {
       context.strokeStyle = 'salmon';
@@ -372,15 +352,18 @@ export function drawRoute(
         context.beginPath();
         context.arc(center.x, center.y, 15, 0, 2 * Math.PI, false);
         context.fill();
+        // const img = new Image();
+        // img.src = Sphere;
+
+        // context.drawImage(img, center.x - 33, center.y - 33);
+
         if (index === flight.length - 1) return;
-        // const offsetHex2 = HexHashToOffset(path[index + 1].tile.slice(2));
         const { col: col2, row: row2 } = offsetFromCube(flight[index + 1]);
         const center2 = {
           x: ((col2 * 3) / 4) * tileWidth,
           y: row2 * tileHeight - (col2 % 2 === 0 ? tileHeight / 2 : 0) - 8,
         };
         context.beginPath();
-        // context.setLineDash([20, 5]);
         context.moveTo(center.x, center.y);
         context.lineTo(center2.x, center2.y);
         context.stroke();
@@ -390,6 +373,10 @@ export function drawRoute(
       context.beginPath();
       context.arc(center.x, center.y, 15, 0, 2 * Math.PI, false);
       context.fill();
+      // const img = new Image();
+      // img.src = Sphere;
+
+      // context.drawImage(img, center.x - 33, center.y - 33);
       if (index === path.length - 1) return;
       const offsetHex2 = HexHashToOffset(path[index + 1].tile.slice(2));
       const { col: col2, row: row2 } = offsetHex2;
@@ -398,7 +385,6 @@ export function drawRoute(
         y: row2 * tileHeight - (col2 % 2 === 0 ? tileHeight / 2 : 0) - 8,
       };
       context.beginPath();
-      // context.setLineDash([10, 10]);
       context.moveTo(center.x, center.y);
       context.lineTo(center2.x, center2.y);
       context.stroke();

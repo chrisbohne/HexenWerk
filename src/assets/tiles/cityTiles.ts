@@ -7,7 +7,7 @@ import { ITileCategory } from './interfaces';
 export const cityTiles: ITileCategory = {
   64: {
     svg: Town,
-    height: 212.6,
+    height: 218.1,
     category: 'city',
     streetConnections: [0, 1, 2, 3, 4, 5],
     railConnections: [0, 1, 2, 3, 4, 5],
@@ -16,7 +16,7 @@ export const cityTiles: ITileCategory = {
   },
   65: {
     svg: City,
-    height: 204.6,
+    height: 293.1,
     category: 'city',
     streetConnections: [0, 1, 2, 3, 4, 5],
     railConnections: [0, 1, 2, 3, 4, 5],
@@ -25,7 +25,7 @@ export const cityTiles: ITileCategory = {
   },
   66: {
     svg: Village,
-    height: 159.88,
+    height: 171.1,
     category: 'city',
     streetConnections: [0, 1, 2, 3, 4, 5],
     railConnections: undefined,
@@ -34,7 +34,7 @@ export const cityTiles: ITileCategory = {
   },
   67: {
     svg: Sight,
-    height: 178.88,
+    height: 182.38,
     category: 'city',
     streetConnections: [0, 1, 2, 3, 4, 5],
     railConnections: undefined,

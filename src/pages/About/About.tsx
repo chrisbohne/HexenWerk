@@ -4,8 +4,7 @@ import TownPreview from '../../assets/images/cities/Town.svg';
 import VillagePreview from '../../assets/images/cities/Village.svg';
 import SightPreview from '../../assets/images/cities/Sight.svg';
 import Example from '../../assets/images/Example.svg';
-import Zwo from '../../assets/images/2.png';
-import One from '../../assets/images/1.png';
+import AboutImg from '../../assets/images/about.png';
 import StepOne from '../../assets/images/Step1.png';
 import { Carousel } from '../../components';
 
@@ -35,7 +34,7 @@ export const About = () => {
           settings and also check out a prebuild map to get started.
         </p>
         <div
-          style={{ backgroundImage: `url(${Example})` }}
+          style={{ backgroundImage: `url(${AboutImg})` }}
           className={styles.parallax}
         >
           <h1>Build your own map or just use one of the example maps!</h1>

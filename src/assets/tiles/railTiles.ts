@@ -18,7 +18,7 @@ import { ITileCategory } from './interfaces';
 export const railTiles: ITileCategory = {
   49: {
     svg: Rail52,
-    height: 138.6,
+    height: 142.1,
     category: 'rails',
     railConnections: [5, 2],
     streetConnections: undefined,
@@ -27,7 +27,7 @@ export const railTiles: ITileCategory = {
   },
   50: {
     svg: Rail41,
-    height: 136.6,
+    height: 136.1,
     category: 'rails',
     railConnections: [4, 1],
     streetConnections: undefined,
@@ -36,7 +36,7 @@ export const railTiles: ITileCategory = {
   },
   51: {
     svg: Rail30,
-    height: 136.6,
+    height: 136.1,
     category: 'rails',
     railConnections: [3, 0],
     streetConnections: undefined,
@@ -45,7 +45,7 @@ export const railTiles: ITileCategory = {
   },
   52: {
     svg: Rail51,
-    height: 138.6,
+    height: 142.1,
     category: 'rails',
     railConnections: [5, 1],
     streetConnections: undefined,
@@ -54,7 +54,7 @@ export const railTiles: ITileCategory = {
   },
   53: {
     svg: Rail42,
-    height: 136.6,
+    height: 136.1,
     category: 'rails',
     railConnections: [4, 2],
     streetConnections: undefined,
@@ -63,7 +63,7 @@ export const railTiles: ITileCategory = {
   },
   54: {
     svg: Rail53,
-    height: 138.6,
+    height: 142.1,
     category: 'rails',
     railConnections: [5, 3],
     streetConnections: undefined,
@@ -72,7 +72,7 @@ export const railTiles: ITileCategory = {
   },
   55: {
     svg: Rail40,
-    height: 136.6,
+    height: 136.1,
     category: 'rails',
     railConnections: [4, 0],
     streetConnections: undefined,
@@ -81,7 +81,7 @@ export const railTiles: ITileCategory = {
   },
   56: {
     svg: Rail31,
-    height: 136.6,
+    height: 136.1,
     category: 'rails',
     railConnections: [3, 1],
     streetConnections: undefined,
@@ -90,7 +90,7 @@ export const railTiles: ITileCategory = {
   },
   57: {
     svg: Rail20,
-    height: 136.6,
+    height: 136.1,
     category: 'rails',
     railConnections: [2, 0],
     streetConnections: undefined,
@@ -99,7 +99,7 @@ export const railTiles: ITileCategory = {
   },
   58: {
     svg: Rail41Street52,
-    height: 138.6,
+    height: 142.1,
     category: 'railsAndStreet',
     railConnections: [4, 1],
     streetConnections: [5, 2],
@@ -108,7 +108,7 @@ export const railTiles: ITileCategory = {
   },
   59: {
     svg: Rail30Street52,
-    height: 138.6,
+    height: 142.1,
     category: 'railsAndStreet',
     railConnections: [3, 0],
     streetConnections: [5, 2],
@@ -117,7 +117,7 @@ export const railTiles: ITileCategory = {
   },
   60: {
     svg: Rail52Street30,
-    height: 138.6,
+    height: 142.1,
     category: 'railsAndStreet',
     railConnections: [5, 2],
     streetConnections: [3, 0],
@@ -126,7 +126,7 @@ export const railTiles: ITileCategory = {
   },
   61: {
     svg: Rail30Street41,
-    height: 136.6,
+    height: 136.1,
     category: 'railsAndStreet',
     railConnections: [3, 0],
     streetConnections: [4, 1],
@@ -135,7 +135,7 @@ export const railTiles: ITileCategory = {
   },
   62: {
     svg: Rail41Street30,
-    height: 136.6,
+    height: 136.1,
     category: 'railsAndStreet',
     railConnections: [4, 1],
     streetConnections: [3, 0],
@@ -144,7 +144,7 @@ export const railTiles: ITileCategory = {
   },
   63: {
     svg: Rail52Street41,
-    height: 138.6,
+    height: 142.1,
     category: 'railsAndStreet',
     railConnections: [5, 2],
     streetConnections: [4, 1],

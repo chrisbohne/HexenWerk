@@ -2,4 +2,8 @@
 
 .blogContainer {
   height: calc(100vh - #{$nav-height});
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+

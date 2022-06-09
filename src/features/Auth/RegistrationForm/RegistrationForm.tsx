@@ -5,6 +5,7 @@ import { AxiosError } from 'axios';
 import { Button, Icon } from '../../../components';
 
 import styles from './RegistrationForm.module.scss';
+import { useAuth } from '../../../hooks';
 
 const USERNAME_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const EMAIL_REGEX =
@@ -14,6 +15,7 @@ const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 export const RegistrationForm = () => {
   const navigate = useNavigate();
   const errRef = useRef<HTMLParagraphElement>(null);
+  const { setAuth } = useAuth();
 
   const [username, setUsername] = useState('');
   const [validUsername, setValidUsername] = useState(false);
@@ -69,6 +71,11 @@ export const RegistrationForm = () => {
     try {
       const data = { username, email, password };
       await authService.register(data);
+      const { accessToken, role } = await authService.login({
+        email,
+        password,
+      });
+      setAuth({ username, email, role, accessToken });
       setUsername('');
       setEmail('');
       setPassword('');

@@ -4,7 +4,7 @@
 $primary-font: 'Poppins', sans-serif;
 
 // color
-$primary-100: #fa8072;
+$primary-100: #F87171;
 $primary-200: #fcf7f8;
 $primary-300: #93a3b1;
 $primary-400: #34495e;
@@ -65,9 +65,15 @@ $xl: 1200px;
       @content;
     }
   }
+  @if $point == xl {
+    @media (min-width: $xl) {
+      @content;
+    }
+  }
 }
 
 :export {
   lg: $lg;
   navHeight: $nav-height;
+  red: ff0000;
 }

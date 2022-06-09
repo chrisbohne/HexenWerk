@@ -1,8 +1,14 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  WheelEvent,
+} from 'react';
 import { useAppSelector, useAppDispatch } from '../../../app/store';
 import {
-  addPoints,
   diffPoints,
+  getMouseOffset,
   ORIGIN,
   scalePoint,
 } from '../_utils/canvasHelpers';
@@ -30,8 +36,9 @@ import { getHex } from '../_utils/hexHelper';
 import { offsetFromCube } from '../_utils/hexLogic';
 import styles from './Canvas.module.scss';
 import { CanvasProps } from '../_interfaces';
-
-const ZOOM_SENSITIVITY = 500;
+import { usePreCanvas } from '../_hooks/usePreCanvas';
+import { zoomLevels } from '../_constants/canvas';
+import { Spinner } from '../../../components';
 
 export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
   const dispatch = useAppDispatch();
@@ -54,15 +61,21 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
   const [isMoving, setIsMoving] = useState(false);
   const [hoveredHexTest, setHoveredHexTest] = useState('');
   const [cityTileIsHovered, setCityTileIsHovered] = useState(false);
+  const { preCanvas, isLoading } = usePreCanvas();
+  const [zoomLevelIndex, setZoomLevelIndex] = useState(0);
 
   useEffect(() => {
     lastOffset.current = offset;
   }, [offset]);
 
+  useEffect(() => {
+    const index = zoomLevels.findIndex((el) => el === scale);
+    setZoomLevelIndex(index);
+  }, [scale]);
+
   // Initial Context Setup
   useLayoutEffect(() => {
     if (!canvasRef.current) return;
-    // console.log(canvasWidth);
     if (!canvasWidth) return;
     const renderContext = canvasRef.current.getContext('2d');
     if (!renderContext) return;
@@ -112,11 +125,16 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
 
       setCityTileIsHovered(cityHovered === true);
 
+      if (!preCanvas) return;
+
       drawGrid(
         context,
         map,
         visibleGridRange,
         mode,
+        preCanvas,
+        zoomLevelIndex,
+        scale,
         hoveredHex,
         selectedTile,
         canvasData
@@ -129,7 +147,10 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
           hoveredHex,
           startingPoint,
           destination,
-          mode
+          mode,
+          preCanvas,
+          zoomLevelIndex,
+          scale
         );
 
       if (mode === 'direction' && route && route.distance !== Infinity) {
@@ -139,7 +160,10 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
           hoveredHex,
           startingPoint,
           destination,
-          mode
+          mode,
+          preCanvas,
+          zoomLevelIndex,
+          scale
         );
         drawRoute(context, route.path);
       }
@@ -151,7 +175,10 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
           hoveredHex,
           startingPoint,
           destination,
-          mode
+          mode,
+          preCanvas,
+          zoomLevelIndex,
+          scale
         );
       }
 
@@ -175,6 +202,8 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
     destination,
     startingPoint,
     route,
+    preCanvas,
+    zoomLevelIndex,
   ]);
 
   // update new canvas position based on current offset and last offset
@@ -189,48 +218,22 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
   }, [context, offset, scale, dispatch]);
 
   // update new canvas position based on scale
-  useEffect(() => {
-    const canvasElem = canvasRef.current;
-    if (!canvasElem) return;
 
-    function handleWheel(event: WheelEvent) {
-      event.preventDefault();
+  const handleWheel = (e: WheelEvent) => {
+    const { mouseOffset, newScale } = getMouseOffset(e, scale, mousePosRef);
+    if (!mouseOffset) return;
 
-      if (!context) return;
-      if (
-        (scale > 1.5 && event.deltaY < 0) ||
-        (scale < 0.3 && event.deltaY > 0)
-      )
-        return;
-      let zoom = 1 - event.deltaY / ZOOM_SENSITIVITY;
-      if (zoom * scale > 1.5) zoom = 1.5 / scale;
-      if (zoom * scale < 0.3) zoom = 0.3 / scale;
+    // const index = zoomLevels.findIndex((el) => el === newScale);
+    // setZoomLevelIndex(index);
 
-      context.translate(viewPortTopLeft.x, viewPortTopLeft.y);
-
-      const viewportTopLeftDelta = {
-        x: (mousePosRef.current.x / scale) * (1 - 1 / zoom),
-        y: (mousePosRef.current.y / scale) * (1 - 1 / zoom),
-      };
-      const newviewPortTopLeft = addPoints(
-        viewPortTopLeft,
-        viewportTopLeftDelta
-      );
-      context.scale(zoom, zoom);
-      context.translate(-newviewPortTopLeft.x, -newviewPortTopLeft.y);
-
-      dispatch(
-        updateViewPortTopLeft({
-          x: -viewportTopLeftDelta.x,
-          y: -viewportTopLeftDelta.y,
-        })
-      );
-      dispatch(updateScale(zoom));
-    }
-
-    canvasElem.addEventListener('wheel', handleWheel);
-    return () => canvasElem.removeEventListener('wheel', handleWheel);
-  }, [context, mousePosRef, scale, viewPortTopLeft, dispatch]);
+    dispatch(
+      updateViewPortTopLeft({
+        x: -mouseOffset.x,
+        y: -mouseOffset.y,
+      })
+    );
+    dispatch(updateScale(newScale));
+  };
 
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsMoving(false);
@@ -300,6 +303,7 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
 
   return (
     <>
+      {isLoading && <Spinner />}
       <canvas
         style={{
           cursor:
@@ -316,6 +320,7 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
+        onWheel={handleWheel}
         width={canvasWidth}
         height={canvasHeight}
       />

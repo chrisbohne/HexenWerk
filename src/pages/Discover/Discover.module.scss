@@ -1,5 +1,8 @@
 @import '../../app/style/variables.module.scss';
 
-.container {
+.discoverContainer {
   height: calc(100vh - #{$nav-height});
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

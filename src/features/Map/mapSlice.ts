@@ -36,8 +36,8 @@ const mapSlice = createSlice({
   name: 'map',
   initialState,
   reducers: {
-    updateScale: (state, { payload: zoom }: PayloadAction<number>) => {
-      state.scale = state.scale * zoom;
+    updateScale: (state, { payload: newScale }: PayloadAction<number>) => {
+      state.scale = newScale;
     },
     updateViewPortTopLeft: (
       state,
