@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../app/store';
 import { maps } from '../../../../assets/maps';
-import { Confirmation, Icon, Modal, Spinner } from '../../../../components';
+import { Icon, Modal, Spinner } from '../../../../components';
 import { addNotification } from '../../../../components/Notification/notificationSlice';
 import { useAuth } from '../../../../hooks';
 import { Map } from '../../../Auth/_interfaces';

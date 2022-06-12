@@ -6,10 +6,10 @@ import {
   cityTiles,
   natureTiles,
 } from '../../../../assets/tiles';
-import StreetPreview from '../../../../assets/images/StreetPreview.svg';
-import RailPreview from '../../../../assets/images/RailPreview.svg';
-import CityPreview from '../../../../assets/images/CityPreview.svg';
-import NaturePreview from '../../../../assets/images/NaturePreview.svg';
+import StreetPreview from '../../../../assets/images/StreetPreviewBlue.svg';
+import RailPreview from '../../../../assets/images/RailPreviewBlue.svg';
+import CityPreview from '../../../../assets/images/CityPreviewBlue.svg';
+import NaturePreview from '../../../../assets/images/NaturePreviewBlue.svg';
 import { useAppDispatch } from '../../../../app/store';
 import {
   changeMode,

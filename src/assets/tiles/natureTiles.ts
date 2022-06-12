@@ -2,7 +2,7 @@ import Water from '../images/nature/Water.svg';
 import Mountain from '../images/nature/Mountain.svg';
 import Forest from '../images/nature/Forest.svg';
 import Grass from '../images/nature/Grass.svg';
-import Grain from '../images/nature/Grain.svg'
+import Grain from '../images/nature/Grain.svg';
 import { ITileCategory } from './interfaces';
 
 export const natureTiles: ITileCategory = {
