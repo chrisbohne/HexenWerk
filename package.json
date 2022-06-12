@@ -1,9 +1,12 @@
 {
+  "homepage": "http://chrisbohne.github.io/HexFinder_v2",
   "name": "hex-finder-client",
   "version": "1.0.0",
   "description": "This is going to be the new improved version of HexFinder.",
   "main": "index.js",
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "webpack-dev-server --config webpack.dev.js --open",
     "build": "webpack --config webpack.prod.js",
     "lint": "eslint \"./src/**/*.{js,jsx,ts,tsx,json}\"",
@@ -21,7 +24,6 @@
   "bugs": {
     "url": "https://github.com/chrisbohne/HexFinder_v2/issues"
   },
-  "homepage": "https://github.com/chrisbohne/HexFinder_v2#readme",
   "dependencies": {
     "@hookform/resolvers": "^2.8.8",
     "@reduxjs/toolkit": "^1.8.0",
@@ -64,6 +66,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
+    "gh-pages": "^4.0.0",
     "html-loader": "^3.1.0",
     "html-webpack-plugin": "^5.5.0",
     "identity-obj-proxy": "^3.0.0",
