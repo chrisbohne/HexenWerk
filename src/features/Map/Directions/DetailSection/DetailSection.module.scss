@@ -13,6 +13,7 @@
     & span {
       &:first-of-type {
         color: $info-100;
+        font-weight: 600;
       }
     }
   }
@@ -34,6 +35,7 @@
     svg {
       width: 24px;
       height: 24px;
+      cursor: default;
     }
   }
 }

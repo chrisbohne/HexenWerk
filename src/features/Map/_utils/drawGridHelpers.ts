@@ -18,8 +18,6 @@ import { hexDrawLine, offsetFromCube, offsetToCube } from './hexLogic';
 import { getHex } from './hexHelper';
 import { MAX_SCALE } from '../_constants/canvas';
 
-import Sphere from '../../../assets/images/Sphere.svg';
-
 interface ICity {
   height: number;
   tileNum: string;

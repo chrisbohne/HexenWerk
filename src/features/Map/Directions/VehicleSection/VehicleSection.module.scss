@@ -25,20 +25,23 @@
 
     & input {
       -webkit-appearance: none;
-      height: 6px;
       appearance: none;
+      height: 6px;
+      width: 150px;
       border-radius: 30px;
       background: $primary-400;
+      // overflow: hidden;
 
       &::-webkit-slider-thumb {
         -webkit-appearance: none;
         appearance: none;
         width: 15px;
         height: 15px;
-        background: $info-100;
+        background: white;
         cursor: pointer;
         border-radius: 30px;
         outline: none;
+        // box-shadow: -150px 0 0 150px blue;
       }
     }
 

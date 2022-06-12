@@ -4,10 +4,14 @@ import { CarouselProps } from '../_interfaces/carousel.interface';
 
 import styles from './Carousel.module.scss';
 
-export const Carousel = ({ slides }: CarouselProps) => {
+export const Carousel = ({ slides, setIndex }: CarouselProps) => {
   const slideRef = useRef<HTMLLIElement>(null);
   const [slideSize, setSlideSize] = useState(0);
   const [slideIndex, setSlideIndex] = useState(0);
+
+  useEffect(() => {
+    setIndex(slideIndex);
+  }, [slideIndex, setIndex]);
 
   const slidesToShow = slides.map((slide, index) => {
     return (
@@ -20,9 +24,7 @@ export const Carousel = ({ slides }: CarouselProps) => {
         <div
           style={{ backgroundImage: `url(${slide})` }}
           className={styles.carousel__image}
-        >
-          <h1>This is just some info for the map!</h1>
-        </div>
+        ></div>
       </li>
     );
   });

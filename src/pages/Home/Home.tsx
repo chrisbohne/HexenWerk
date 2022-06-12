@@ -1,9 +1,12 @@
 import { Link } from 'react-router-dom';
 import Hero from '../../assets/images/Hero.png';
 import { Button } from '../../components/Button/Button';
+import { useAuth } from '../../hooks';
 import styles from './Home.module.scss';
 
 export const Home = () => {
+  const { auth } = useAuth();
+
   return (
     <div>
       <div className={styles.hero}>
@@ -16,12 +19,23 @@ export const Home = () => {
             </p>
           </div>
           <div className={styles.hero__ctaButton}>
-            <Button type="primary">
-              <Link to="/signup">Sign Up</Link>
-            </Button>
-            <Button type="secondary">
-              <Link to="/playground">Play Around</Link>
-            </Button>
+            {auth.username ? (
+              <>
+                <Button type="primary">
+                  <Link to="/playground">Play Around</Link>
+                </Button>
+              </>
+            ) : (
+              <>
+                {' '}
+                <Button type="primary">
+                  <Link to="/signup">Sign Up</Link>
+                </Button>
+                <Button type="secondary">
+                  <Link to="/playground">Play Around</Link>
+                </Button>
+              </>
+            )}
           </div>
         </div>
         <div

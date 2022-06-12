@@ -18,7 +18,7 @@ const Nav = () => {
     }
 
     if (mobileOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = 'unset';
     }
 
     if (!mobileOpen) {
@@ -42,7 +42,7 @@ const Nav = () => {
     <nav className={styles.navbar}>
       <div className={styles.navbar__logo}>
         <Link onClick={menuCloseHandler} to="/">
-          HexFinder
+          HexenWerk
         </Link>
       </div>
       <div

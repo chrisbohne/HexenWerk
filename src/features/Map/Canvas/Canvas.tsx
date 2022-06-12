@@ -73,6 +73,10 @@ export const Canvas = ({ canvasHeight, canvasWidth }: CanvasProps) => {
     setZoomLevelIndex(index);
   }, [scale]);
 
+  useEffect(() => {
+    dispatch(changeMode('none'));
+  }, [dispatch]);
+
   // Initial Context Setup
   useLayoutEffect(() => {
     if (!canvasRef.current) return;
