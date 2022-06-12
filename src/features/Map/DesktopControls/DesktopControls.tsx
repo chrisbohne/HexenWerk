@@ -5,7 +5,7 @@ import { Spinner } from '../../../components';
 import { useAuth } from '../../../hooks';
 import { setMaps } from '../../Auth';
 import { Editor } from '../EditorMenu/Editor/Editor';
-import { Directions, EditorMenu, Settings } from '../index';
+import { Directions, Settings } from '../index';
 import { TileCount } from '../TileCount/TileCount';
 
 import styles from './DesktopControls.module.scss';
