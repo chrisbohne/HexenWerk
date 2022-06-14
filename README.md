@@ -1,7 +1,7 @@
 # HexenWerk
 ## The improved version of HexFinder
 
-[Visit HexenWerk](https://chrisbohne.github.io/)
+<a href="https://chrisbohne.github.io" target="_blank">Visit HexenWerk</a>
 
 
 
