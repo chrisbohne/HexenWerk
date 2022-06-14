@@ -1,4 +1,9 @@
-# HexFinder v2.0
+# HexenWerk
+## The improved version of HexFinder
+
+[Visit HexenWerk](https://chrisbohne.github.io/)
+
+
 
 This is going to be the new improved version of HexFinder.
 
