@@ -9,7 +9,7 @@ Different locations can be connected with each other. A city can be reached by a
 
 ### Technology used for HexenWerk
 The frontend of HexenWerk was build using React, Typescript and SCSS. Webpack was used to bundle all components and assets.
-The editor was built using HTML Canvas without using any library.
+The editor was built using HTML Canvas without using any library. The tiles were designed using Figma.
 
 The backend was built using NestJS and a dockerized PostreSQL.
 
