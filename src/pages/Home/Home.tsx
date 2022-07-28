@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import Hero from '../../assets/images/Hero.png';
+import Hero from '../../assets/images/Hero.svg';
 import { Button } from '../../components/Button/Button';
 import { useAuth } from '../../hooks';
 import styles from './Home.module.scss';
@@ -12,7 +12,7 @@ export const Home = () => {
       <div className={styles.hero}>
         <div className={styles.hero__ctaContainer}>
           <div className={styles.hero__ctaText}>
-            <h1>HexFinder</h1>
+            <h1>HexenWerk</h1>
             <p>
               The perfect place to learn about algorithm and discover fun and
               interesting things about computer science.
